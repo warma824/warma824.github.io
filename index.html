@@ -26,42 +26,72 @@
     --border: rgba(108,92,231,0.12);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
 
-  #app { height: 100dvh; display: flex; flex-direction: column; max-width: 430px; margin: 0 auto; position: relative; overflow: hidden; }
+  /* iOS status bar seamless fix */
+  html {
+    background: #6c5ce7;
+    height: 100%;
+    font-family: 'Nunito', sans-serif;
+  }
+  body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  #app { height: 100dvh; display: flex; flex-direction: column; max-width: 430px; margin: 0 auto; position: relative; overflow: hidden; background: var(--bg); }
 
   /* HEADER */
   .header {
     background: linear-gradient(145deg, var(--purple) 0%, #a855f7 50%, var(--pink) 100%);
-    padding: env(safe-area-inset-top, 12px) 20px 24px;
-    padding-top: max(env(safe-area-inset-top), 52px);
+    padding: 0 20px 20px;
+    padding-top: max(env(safe-area-inset-top), 54px);
     position: relative; overflow: hidden; flex-shrink: 0;
   }
-  .header::before { content: ''; position: absolute; width: 200px; height: 200px; background: rgba(255,255,255,0.07); border-radius: 50%; top: -60px; right: -40px; }
-  .header::after  { content: ''; position: absolute; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border-radius: 50%; top: 30px;  right: 60px; }
-  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; position: relative; z-index: 1; }
-  .header-week { color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
-  .settings-btn { background: rgba(255,255,255,0.2); border: none; color: white; width: 36px; height: 36px; border-radius: 12px; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
-  .budget-remaining { color: white; font-size: 46px; font-weight: 900; line-height: 1; position: relative; z-index: 1; }
-  .budget-remaining span { font-size: 22px; font-weight: 700; opacity: 0.8; vertical-align: super; }
-  .budget-label { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; margin-top: 4px; margin-bottom: 16px; position: relative; z-index: 1; }
+  .header::before { content: ''; position: absolute; width: 200px; height: 200px; background: rgba(255,255,255,0.07); border-radius: 50%; top: -60px; right: -40px; pointer-events: none; }
+  .header::after  { content: ''; position: absolute; width: 120px; height: 120px; background: rgba(255,255,255,0.05); border-radius: 50%; top: 30px;  right: 60px; pointer-events: none; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; position: relative; z-index: 1; }
+  .header-week { color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 4px; }
+  .settings-btn { background: rgba(255,255,255,0.2); border: none; color: white; width: 38px; height: 38px; border-radius: 13px; cursor: pointer; font-size: 17px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .budget-remaining { color: white; font-size: 44px; font-weight: 900; line-height: 1; position: relative; z-index: 1; }
+  .budget-remaining span { font-size: 21px; font-weight: 700; opacity: 0.8; vertical-align: super; }
+  .budget-label { color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 700; margin-top: 3px; margin-bottom: 14px; position: relative; z-index: 1; }
   .progress-wrap { position: relative; z-index: 1; }
-  .progress-track { background: rgba(255,255,255,0.25); border-radius: 99px; height: 10px; overflow: hidden; }
-  .progress-bar { background: white; height: 10px; border-radius: 99px; transition: width 0.6s cubic-bezier(.34,1.56,.64,1); }
+  .progress-track { background: rgba(255,255,255,0.25); border-radius: 99px; height: 8px; overflow: hidden; }
+  .progress-bar { background: white; height: 8px; border-radius: 99px; transition: width 0.6s cubic-bezier(.34,1.56,.64,1); }
   .progress-meta { display: flex; justify-content: space-between; margin-top: 6px; }
-  .progress-meta span { color: rgba(255,255,255,0.75); font-size: 12px; font-weight: 700; }
+  .progress-meta span { color: rgba(255,255,255,0.75); font-size: 11px; font-weight: 700; }
   .over-budget .progress-bar { background: var(--amber); }
   .over-budget .budget-remaining { color: var(--amber); }
 
   /* TABS */
-  .tabs { display: flex; gap: 8px; padding: 14px 20px 0; flex-shrink: 0; }
-  .tab { flex: 1; text-align: center; font-size: 13px; font-weight: 800; padding: 9px 0; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: var(--muted); background: transparent; border: none; }
-  .tab.active { background: var(--card); color: var(--purple); box-shadow: 0 2px 12px rgba(108,92,231,0.15); }
+  .tabs { display: flex; gap: 6px; padding: 12px 16px 0; flex-shrink: 0; background: var(--bg); }
+  .tab { flex: 1; text-align: center; font-size: 12px; font-weight: 800; padding: 9px 4px; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: var(--muted); background: transparent; border: none; font-family: 'Nunito', sans-serif; }
+  .tab.active { background: var(--card); color: var(--purple); box-shadow: 0 2px 10px rgba(108,92,231,0.14); }
 
   /* BODY */
-  .body { flex: 1; overflow-y: auto; padding: 14px 20px calc(env(safe-area-inset-bottom, 0px) + 90px); -webkit-overflow-scrolling: touch; }
-  .section-label { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; margin: 16px 0 8px; }
+  .body { flex: 1; overflow-y: auto; padding: 10px 16px calc(env(safe-area-inset-bottom, 0px) + 88px); -webkit-overflow-scrolling: touch; }
+  .section-label { font-size: 11px; font-weight: 800; color: var(--muted); letter-spacing: 0.8px; text-transform: uppercase; margin: 14px 0 8px; }
   .section-label:first-child { margin-top: 4px; }
+
+  /* QUICK ADD SHORTCUTS */
+  .shortcuts-wrap { margin-bottom: 6px; }
+  .shortcuts-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .shortcuts-scroll::-webkit-scrollbar { display: none; }
+  .shortcut-chip {
+    display: flex; flex-direction: column; align-items: center;
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 8px 10px; cursor: pointer;
+    flex-shrink: 0; min-width: 68px; text-align: center;
+    transition: transform 0.15s, box-shadow 0.15s; position: relative;
+  }
+  .shortcut-chip:active { transform: scale(0.95); }
+  .shortcut-chip.add-new { border-style: dashed; color: var(--muted); background: transparent; }
+  .shortcut-chip-emoji { font-size: 20px; line-height: 1; margin-bottom: 3px; }
+  .shortcut-chip-name { font-size: 10px; font-weight: 800; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60px; }
+  .shortcut-chip-amt  { font-size: 10px; font-weight: 700; color: var(--purple); margin-top: 1px; }
+  .shortcut-delete { position: absolute; top: -5px; right: -5px; background: var(--coral); color: white; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: 900; line-height: 1; }
 
   /* EXPENSE ITEMS */
   .expense-item { display: flex; align-items: flex-start; gap: 12px; background: var(--card); border-radius: 16px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid var(--border); animation: slideIn 0.25s ease; transition: transform 0.1s; }
@@ -83,13 +113,66 @@
   .empty-state p { font-size: 14px; font-weight: 700; }
   .empty-state small { font-size: 12px; }
 
+  /* INSIGHTS */
+  .insights-summary-card {
+    background: linear-gradient(135deg, var(--purple), #a855f7);
+    border-radius: 20px; padding: 18px 20px; margin-bottom: 14px; color: white; position: relative; overflow: hidden;
+  }
+  .insights-summary-card::before { content:''; position:absolute; width:120px;height:120px; background:rgba(255,255,255,0.08); border-radius:50%; top:-30px;right:-20px; }
+  .isc-row { display:flex; gap:12px; margin-top:12px; }
+  .isc-stat { flex:1; background:rgba(255,255,255,0.15); border-radius:12px; padding:10px 12px; }
+  .isc-label { font-size:10px;font-weight:800;opacity:0.75;letter-spacing:0.5px;text-transform:uppercase; }
+  .isc-val   { font-size:18px;font-weight:900;margin-top:2px; }
+  .isc-title { font-size:13px;font-weight:800;opacity:0.8;margin-bottom:2px; }
+  .isc-main  { font-size:38px;font-weight:900;line-height:1; }
+
+  .insight-card { background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;border:1px solid var(--border); }
+  .insight-card-title { font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:6px; }
+
+  /* Category bars */
+  .cat-bar-row { display:flex;align-items:center;gap:8px;margin-bottom:10px; }
+  .cat-bar-row:last-child { margin-bottom:0; }
+  .cat-bar-icon { width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0; }
+  .cat-bar-info { flex:1;min-width:0; }
+  .cat-bar-label { font-size:12px;font-weight:800;color:var(--text);display:flex;justify-content:space-between;margin-bottom:4px; }
+  .cat-bar-label span { font-weight:700;color:var(--muted); }
+  .cat-bar-track { background:var(--bg);border-radius:99px;height:6px;overflow:hidden; }
+  .cat-bar-fill  { height:6px;border-radius:99px;transition:width 0.5s cubic-bezier(.34,1.26,.64,1); }
+
+  /* Reflection */
+  .refl-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px; }
+  .refl-stat-card { background:var(--bg);border-radius:12px;padding:10px 12px; }
+  .refl-stat-label { font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px; }
+  .refl-stat-val   { font-size:20px;font-weight:900;color:var(--text);margin-top:2px; }
+  .refl-stat-sub   { font-size:11px;font-weight:700;color:var(--muted);margin-top:1px; }
+  .guilt-bar-wrap  { margin-top:4px; }
+  .guilt-bar-label { display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px; }
+  .guilt-bar-track { background:var(--bg);border-radius:99px;height:8px;overflow:hidden;display:flex; }
+  .guilt-seg { height:8px;transition:width 0.5s ease; }
+
+  /* Vibe pills */
+  .vibe-pills { display:flex;gap:6px;flex-wrap:wrap;margin-top:4px; }
+  .vibe-pill { display:flex;align-items:center;gap:4px;background:var(--bg);border-radius:99px;padding:5px 10px;font-size:11px;font-weight:800;color:var(--text); }
+  .vibe-pill-count { font-size:13px;font-weight:900;color:var(--purple); }
+
+  /* Trend */
+  .trend-bars { display:flex;gap:8px;align-items:flex-end;height:80px;margin-top:8px; }
+  .trend-bar-wrap { flex:1;display:flex;flex-direction:column;align-items:center;gap:4px; }
+  .trend-bar-outer { width:100%;background:var(--bg);border-radius:8px;overflow:hidden;position:relative;height:60px;display:flex;align-items:flex-end; }
+  .trend-bar-inner { width:100%;border-radius:8px;transition:height 0.5s cubic-bezier(.34,1.26,.64,1); }
+  .trend-bar-label { font-size:10px;font-weight:800;color:var(--muted);text-align:center; }
+  .trend-bar-amt   { font-size:10px;font-weight:900;color:var(--text);text-align:center; }
+  .trend-current .trend-bar-inner { background:linear-gradient(180deg,var(--purple),#a855f7); }
+  .trend-past .trend-bar-inner { background:linear-gradient(180deg,#c4b8f0,#ddd8fa); }
+  .trend-over .trend-bar-inner { background:linear-gradient(180deg,var(--coral),#f0a090); }
+
   /* HISTORY */
   .history-week { background: var(--card); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s; }
   .history-week.expanded { border-color: rgba(108,92,231,0.28); }
   .history-week-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .history-week-title { font-size: 14px; font-weight: 800; color: var(--text); }
+  .history-week-title { font-size: 13px; font-weight: 800; color: var(--text); }
   .history-header-right { display: flex; align-items: center; gap: 8px; }
-  .history-badge { font-size: 12px; font-weight: 800; padding: 3px 10px; border-radius: 99px; }
+  .history-badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 99px; }
   .badge-ok       { background: #e8fdf5; color: #00b894; }
   .badge-over     { background: #fff3e0; color: var(--coral); }
   .badge-progress { background: #ede9ff; color: #6c5ce7; }
@@ -98,11 +181,9 @@
   .history-amounts { display: flex; gap: 8px; }
   .history-amounts div { flex: 1; background: var(--bg); border-radius: 10px; padding: 8px 10px; }
   .hlabel { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-  .hval   { font-size: 16px; font-weight: 900; color: var(--text); margin-top: 2px; }
-  .history-bar { height: 6px; background: #eee; border-radius: 99px; margin-top: 10px; overflow: hidden; }
-  .history-bar-fill { height: 6px; border-radius: 99px; background: linear-gradient(90deg, var(--purple), var(--pink)); }
-
-  /* HISTORY EXPANDED */
+  .hval   { font-size: 15px; font-weight: 900; color: var(--text); margin-top: 2px; }
+  .history-bar { height: 5px; background: #eee; border-radius: 99px; margin-top: 10px; overflow: hidden; }
+  .history-bar-fill { height: 5px; border-radius: 99px; background: linear-gradient(90deg, var(--purple), var(--pink)); }
   .history-items { display: none; margin-top: 12px; border-top: 1px solid var(--border); padding-top: 10px; }
   .history-week.expanded .history-items { display: block; }
   .h-exp-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
@@ -117,13 +198,13 @@
 
   /* FAB */
   .fab {
-    position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 24px); left: 50%; transform: translateX(-50%);
-    width: calc(100% - 40px); max-width: 390px;
+    position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px); left: 50%; transform: translateX(-50%);
+    width: calc(100% - 32px); max-width: 398px;
     background: linear-gradient(135deg, var(--purple), var(--pink));
     color: white; border: none; border-radius: 18px;
     padding: 16px; font-size: 16px; font-weight: 800;
     cursor: pointer; letter-spacing: 0.3px;
-    box-shadow: 0 8px 24px rgba(108,92,231,0.4);
+    box-shadow: 0 8px 24px rgba(108,92,231,0.38);
     transition: transform 0.15s, box-shadow 0.15s;
     font-family: 'Nunito', sans-serif; z-index: 10;
   }
@@ -148,7 +229,7 @@
   .modal-top { padding: 20px 20px 0; flex-shrink: 0; }
   .modal-scroll { flex: 1; overflow-y: auto; padding: 0 20px; -webkit-overflow-scrolling: touch; }
   .modal-bottom { padding: 12px 20px calc(env(safe-area-inset-bottom, 0px) + 16px); flex-shrink: 0; }
-  .modal-handle { width: 40px; height: 4px; background: #e0e0e0; border-radius: 99px; margin: 0 auto 20px; }
+  .modal-handle { width: 40px; height: 4px; background: #e0e0e0; border-radius: 99px; margin: 0 auto 18px; }
   .modal h2 { font-size: 20px; font-weight: 900; color: var(--text); margin-bottom: 4px; }
   .modal label { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px; margin-top: 16px; }
   .modal input, .modal select, .modal textarea {
@@ -159,6 +240,15 @@
   }
   .modal textarea { resize: none; height: 72px; }
   .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--purple); }
+
+  /* Shortcut toggle row */
+  .shortcut-toggle-row { display:flex;align-items:center;justify-content:space-between;background:var(--bg);border-radius:14px;padding:12px 14px;margin-top:16px;cursor:pointer; }
+  .shortcut-toggle-label { font-size:13px;font-weight:800;color:var(--text); }
+  .shortcut-toggle-hint  { font-size:11px;font-weight:600;color:var(--muted);margin-top:2px; }
+  .toggle-switch { width:44px;height:26px;border-radius:13px;background:#ddd;position:relative;transition:background 0.2s;flex-shrink:0; }
+  .toggle-switch.on { background:var(--purple); }
+  .toggle-switch::after { content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:white;top:3px;left:3px;transition:left 0.2s;box-shadow:0 1px 4px rgba(0,0,0,0.2); }
+  .toggle-switch.on::after { left:21px; }
 
   /* CATEGORY GRID — 3 cols */
   .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -191,10 +281,11 @@
   .btn-save   { width: 100%; padding: 14px; border-radius: 14px; border: none; background: linear-gradient(135deg, var(--purple), var(--pink)); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: white; cursor: pointer; }
   .btn-export { width: 100%; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--bg); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--purple); cursor: pointer; margin-top: 10px; }
   .btn-import { width: 100%; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--bg); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--teal); cursor: pointer; margin-top: 10px; }
+  .btn-danger { width: 100%; padding: 14px; border-radius: 14px; border: 1.5px solid rgba(225,112,85,0.3); background: rgba(225,112,85,0.07); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--coral); cursor: pointer; margin-top: 10px; }
 
   /* TOAST */
   .toast {
-    position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 110px);
+    position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 108px);
     left: 50%; transform: translateX(-50%) translateY(20px);
     background: #2d2d44; color: white;
     padding: 12px 20px; border-radius: 14px;
@@ -231,6 +322,7 @@
 
   <div class="tabs">
     <button class="tab active" onclick="showTab('week',this)">This week</button>
+    <button class="tab" onclick="showTab('insights',this)">Insights</button>
     <button class="tab" onclick="showTab('history',this)">History</button>
   </div>
 
@@ -238,10 +330,7 @@
   <button class="fab" id="fabBtn" onclick="openAdd()">+ Add expense</button>
 </div>
 
-<!-- Toast notification -->
 <div class="toast" id="toast"></div>
-
-<!-- Hidden file input for CSV import -->
 <input type="file" id="csvFileInput" accept=".csv,text/csv" style="display:none" onchange="handleCSVFile(event)">
 
 <!-- ADD EXPENSE MODAL -->
@@ -279,6 +368,14 @@
 
       <label>Why? (optional)</label>
       <textarea id="inputNotes" placeholder="e.g. Just needed it after a long clinic…"></textarea>
+
+      <div class="shortcut-toggle-row" id="shortcutToggleRow" onclick="toggleSaveShortcut()">
+        <div>
+          <div class="shortcut-toggle-label">⚡ Save as quick-add</div>
+          <div class="shortcut-toggle-hint">One tap to add next time</div>
+        </div>
+        <div class="toggle-switch" id="shortcutToggle"></div>
+      </div>
       <div style="height:10px"></div>
     </div>
     <div class="modal-bottom">
@@ -317,6 +414,7 @@
       <button class="btn-save" onclick="saveBudget()">Save budgets</button>
       <button class="btn-export" onclick="exportCSV()">📤 Export to CSV</button>
       <button class="btn-import" onclick="document.getElementById('csvFileInput').click()">📥 Import from CSV</button>
+      <button class="btn-danger" onclick="confirmClearAll()">🗑 Clear all data</button>
     </div>
   </div>
 </div>
@@ -339,7 +437,6 @@ const CATS = [
   { id:'other',         label:'Other',           emoji:'📦', color:'#b2bec3' },
 ];
 
-// Build a label→id lookup for CSV import
 const CAT_LABEL_TO_ID = {};
 CATS.forEach(c => { CAT_LABEL_TO_ID[c.label.toLowerCase()] = c.id; });
 
@@ -350,21 +447,22 @@ function loadData() {
   const raw = localStorage.getItem('spendly_data');
   if (!raw) return { defaultBudget:150, weekBudgets:{}, expenses:[] };
   const d = JSON.parse(raw);
-  if (d.budget !== undefined && d.defaultBudget === undefined) {
-    d.defaultBudget = d.budget;
-    delete d.budget;
-  }
+  if (d.budget !== undefined && d.defaultBudget === undefined) { d.defaultBudget = d.budget; delete d.budget; }
   if (!d.weekBudgets) d.weekBudgets = {};
   if (!d.defaultBudget) d.defaultBudget = 150;
   return d;
 }
 function saveData(d) { localStorage.setItem('spendly_data', JSON.stringify(d)); }
 
+function loadShortcuts() {
+  const raw = localStorage.getItem('spendly_shortcuts');
+  return raw ? JSON.parse(raw) : [];
+}
+function saveShortcuts(s) { localStorage.setItem('spendly_shortcuts', JSON.stringify(s)); }
+
 function getWeekBudget(weekStart, data) {
   const key = weekStart.toISOString();
-  return (data.weekBudgets && data.weekBudgets[key] != null)
-    ? data.weekBudgets[key]
-    : (data.defaultBudget || 150);
+  return (data.weekBudgets && data.weekBudgets[key] != null) ? data.weekBudgets[key] : (data.defaultBudget || 150);
 }
 
 // ─── DATE HELPERS ─────────────────────────────────────────────────────────────
@@ -379,26 +477,19 @@ function getWeekStart(from) {
   if (!from && new Date() < start) start.setDate(start.getDate() - 7);
   return start;
 }
-
-function getWeekEnd(start) {
-  const e = new Date(start);
-  e.setDate(start.getDate() + 7);
-  return e;
-}
-
-function formatDate(d) {
-  return d.toLocaleDateString('en-NZ', { day:'numeric', month:'short' });
-}
-
+function getWeekEnd(start) { const e = new Date(start); e.setDate(start.getDate() + 7); return e; }
+function formatDate(d) { return d.toLocaleDateString('en-NZ', { day:'numeric', month:'short' }); }
 function fmtAmt(n) { return n.toFixed(2).replace(/\.00$/, ''); }
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 
-let currentTab     = 'week';
-let selectedCat    = 'food';
-let selectedNec    = null;
-let selectedVibe   = null;
-let expandedWeeks  = new Set();
+let currentTab      = 'week';
+let selectedCat     = 'food';
+let selectedNec     = null;
+let selectedVibe    = null;
+let expandedWeeks   = new Set();
+let saveAsShortcut  = false;
+let editShortcuts   = false;
 
 // ─── TOAST ───────────────────────────────────────────────────────────────────
 
@@ -412,195 +503,97 @@ function showToast(msg, type = '') {
 }
 
 // ─── CSV PARSER ───────────────────────────────────────────────────────────────
-// Handles quoted fields, escaped double-quotes, and Windows/Unix line endings.
 
 function parseCSV(text) {
   const rows = [];
-  // Normalise line endings
   const input = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   let i = 0;
-
   while (i < input.length) {
     const row = [];
-    // Skip blank lines
     if (input[i] === '\n') { i++; continue; }
-
     while (i < input.length && input[i] !== '\n') {
       if (input[i] === '"') {
-        // Quoted field
-        i++; // skip opening quote
+        i++;
         let field = '';
         while (i < input.length) {
-          if (input[i] === '"' && input[i + 1] === '"') {
-            field += '"'; i += 2; // escaped quote
-          } else if (input[i] === '"') {
-            i++; break; // closing quote
-          } else {
-            field += input[i++];
-          }
+          if (input[i] === '"' && input[i+1] === '"') { field += '"'; i += 2; }
+          else if (input[i] === '"') { i++; break; }
+          else { field += input[i++]; }
         }
         row.push(field);
-        if (input[i] === ',') i++; // skip comma after field
+        if (input[i] === ',') i++;
       } else {
-        // Unquoted field
         let field = '';
-        while (i < input.length && input[i] !== ',' && input[i] !== '\n') {
-          field += input[i++];
-        }
+        while (i < input.length && input[i] !== ',' && input[i] !== '\n') { field += input[i++]; }
         row.push(field);
         if (input[i] === ',') i++;
       }
     }
     if (input[i] === '\n') i++;
-    if (row.length > 0 && !(row.length === 1 && row[0] === '')) {
-      rows.push(row);
-    }
+    if (row.length > 0 && !(row.length === 1 && row[0] === '')) rows.push(row);
   }
   return rows;
 }
 
-// Parse an en-NZ date string (d/MM/yyyy) into a Date at noon local time.
 function parseNZDate(str) {
   if (!str) return null;
-  // Try d/MM/yyyy
   const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-  if (m) {
-    const [, d, mo, y] = m;
-    return new Date(+y, +mo - 1, +d, 12, 0, 0);
-  }
-  // Fallback: let the browser try
+  if (m) { const [,d,mo,y] = m; return new Date(+y, +mo-1, +d, 12, 0, 0); }
   const d = new Date(str);
   return isNaN(d) ? null : d;
 }
 
-// ─── CSV IMPORT ───────────────────────────────────────────────────────────────
-
 function handleCSVFile(event) {
   const file = event.target.files[0];
-  // Reset input so the same file can be re-imported if needed
   event.target.value = '';
   if (!file) return;
-
   const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      importCSVText(e.target.result);
-    } catch (err) {
-      showToast('Import failed: ' + err.message, 'error');
-    }
-  };
-  reader.onerror = () => showToast('Could not read file.', 'error');
-  reader.readAsText(file, 'utf-8');
+  reader.onload = e => { try { importCSVText(e.target.result); } catch(err) { showToast('Import failed: '+err.message,'error'); } };
+  reader.onerror = () => showToast('Could not read file.','error');
+  reader.readAsText(file,'utf-8');
 }
 
 function importCSVText(text) {
   const rows = parseCSV(text);
-  if (rows.length < 2) {
-    showToast('CSV appears to be empty.', 'error');
-    return;
-  }
-
-  // Validate header — must match the export format
-  // Expected: Date, Week Start, Name, Category, Amount ($), Necessary, Vibe, Notes
+  if (rows.length < 2) { showToast('CSV appears to be empty.','error'); return; }
   const header = rows[0].map(h => h.trim().toLowerCase());
   const COL = {
-    date:      header.indexOf('date'),
-    name:      header.indexOf('name'),
-    category:  header.indexOf('category'),
-    amount:    header.findIndex(h => h.includes('amount')),
-    necessary: header.indexOf('necessary'),
-    vibe:      header.indexOf('vibe'),
-    notes:     header.indexOf('notes'),
+    date: header.indexOf('date'), name: header.indexOf('name'), category: header.indexOf('category'),
+    amount: header.findIndex(h => h.includes('amount')), necessary: header.indexOf('necessary'),
+    vibe: header.indexOf('vibe'), notes: header.indexOf('notes'),
   };
-
-  if (COL.date === -1 || COL.name === -1 || COL.amount === -1) {
-    showToast('Unrecognised CSV format.', 'error');
-    return;
-  }
-
+  if (COL.date === -1 || COL.name === -1 || COL.amount === -1) { showToast('Unrecognised CSV format.','error'); return; }
   const data = loadData();
-
-  // Build a dedup fingerprint set from existing expenses
-  // Fingerprint: date-string (day precision) + name + amount rounded to cents
-  const existingFingerprints = new Set(
-    data.expenses.map(e => {
-      const d = new Date(e.date);
-      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}|${e.name}|${Math.round(e.amount * 100)}`;
-    })
-  );
-
-  let imported = 0;
-  let skipped  = 0;
-  const errors = [];
-
-  rows.slice(1).forEach((row, rowIdx) => {
-    // Skip short / empty rows
+  const existingFP = new Set(data.expenses.map(e => {
+    const d = new Date(e.date);
+    return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}|${e.name}|${Math.round(e.amount*100)}`;
+  }));
+  let imported=0, skipped=0; const errors=[];
+  rows.slice(1).forEach((row,ri) => {
     if (row.every(c => !c.trim())) return;
-
-    const rawDate   = COL.date      >= 0 ? row[COL.date]?.trim()      : '';
-    const rawName   = COL.name      >= 0 ? row[COL.name]?.trim()      : '';
-    const rawCat    = COL.category  >= 0 ? row[COL.category]?.trim()  : '';
-    const rawAmt    = COL.amount    >= 0 ? row[COL.amount]?.trim()    : '';
-    const rawNec    = COL.necessary >= 0 ? row[COL.necessary]?.trim() : '';
-    const rawVibe   = COL.vibe      >= 0 ? row[COL.vibe]?.trim()      : '';
-    const rawNotes  = COL.notes     >= 0 ? row[COL.notes]?.trim()     : '';
-
-    const date   = parseNZDate(rawDate);
-    const amount = parseFloat(rawAmt);
-
-    if (!date || isNaN(amount) || amount <= 0) {
-      errors.push(`Row ${rowIdx + 2}: invalid date or amount`);
-      return;
-    }
-
-    const name = rawName || rawCat || 'Expense';
-
-    // Resolve category id from label
-    const catId = CAT_LABEL_TO_ID[rawCat.toLowerCase()] || 'other';
-
-    // Resolve necessary (stored as raw key: yes / maybe / no)
-    const necMap = { yes:'yes', maybe:'maybe', no:'no' };
-    const necessary = necMap[rawNec.toLowerCase()] || null;
-
-    // Resolve vibe
-    const vibeMap = { happy:'happy', fine:'fine', guilty:'guilty', meh:'meh', 'treat!':'treat', treat:'treat' };
-    const vibe = vibeMap[rawVibe.toLowerCase()] || null;
-
-    // Dedup check
-    const fp = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}|${name}|${Math.round(amount * 100)}`;
-    if (existingFingerprints.has(fp)) {
-      skipped++;
-      return;
-    }
-    existingFingerprints.add(fp);
-
-    data.expenses.push({
-      id:        date.getTime() + Math.random(), // unique enough
-      amount,
-      name,
-      category:  catId,
-      date:      date.toISOString(),
-      necessary,
-      vibe,
-      notes:     rawNotes || null,
-    });
+    const rawDate=COL.date>=0?row[COL.date]?.trim():'', rawName=COL.name>=0?row[COL.name]?.trim():'',
+          rawCat=COL.category>=0?row[COL.category]?.trim():'', rawAmt=COL.amount>=0?row[COL.amount]?.trim():'',
+          rawNec=COL.necessary>=0?row[COL.necessary]?.trim():'', rawVibe=COL.vibe>=0?row[COL.vibe]?.trim():'',
+          rawNotes=COL.notes>=0?row[COL.notes]?.trim():'';
+    const date=parseNZDate(rawDate), amount=parseFloat(rawAmt);
+    if (!date || isNaN(amount) || amount<=0) { errors.push(`Row ${ri+2}`); return; }
+    const name=rawName||rawCat||'Expense';
+    const catId=CAT_LABEL_TO_ID[rawCat.toLowerCase()]||'other';
+    const necessary={'yes':'yes','maybe':'maybe','no':'no'}[rawNec.toLowerCase()]||null;
+    const vibe={'happy':'happy','fine':'fine','guilty':'guilty','meh':'meh','treat!':'treat','treat':'treat'}[rawVibe.toLowerCase()]||null;
+    const fp=`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}|${name}|${Math.round(amount*100)}`;
+    if (existingFP.has(fp)) { skipped++; return; }
+    existingFP.add(fp);
+    data.expenses.push({ id:date.getTime()+Math.random(), amount, name, category:catId, date:date.toISOString(), necessary, vibe, notes:rawNotes||null });
     imported++;
   });
-
-  if (imported === 0 && skipped === 0 && errors.length === 0) {
-    showToast('No data rows found in CSV.', 'error');
-    return;
-  }
-
-  saveData(data);
-  closeModal('settingsModal');
-  render();
-
-  const parts = [];
-  if (imported > 0) parts.push(`${imported} imported`);
-  if (skipped  > 0) parts.push(`${skipped} skipped (duplicates)`);
-  if (errors.length > 0) parts.push(`${errors.length} invalid`);
-  showToast('✅ ' + parts.join(' · '), 'success');
+  if (imported===0 && skipped===0 && errors.length===0) { showToast('No data rows found.','error'); return; }
+  saveData(data); closeModal('settingsModal'); render();
+  const parts=[];
+  if (imported>0) parts.push(`${imported} imported`);
+  if (skipped>0)  parts.push(`${skipped} skipped`);
+  if (errors.length>0) parts.push(`${errors.length} invalid`);
+  showToast('✅ '+parts.join(' · '),'success');
 }
 
 // ─── CATEGORY GRID ───────────────────────────────────────────────────────────
@@ -610,15 +603,13 @@ function initCatGrid() {
   grid.innerHTML = '';
   CATS.forEach(c => {
     const btn = document.createElement('button');
-    btn.className = 'cat-btn' + (c.id === selectedCat ? ' selected' : '');
-    if (c.id === selectedCat) { btn.style.borderColor = c.color; btn.style.color = c.color; }
+    btn.className = 'cat-btn'+(c.id===selectedCat?' selected':'');
+    if (c.id===selectedCat) { btn.style.borderColor=c.color; btn.style.color=c.color; }
     btn.innerHTML = `<span class="cat-emoji">${c.emoji}</span>${c.label}`;
     btn.onclick = () => {
-      selectedCat = c.id;
-      document.querySelectorAll('.cat-btn').forEach(b => { b.classList.remove('selected'); b.style.borderColor=''; b.style.color=''; });
-      btn.classList.add('selected');
-      btn.style.borderColor = c.color;
-      btn.style.color = c.color;
+      selectedCat=c.id;
+      document.querySelectorAll('.cat-btn').forEach(b=>{b.classList.remove('selected');b.style.borderColor='';b.style.color='';});
+      btn.classList.add('selected'); btn.style.borderColor=c.color; btn.style.color=c.color;
     };
     grid.appendChild(btn);
   });
@@ -627,76 +618,84 @@ function initCatGrid() {
 // ─── REFLECTION SELECTORS ────────────────────────────────────────────────────
 
 function selectReflect(type, val, btn) {
-  const rowId = type === 'necessary' ? 'necessaryRow' : 'vibeRow';
-  document.querySelectorAll(`#${rowId} button`).forEach(b => {
-    b.classList.remove('selected'); b.style.borderColor=''; b.style.color='';
-  });
-  btn.classList.add('selected');
-  btn.style.borderColor = '#6c5ce7';
-  btn.style.color = '#6c5ce7';
-  if (type === 'necessary') selectedNec  = val;
-  else                       selectedVibe = val;
+  const rowId = type==='necessary'?'necessaryRow':'vibeRow';
+  document.querySelectorAll(`#${rowId} button`).forEach(b=>{b.classList.remove('selected');b.style.borderColor='';b.style.color='';});
+  btn.classList.add('selected'); btn.style.borderColor='#6c5ce7'; btn.style.color='#6c5ce7';
+  if (type==='necessary') selectedNec=val; else selectedVibe=val;
+}
+
+// ─── SHORTCUT TOGGLE ─────────────────────────────────────────────────────────
+
+function toggleSaveShortcut() {
+  saveAsShortcut = !saveAsShortcut;
+  const sw = document.getElementById('shortcutToggle');
+  sw.classList.toggle('on', saveAsShortcut);
 }
 
 // ─── MODAL OPEN / CLOSE ──────────────────────────────────────────────────────
 
-function openAdd() {
-  document.getElementById('inputAmt').value   = '';
-  document.getElementById('inputName').value  = '';
+function openAdd(prefill) {
+  document.getElementById('inputAmt').value   = prefill ? prefill.amount : '';
+  document.getElementById('inputName').value  = prefill ? prefill.name   : '';
   document.getElementById('inputNotes').value = '';
-  selectedCat = 'food'; selectedNec = null; selectedVibe = null;
+  selectedCat  = prefill ? prefill.category : 'food';
+  selectedNec  = null; selectedVibe = null; saveAsShortcut = false;
   initCatGrid();
-  document.querySelectorAll('.rfl-btn, .vibe-btn').forEach(b => {
-    b.classList.remove('selected'); b.style.borderColor=''; b.style.color='';
-  });
+  document.querySelectorAll('.rfl-btn, .vibe-btn').forEach(b=>{b.classList.remove('selected');b.style.borderColor='';b.style.color='';});
+  document.getElementById('shortcutToggle').classList.remove('on');
   document.getElementById('addModal').classList.add('open');
   setTimeout(() => document.getElementById('inputAmt').focus(), 350);
 }
 
 function openSettings() {
-  const d  = loadData();
-  const ws = getWeekStart();
-  document.getElementById('defaultBudgetInput').value   = d.defaultBudget;
-  document.getElementById('thisWeekBudgetInput').value  = getWeekBudget(ws, d);
+  const d=loadData(), ws=getWeekStart();
+  document.getElementById('defaultBudgetInput').value  = d.defaultBudget;
+  document.getElementById('thisWeekBudgetInput').value = getWeekBudget(ws, d);
   document.getElementById('settingsModal').classList.add('open');
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
+function confirmClearAll() {
+  if (confirm('Clear ALL expenses and shortcuts? This cannot be undone.')) {
+    localStorage.removeItem('spendly_data');
+    localStorage.removeItem('spendly_shortcuts');
+    closeModal('settingsModal');
+    render();
+    showToast('All data cleared.', '');
+  }
+}
+
 // ─── SAVE / ADD / DELETE ─────────────────────────────────────────────────────
 
 function saveBudget() {
-  const d       = loadData();
-  const defVal  = parseFloat(document.getElementById('defaultBudgetInput').value);
-  const wkVal   = parseFloat(document.getElementById('thisWeekBudgetInput').value);
-  if (!isNaN(defVal) && defVal > 0) d.defaultBudget = defVal;
-  if (!isNaN(wkVal)  && wkVal  > 0) {
-    const ws = getWeekStart();
-    d.weekBudgets[ws.toISOString()] = wkVal;
-  }
-  saveData(d);
-  render();
-  closeModal('settingsModal');
+  const d=loadData();
+  const defVal=parseFloat(document.getElementById('defaultBudgetInput').value);
+  const wkVal =parseFloat(document.getElementById('thisWeekBudgetInput').value);
+  if (!isNaN(defVal)&&defVal>0) d.defaultBudget=defVal;
+  if (!isNaN(wkVal) &&wkVal>0) { const ws=getWeekStart(); d.weekBudgets[ws.toISOString()]=wkVal; }
+  saveData(d); render(); closeModal('settingsModal');
 }
 
 function addExpense() {
   const amt  = parseFloat(document.getElementById('inputAmt').value);
   const name = document.getElementById('inputName').value.trim();
-  const notes = document.getElementById('inputNotes').value.trim();
-  if (isNaN(amt) || amt <= 0) { document.getElementById('inputAmt').focus(); return; }
-  const label = name || CATS.find(c => c.id === selectedCat).label;
+  const notes= document.getElementById('inputNotes').value.trim();
+  if (isNaN(amt)||amt<=0) { document.getElementById('inputAmt').focus(); return; }
+  const label = name || CATS.find(c=>c.id===selectedCat).label;
   const d = loadData();
-  d.expenses.push({
-    id:        Date.now(),
-    amount:    amt,
-    name:      label,
-    category:  selectedCat,
-    date:      new Date().toISOString(),
-    necessary: selectedNec,
-    vibe:      selectedVibe,
-    notes:     notes || null,
-  });
+  d.expenses.push({ id:Date.now(), amount:amt, name:label, category:selectedCat, date:new Date().toISOString(), necessary:selectedNec, vibe:selectedVibe, notes:notes||null });
   saveData(d);
+
+  if (saveAsShortcut) {
+    const shortcuts = loadShortcuts();
+    const alreadyExists = shortcuts.some(s => s.name===label && s.amount===amt && s.category===selectedCat);
+    if (!alreadyExists) {
+      shortcuts.push({ id:Date.now(), name:label, amount:amt, category:selectedCat });
+      saveShortcuts(shortcuts);
+    }
+  }
+
   closeModal('addModal');
   render();
 }
@@ -704,17 +703,29 @@ function addExpense() {
 function deleteExpense(id) {
   const d = loadData();
   d.expenses = d.expenses.filter(e => e.id !== id);
-  saveData(d);
-  render();
+  saveData(d); render();
+}
+
+function addFromShortcut(sc) {
+  const d = loadData();
+  d.expenses.push({ id:Date.now(), amount:sc.amount, name:sc.name, category:sc.category, date:new Date().toISOString(), necessary:null, vibe:null, notes:null });
+  saveData(d); render();
+  showToast(`Added ${sc.name} $${fmtAmt(sc.amount)}`, 'success');
+}
+
+function deleteShortcut(id, e) {
+  e.stopPropagation();
+  const shortcuts = loadShortcuts().filter(s => s.id !== id);
+  saveShortcuts(shortcuts); render();
 }
 
 // ─── TABS ─────────────────────────────────────────────────────────────────────
 
 function showTab(tab, el) {
   currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('fabBtn').style.display = tab === 'week' ? 'block' : 'none';
+  document.getElementById('fabBtn').style.display = tab==='week' ? 'block' : 'none';
   render();
 }
 
@@ -722,25 +733,25 @@ function showTab(tab, el) {
 
 function groupByDay(expenses) {
   const groups = {};
-  const today     = new Date(); today.setHours(0,0,0,0);
-  const yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
+  const today=new Date(); today.setHours(0,0,0,0);
+  const yesterday=new Date(today); yesterday.setDate(today.getDate()-1);
   expenses.forEach(e => {
-    const ed = new Date(e.date); ed.setHours(0,0,0,0);
+    const ed=new Date(e.date); ed.setHours(0,0,0,0);
     let label;
-    if (ed.getTime() === today.getTime())          label = 'Today';
-    else if (ed.getTime() === yesterday.getTime()) label = 'Yesterday';
-    else label = ed.toLocaleDateString('en-NZ', { weekday:'long', day:'numeric', month:'short' });
-    if (!groups[label]) groups[label] = [];
+    if (ed.getTime()===today.getTime())     label='Today';
+    else if (ed.getTime()===yesterday.getTime()) label='Yesterday';
+    else label=ed.toLocaleDateString('en-NZ',{weekday:'long',day:'numeric',month:'short'});
+    if (!groups[label]) groups[label]=[];
     groups[label].push(e);
   });
   return groups;
 }
 
-function catFor(e) { return CATS.find(c => c.id === e.category) || CATS[CATS.length - 1]; }
+function catFor(e) { return CATS.find(c=>c.id===e.category)||CATS[CATS.length-1]; }
 
 function renderExpenseItem(e) {
-  const cat   = catFor(e);
-  const chips = [];
+  const cat=catFor(e);
+  const chips=[];
   if (e.necessary) chips.push(`<span class="exp-chip">${NECESSARY_LABELS[e.necessary]}</span>`);
   if (e.vibe)      chips.push(`<span class="exp-chip">${VIBE_LABELS[e.vibe]}</span>`);
   if (e.notes)     chips.push(`<span class="exp-chip">💬 ${e.notes.slice(0,32)}${e.notes.length>32?'…':''}</span>`);
@@ -749,7 +760,7 @@ function renderExpenseItem(e) {
     <div class="exp-info">
       <div class="exp-name">${e.name}</div>
       <div class="exp-cat">${cat.label}</div>
-      ${chips.length ? `<div class="exp-chips">${chips.join('')}</div>` : ''}
+      ${chips.length?`<div class="exp-chips">${chips.join('')}</div>`:''}
     </div>
     <div class="exp-right">
       <div class="exp-amt">$${fmtAmt(e.amount)}</div>
@@ -758,60 +769,226 @@ function renderExpenseItem(e) {
   </div>`;
 }
 
-function renderHistoryItems(expenses) {
-  if (!expenses.length) return '<div style="font-size:12px;color:var(--muted);padding:6px 0">No expenses logged.</div>';
-  return expenses
-    .slice().sort((a,b) => new Date(b.date)-new Date(a.date))
-    .map(e => {
-      const cat   = catFor(e);
-      const refl  = [];
-      if (e.necessary) refl.push(`<span class="refl-chip">${NECESSARY_LABELS[e.necessary]}</span>`);
-      if (e.vibe)      refl.push(`<span class="refl-chip">${VIBE_LABELS[e.vibe]}</span>`);
-      if (e.notes)     refl.push(`<span class="refl-chip">💬 ${e.notes.slice(0,40)}${e.notes.length>40?'…':''}</span>`);
-      const ds = new Date(e.date).toLocaleDateString('en-NZ', { weekday:'short', day:'numeric', month:'short' });
-      return `<div class="h-exp-item">
-        <div class="h-exp-icon" style="background:${cat.color}22">${cat.emoji}</div>
-        <div class="h-exp-info">
-          <div class="h-exp-name">${e.name}</div>
-          <div class="h-exp-meta">${cat.label} · ${ds}</div>
-          ${refl.length ? `<div class="h-exp-refl">${refl.join('')}</div>` : ''}
-        </div>
-        <div class="h-exp-amt">$${fmtAmt(e.amount)}</div>
-      </div>`;
-    }).join('');
+function renderShortcutsRow() {
+  const shortcuts = loadShortcuts();
+  if (!shortcuts.length) return '';
+  const chips = shortcuts.map(sc => {
+    const cat = CATS.find(c=>c.id===sc.category)||CATS[CATS.length-1];
+    return `<div class="shortcut-chip" onclick="addFromShortcut(${JSON.stringify(sc).replace(/"/g,'&quot;')})">
+      <button class="shortcut-delete" onclick="deleteShortcut(${sc.id}, event)">✕</button>
+      <span class="shortcut-chip-emoji">${cat.emoji}</span>
+      <span class="shortcut-chip-name">${sc.name}</span>
+      <span class="shortcut-chip-amt">$${fmtAmt(sc.amount)}</span>
+    </div>`;
+  }).join('');
+  return `<div class="shortcuts-wrap">
+    <div class="section-label">Quick add</div>
+    <div class="shortcuts-scroll">${chips}</div>
+  </div>`;
 }
 
-function historyWeekCard({ start, end, expenses, budget, isCurrentWeek }) {
-  const spent    = expenses.reduce((s,e) => s + e.amount, 0);
-  const pct      = Math.min(100, (spent / budget) * 100);
-  const diff     = budget - spent;
-  const ok       = diff >= 0;
-  const key      = start.toISOString();
-  const expanded = expandedWeeks.has(key);
+function renderWeek() {
+  const d=loadData(), ws=getWeekStart(), we=getWeekEnd(ws);
+  const budget=getWeekBudget(ws,d);
+  const weekExp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;}).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const spent=weekExp.reduce((s,e)=>s+e.amount,0);
+  const remaining=budget-spent;
+  const pct=Math.min(100,(spent/budget)*100);
 
-  let badge, diffColor, diffLabel;
-  if (isCurrentWeek) {
-    badge = `<div class="history-badge badge-progress">In progress</div>`;
-    diffLabel = ok ? 'Remaining' : 'Over by';
-    diffColor = ok ? '#6c5ce7' : '#e17055';
+  document.getElementById('weekLabel').textContent    = 'Week of '+formatDate(ws);
+  document.getElementById('remainingAmt').textContent = Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
+  document.getElementById('budgetLabel').textContent  = remaining>=0 ? 'left this week' : 'over budget';
+  document.getElementById('spentLabel').textContent   = '$'+fmtAmt(spent)+' spent';
+  document.getElementById('pctLabel').textContent     = Math.round(pct)+'% used';
+  document.getElementById('progressBar').style.width  = pct+'%';
+  document.getElementById('header').className         = 'header'+(remaining<0?' over-budget':'');
+
+  const body=document.getElementById('mainBody');
+  let html = renderShortcutsRow();
+
+  if (!weekExp.length) {
+    html += `<div class="empty-state"><div class="emoji">🎉</div><p>No expenses yet!</p><small>Tap + Add expense to get started</small></div>`;
+    body.innerHTML = html; return;
+  }
+  const groups=groupByDay(weekExp);
+  for (const [day,items] of Object.entries(groups)) {
+    html += `<div class="section-label">${day}</div>`;
+    items.forEach(e=>{html+=renderExpenseItem(e);});
+  }
+  body.innerHTML = html;
+}
+
+// ─── INSIGHTS ────────────────────────────────────────────────────────────────
+
+function renderInsights() {
+  const d=loadData(), ws=getWeekStart(), we=getWeekEnd(ws);
+  const budget=getWeekBudget(ws,d);
+
+  const weekExp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;});
+  const spent=weekExp.reduce((s,e)=>s+e.amount,0);
+  const remaining=budget-spent;
+  const pct=Math.min(100,(spent/budget)*100);
+  const ok=remaining>=0;
+
+  // header stays current week info
+  document.getElementById('weekLabel').textContent   = 'Week of '+formatDate(ws);
+  document.getElementById('remainingAmt').textContent= Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
+  document.getElementById('budgetLabel').textContent = ok?'left this week':'over budget';
+  document.getElementById('spentLabel').textContent  = '$'+fmtAmt(spent)+' spent';
+  document.getElementById('pctLabel').textContent    = Math.round(pct)+'% used';
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('header').className        = 'header'+(ok?'':' over-budget');
+
+  // Category breakdown
+  const byCat={};
+  weekExp.forEach(e=>{byCat[e.category]=(byCat[e.category]||0)+e.amount;});
+  const catBreakdown=CATS.filter(c=>byCat[c.id]).sort((a,b)=>byCat[b.id]-byCat[a.id]);
+  const maxCatAmt=catBreakdown.length?byCat[catBreakdown[0].id]:1;
+
+  const catBarsHtml = catBreakdown.length ? catBreakdown.map(c=>{
+    const amt=byCat[c.id], pctOfMax=Math.round((amt/Math.max(spent,0.01))*100);
+    return `<div class="cat-bar-row">
+      <div class="cat-bar-icon" style="background:${c.color}22">${c.emoji}</div>
+      <div class="cat-bar-info">
+        <div class="cat-bar-label">${c.label}<span>$${fmtAmt(amt)} · ${pctOfMax}%</span></div>
+        <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${Math.round((amt/maxCatAmt)*100)}%;background:${c.color}"></div></div>
+      </div>
+    </div>`;
+  }).join('') : '<div style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">No expenses logged yet</div>';
+
+  // Reflection stats
+  const necCounts={yes:0,maybe:0,no:0};
+  const vibeCounts={};
+  const necAmts={yes:0,maybe:0,no:0};
+  weekExp.forEach(e=>{
+    if (e.necessary) { necCounts[e.necessary]++; necAmts[e.necessary]+=e.amount; }
+    if (e.vibe) vibeCounts[e.vibe]=(vibeCounts[e.vibe]||0)+1;
+  });
+  const totalTagged=weekExp.filter(e=>e.necessary).length;
+  const guiltyCount=necCounts.no+Math.round(necCounts.maybe*0.5);
+  const guiltyPct=totalTagged?Math.round((necCounts.no/totalTagged)*100):0;
+  const maybePct =totalTagged?Math.round((necCounts.maybe/totalTagged)*100):0;
+  const yesPct   =totalTagged?Math.round((necCounts.yes/totalTagged)*100):0;
+
+  const vibeEntries=Object.entries(vibeCounts).sort((a,b)=>b[1]-a[1]);
+  const vibePillsHtml=vibeEntries.length
+    ? vibeEntries.map(([v,c])=>`<div class="vibe-pill"><span class="vibe-pill-count">${c}×</span>${VIBE_LABELS[v]}</div>`).join('')
+    : '<span style="font-size:12px;color:var(--muted)">No vibes logged yet</span>';
+
+  // guilt score sentence
+  let guiltMsg='';
+  if (weekExp.length===0) {
+    guiltMsg='Nothing logged yet — great start!';
+  } else if (totalTagged===0) {
+    guiltMsg='Add reflections when logging to see your guilt score here.';
+  } else if (necCounts.no===0 && necCounts.maybe===0) {
+    guiltMsg=`All ${necCounts.yes} tagged expenses were necessary. Solid week! 💪`;
   } else {
-    badge = `<div class="history-badge ${ok?'badge-ok':'badge-over'}">${ok?'Under':'Over'}</div>`;
-    diffLabel = ok ? 'Saved' : 'Over by';
-    diffColor = ok ? '#00b894' : '#e17055';
+    guiltMsg=`${necCounts.no} expense${necCounts.no!==1?'s':''} marked not necessary ($${fmtAmt(necAmts.no)})${necCounts.maybe?` and ${necCounts.maybe} maybe ($${fmtAmt(necAmts.maybe)})`:''}.`;
   }
 
-  const borderStyle = isCurrentWeek ? 'border: 1.5px solid rgba(108,92,231,0.28);' : '';
+  // 4-week trend
+  const weeks=[];
+  let maxWkSpent=1;
+  for (let i=3;i>=0;i--) {
+    const ps=new Date(ws); ps.setDate(ws.getDate()-7*i);
+    const pe=new Date(ps); pe.setDate(ps.getDate()+7);
+    const exp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ps&&t<pe;});
+    const s=exp.reduce((a,e)=>a+e.amount,0);
+    if (s>maxWkSpent) maxWkSpent=s;
+    weeks.push({ label:i===0?'This wk':i===1?'Last wk':`-${i}w`, spent:s, budget:getWeekBudget(ps,d), isCurrent:i===0 });
+  }
 
+  const trendBarsHtml=weeks.map(w=>{
+    const h=Math.max(4,Math.round((w.spent/maxWkSpent)*56));
+    const cls=w.isCurrent?'trend-current':(w.spent>w.budget?'trend-over':'trend-past');
+    return `<div class="trend-bar-wrap ${cls}">
+      <div class="trend-bar-outer"><div class="trend-bar-inner" style="height:${h}px"></div></div>
+      <div class="trend-bar-label">${w.label}</div>
+      <div class="trend-bar-amt">$${fmtAmt(w.spent)}</div>
+    </div>`;
+  }).join('');
+
+  // Summary card
+  const body=document.getElementById('mainBody');
+  body.innerHTML = `
+    <div class="insights-summary-card">
+      <div class="isc-title">This week so far</div>
+      <div class="isc-main">$${fmtAmt(spent)}</div>
+      <div class="isc-row">
+        <div class="isc-stat"><div class="isc-label">Budget</div><div class="isc-val">$${fmtAmt(budget)}</div></div>
+        <div class="isc-stat"><div class="isc-label">${ok?'Remaining':'Over by'}</div><div class="isc-val" style="color:${ok?'rgba(255,255,255,0.95)':'#fdcb6e'}">$${fmtAmt(Math.abs(remaining))}</div></div>
+        <div class="isc-stat"><div class="isc-label">Used</div><div class="isc-val">${Math.round(pct)}%</div></div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-card-title">📊 Spending by category</div>
+      ${catBarsHtml}
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-card-title">🧠 Reflection summary</div>
+      <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;line-height:1.5">${guiltMsg}</div>
+      ${totalTagged>0?`<div class="guilt-bar-wrap">
+        <div class="guilt-bar-label"><span>✅ Yes (${yesPct}%)</span><span>🤔 Maybe (${maybePct}%)</span><span>❌ No (${guiltyPct}%)</span></div>
+        <div class="guilt-bar-track">
+          <div class="guilt-seg" style="width:${yesPct}%;background:#00b894"></div>
+          <div class="guilt-seg" style="width:${maybePct}%;background:#fdcb6e"></div>
+          <div class="guilt-seg" style="width:${guiltyPct}%;background:#e17055"></div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:11px;font-weight:800;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px">Vibes</div>
+      <div class="vibe-pills">${vibePillsHtml}</div>`:''}
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-card-title">📈 4-week trend</div>
+      <div class="trend-bars">${trendBarsHtml}</div>
+    </div>
+  `;
+}
+
+// ─── HISTORY ─────────────────────────────────────────────────────────────────
+
+function renderHistoryItems(expenses) {
+  if (!expenses.length) return '<div style="font-size:12px;color:var(--muted);padding:6px 0">No expenses logged.</div>';
+  return expenses.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>{
+    const cat=catFor(e);
+    const refl=[];
+    if (e.necessary) refl.push(`<span class="refl-chip">${NECESSARY_LABELS[e.necessary]}</span>`);
+    if (e.vibe)      refl.push(`<span class="refl-chip">${VIBE_LABELS[e.vibe]}</span>`);
+    if (e.notes)     refl.push(`<span class="refl-chip">💬 ${e.notes.slice(0,40)}${e.notes.length>40?'…':''}</span>`);
+    const ds=new Date(e.date).toLocaleDateString('en-NZ',{weekday:'short',day:'numeric',month:'short'});
+    return `<div class="h-exp-item">
+      <div class="h-exp-icon" style="background:${cat.color}22">${cat.emoji}</div>
+      <div class="h-exp-info">
+        <div class="h-exp-name">${e.name}</div>
+        <div class="h-exp-meta">${cat.label} · ${ds}</div>
+        ${refl.length?`<div class="h-exp-refl">${refl.join('')}</div>`:''}
+      </div>
+      <div class="h-exp-amt">$${fmtAmt(e.amount)}</div>
+    </div>`;
+  }).join('');
+}
+
+function historyWeekCard({start,end,expenses,budget,isCurrentWeek}) {
+  const spent=expenses.reduce((s,e)=>s+e.amount,0);
+  const pct=Math.min(100,(spent/budget)*100);
+  const diff=budget-spent, ok=diff>=0;
+  const key=start.toISOString(), expanded=expandedWeeks.has(key);
+  const badge=isCurrentWeek?`<div class="history-badge badge-progress">In progress</div>`:
+              `<div class="history-badge ${ok?'badge-ok':'badge-over'}">${ok?'Under':'Over'}</div>`;
+  const diffColor=isCurrentWeek?(ok?'#6c5ce7':'#e17055'):(ok?'#00b894':'#e17055');
+  const diffLabel=isCurrentWeek?(ok?'Remaining':'Over by'):(ok?'Saved':'Over by');
+  const borderStyle=isCurrentWeek?'border: 1.5px solid rgba(108,92,231,0.28);':'';
   return `<div class="history-week ${expanded?'expanded':''}" style="${borderStyle}" onclick="toggleWeek('${key}')">
     <div class="history-week-header">
       <div class="history-week-title">${formatDate(start)} – ${formatDate(end)}</div>
-      <div class="history-header-right">
-        ${badge}
-        <div class="history-chevron">›</div>
-      </div>
+      <div class="history-header-right">${badge}<div class="history-chevron">›</div></div>
     </div>
     <div class="history-amounts">
-      <div><div class="hlabel">${isCurrentWeek?'Spent so far':'Spent'}</div><div class="hval">$${fmtAmt(spent)}</div></div>
+      <div><div class="hlabel">${isCurrentWeek?'So far':'Spent'}</div><div class="hval">$${fmtAmt(spent)}</div></div>
       <div><div class="hlabel">${diffLabel}</div><div class="hval" style="color:${diffColor}">$${fmtAmt(Math.abs(diff))}</div></div>
       <div><div class="hlabel">Budget</div><div class="hval">$${fmtAmt(budget)}</div></div>
     </div>
@@ -821,114 +998,70 @@ function historyWeekCard({ start, end, expenses, budget, isCurrentWeek }) {
 }
 
 function toggleWeek(key) {
-  if (expandedWeeks.has(key)) expandedWeeks.delete(key);
-  else expandedWeeks.add(key);
+  if (expandedWeeks.has(key)) expandedWeeks.delete(key); else expandedWeeks.add(key);
   render();
 }
 
-function renderWeek() {
-  const d          = loadData();
-  const ws         = getWeekStart();
-  const we         = getWeekEnd(ws);
-  const budget     = getWeekBudget(ws, d);
-  const weekExp    = d.expenses.filter(e => { const t = new Date(e.date); return t >= ws && t < we; })
-                               .sort((a,b) => new Date(b.date) - new Date(a.date));
-  const spent      = weekExp.reduce((s,e) => s + e.amount, 0);
-  const remaining  = budget - spent;
-  const pct        = Math.min(100, (spent / budget) * 100);
-
-  document.getElementById('weekLabel').textContent    = 'Week of ' + formatDate(ws);
-  document.getElementById('remainingAmt').textContent = Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
-  document.getElementById('spentLabel').textContent   = '$' + fmtAmt(spent) + ' spent';
-  document.getElementById('pctLabel').textContent     = Math.round(pct) + '% used';
-  document.getElementById('progressBar').style.width  = pct + '%';
-  document.getElementById('header').className         = 'header' + (remaining < 0 ? ' over-budget' : '');
-
-  const body = document.getElementById('mainBody');
-  if (!weekExp.length) {
-    body.innerHTML = `<div class="empty-state"><div class="emoji">🎉</div><p>No expenses yet!</p><small>Tap + Add expense to get started</small></div>`;
-    return;
-  }
-  const groups = groupByDay(weekExp);
-  let html = '';
-  for (const [day, items] of Object.entries(groups)) {
-    html += `<div class="section-label">${day}</div>`;
-    items.forEach(e => { html += renderExpenseItem(e); });
-  }
-  body.innerHTML = html;
-}
-
 function renderHistory() {
-  const d  = loadData();
-  const ws = getWeekStart();
-  const we = getWeekEnd(ws);
+  const d=loadData(), ws=getWeekStart(), we=getWeekEnd(ws);
+  const budget=getWeekBudget(ws,d);
+  const spent=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;}).reduce((s,e)=>s+e.amount,0);
+  const remaining=budget-spent, pct=Math.min(100,(spent/budget)*100);
 
-  const currentExp = d.expenses.filter(e => { const t = new Date(e.date); return t >= ws && t < we; });
+  document.getElementById('weekLabel').textContent   = 'Week of '+formatDate(ws);
+  document.getElementById('remainingAmt').textContent= Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
+  document.getElementById('budgetLabel').textContent = remaining>=0?'left this week':'over budget';
+  document.getElementById('spentLabel').textContent  = '$'+fmtAmt(spent)+' spent';
+  document.getElementById('pctLabel').textContent    = Math.round(pct)+'% used';
+  document.getElementById('progressBar').style.width = pct+'%';
+  document.getElementById('header').className        = 'header'+(remaining<0?' over-budget':'');
 
-  let html = historyWeekCard({
-    start: ws, end: we, expenses: currentExp,
-    budget: getWeekBudget(ws, d), isCurrentWeek: true
-  });
-
-  let hasAny = currentExp.length > 0;
-  for (let i = 1; i <= 12; i++) {
-    const ps = new Date(ws); ps.setDate(ws.getDate() - 7 * i);
-    const pe = new Date(ps); pe.setDate(ps.getDate() + 7);
-    const exp = d.expenses.filter(e => { const t = new Date(e.date); return t >= ps && t < pe; });
+  const currentExp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;});
+  let html=historyWeekCard({start:ws,end:we,expenses:currentExp,budget:getWeekBudget(ws,d),isCurrentWeek:true});
+  let hasAny=currentExp.length>0;
+  for (let i=1;i<=12;i++) {
+    const ps=new Date(ws); ps.setDate(ws.getDate()-7*i);
+    const pe=new Date(ps); pe.setDate(ps.getDate()+7);
+    const exp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ps&&t<pe;});
     if (!exp.length) continue;
-    hasAny = true;
-    html += historyWeekCard({ start:ps, end:pe, expenses:exp, budget: getWeekBudget(ps, d), isCurrentWeek:false });
+    hasAny=true;
+    html+=historyWeekCard({start:ps,end:pe,expenses:exp,budget:getWeekBudget(ps,d),isCurrentWeek:false});
   }
-
   if (!hasAny) {
-    document.getElementById('mainBody').innerHTML = `<div class="empty-state"><div class="emoji">📅</div><p>No history yet</p><small>Come back next week!</small></div>`;
+    document.getElementById('mainBody').innerHTML=`<div class="empty-state"><div class="emoji">📅</div><p>No history yet</p><small>Come back next week!</small></div>`;
     return;
   }
-  document.getElementById('mainBody').innerHTML = html;
+  document.getElementById('mainBody').innerHTML=html;
 }
 
 function render() {
-  if (currentTab === 'week') renderWeek();
+  if (currentTab==='week')     renderWeek();
+  else if (currentTab==='insights') renderInsights();
   else renderHistory();
 }
 
 // ─── CSV EXPORT ──────────────────────────────────────────────────────────────
 
 function exportCSV() {
-  const d = loadData();
-  const rows = [['Date','Week Start','Name','Category','Amount ($)','Necessary','Vibe','Notes']];
-  d.expenses
-    .slice().sort((a,b) => new Date(a.date)-new Date(b.date))
-    .forEach(e => {
-      const cat = catFor(e);
-      const esc = v => v ? `"${String(v).replace(/"/g,'""')}"` : '';
-      rows.push([
-        new Date(e.date).toLocaleDateString('en-NZ'),
-        getWeekStart(e.date).toLocaleDateString('en-NZ'),
-        esc(e.name),
-        esc(cat.label),
-        e.amount.toFixed(2),
-        e.necessary || '',
-        e.vibe || '',
-        esc(e.notes || ''),
-      ]);
-    });
-  const csv  = rows.map(r => r.join(',')).join('\n');
-  const blob = new Blob([csv], { type:'text/csv;charset=utf-8;' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  a.href     = url;
-  a.download = `spendly-${new Date().toISOString().slice(0,10)}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  const d=loadData();
+  const rows=[['Date','Week Start','Name','Category','Amount ($)','Necessary','Vibe','Notes']];
+  d.expenses.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).forEach(e=>{
+    const cat=catFor(e);
+    const esc=v=>v?`"${String(v).replace(/"/g,'""')}"`:  '';
+    rows.push([new Date(e.date).toLocaleDateString('en-NZ'),getWeekStart(e.date).toLocaleDateString('en-NZ'),esc(e.name),esc(cat.label),e.amount.toFixed(2),e.necessary||'',e.vibe||'',esc(e.notes||'')]);
+  });
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`spendly-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
 }
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click', e=>{if(e.target===overlay) overlay.classList.remove('open');});
 });
 
 render();
