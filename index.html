@@ -190,6 +190,23 @@
   .settings-input:focus { border-color: var(--purple); }
   .btn-save   { width: 100%; padding: 14px; border-radius: 14px; border: none; background: linear-gradient(135deg, var(--purple), var(--pink)); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: white; cursor: pointer; }
   .btn-export { width: 100%; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--bg); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--purple); cursor: pointer; margin-top: 10px; }
+  .btn-import { width: 100%; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--bg); font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 800; color: var(--teal); cursor: pointer; margin-top: 10px; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: calc(env(safe-area-inset-bottom, 0px) + 110px);
+    left: 50%; transform: translateX(-50%) translateY(20px);
+    background: #2d2d44; color: white;
+    padding: 12px 20px; border-radius: 14px;
+    font-size: 14px; font-weight: 700;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 200; white-space: nowrap;
+    max-width: calc(100vw - 40px); text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.toast-error { background: var(--coral); }
+  .toast.toast-success { background: var(--teal); }
 </style>
 </head>
 <body>
@@ -220,6 +237,12 @@
   <div class="body" id="mainBody"></div>
   <button class="fab" id="fabBtn" onclick="openAdd()">+ Add expense</button>
 </div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Hidden file input for CSV import -->
+<input type="file" id="csvFileInput" accept=".csv,text/csv" style="display:none" onchange="handleCSVFile(event)">
 
 <!-- ADD EXPENSE MODAL -->
 <div class="modal-overlay" id="addModal">
@@ -293,6 +316,7 @@
     <div class="modal-bottom">
       <button class="btn-save" onclick="saveBudget()">Save budgets</button>
       <button class="btn-export" onclick="exportCSV()">📤 Export to CSV</button>
+      <button class="btn-import" onclick="document.getElementById('csvFileInput').click()">📥 Import from CSV</button>
     </div>
   </div>
 </div>
@@ -315,6 +339,10 @@ const CATS = [
   { id:'other',         label:'Other',           emoji:'📦', color:'#b2bec3' },
 ];
 
+// Build a label→id lookup for CSV import
+const CAT_LABEL_TO_ID = {};
+CATS.forEach(c => { CAT_LABEL_TO_ID[c.label.toLowerCase()] = c.id; });
+
 const NECESSARY_LABELS = { yes:'✅ Yes', maybe:'🤔 Maybe', no:'❌ No' };
 const VIBE_LABELS       = { happy:'😊 Happy', fine:'😐 Fine', guilty:'😬 Guilty', meh:'😒 Meh', treat:'🎉 Treat!' };
 
@@ -322,7 +350,6 @@ function loadData() {
   const raw = localStorage.getItem('spendly_data');
   if (!raw) return { defaultBudget:150, weekBudgets:{}, expenses:[] };
   const d = JSON.parse(raw);
-  // Migrate legacy format (single budget field)
   if (d.budget !== undefined && d.defaultBudget === undefined) {
     d.defaultBudget = d.budget;
     delete d.budget;
@@ -342,10 +369,9 @@ function getWeekBudget(weekStart, data) {
 
 // ─── DATE HELPERS ─────────────────────────────────────────────────────────────
 
-// Returns Wednesday 5am start of the budget week containing `from` (default: now)
 function getWeekStart(from) {
   const d = from ? new Date(from) : new Date();
-  const day = d.getDay(); // 0=Sun … 3=Wed
+  const day = d.getDay();
   const diff = day >= 3 ? day - 3 : day + 4;
   const start = new Date(d);
   start.setDate(d.getDate() - diff);
@@ -370,9 +396,212 @@ function fmtAmt(n) { return n.toFixed(2).replace(/\.00$/, ''); }
 
 let currentTab     = 'week';
 let selectedCat    = 'food';
-let selectedNec    = null;   // necessary
+let selectedNec    = null;
 let selectedVibe   = null;
 let expandedWeeks  = new Set();
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+
+let toastTimer = null;
+function showToast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' toast-' + type : '');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.className = 'toast'; }, 3500);
+}
+
+// ─── CSV PARSER ───────────────────────────────────────────────────────────────
+// Handles quoted fields, escaped double-quotes, and Windows/Unix line endings.
+
+function parseCSV(text) {
+  const rows = [];
+  // Normalise line endings
+  const input = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  let i = 0;
+
+  while (i < input.length) {
+    const row = [];
+    // Skip blank lines
+    if (input[i] === '\n') { i++; continue; }
+
+    while (i < input.length && input[i] !== '\n') {
+      if (input[i] === '"') {
+        // Quoted field
+        i++; // skip opening quote
+        let field = '';
+        while (i < input.length) {
+          if (input[i] === '"' && input[i + 1] === '"') {
+            field += '"'; i += 2; // escaped quote
+          } else if (input[i] === '"') {
+            i++; break; // closing quote
+          } else {
+            field += input[i++];
+          }
+        }
+        row.push(field);
+        if (input[i] === ',') i++; // skip comma after field
+      } else {
+        // Unquoted field
+        let field = '';
+        while (i < input.length && input[i] !== ',' && input[i] !== '\n') {
+          field += input[i++];
+        }
+        row.push(field);
+        if (input[i] === ',') i++;
+      }
+    }
+    if (input[i] === '\n') i++;
+    if (row.length > 0 && !(row.length === 1 && row[0] === '')) {
+      rows.push(row);
+    }
+  }
+  return rows;
+}
+
+// Parse an en-NZ date string (d/MM/yyyy) into a Date at noon local time.
+function parseNZDate(str) {
+  if (!str) return null;
+  // Try d/MM/yyyy
+  const m = str.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (m) {
+    const [, d, mo, y] = m;
+    return new Date(+y, +mo - 1, +d, 12, 0, 0);
+  }
+  // Fallback: let the browser try
+  const d = new Date(str);
+  return isNaN(d) ? null : d;
+}
+
+// ─── CSV IMPORT ───────────────────────────────────────────────────────────────
+
+function handleCSVFile(event) {
+  const file = event.target.files[0];
+  // Reset input so the same file can be re-imported if needed
+  event.target.value = '';
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      importCSVText(e.target.result);
+    } catch (err) {
+      showToast('Import failed: ' + err.message, 'error');
+    }
+  };
+  reader.onerror = () => showToast('Could not read file.', 'error');
+  reader.readAsText(file, 'utf-8');
+}
+
+function importCSVText(text) {
+  const rows = parseCSV(text);
+  if (rows.length < 2) {
+    showToast('CSV appears to be empty.', 'error');
+    return;
+  }
+
+  // Validate header — must match the export format
+  // Expected: Date, Week Start, Name, Category, Amount ($), Necessary, Vibe, Notes
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const COL = {
+    date:      header.indexOf('date'),
+    name:      header.indexOf('name'),
+    category:  header.indexOf('category'),
+    amount:    header.findIndex(h => h.includes('amount')),
+    necessary: header.indexOf('necessary'),
+    vibe:      header.indexOf('vibe'),
+    notes:     header.indexOf('notes'),
+  };
+
+  if (COL.date === -1 || COL.name === -1 || COL.amount === -1) {
+    showToast('Unrecognised CSV format.', 'error');
+    return;
+  }
+
+  const data = loadData();
+
+  // Build a dedup fingerprint set from existing expenses
+  // Fingerprint: date-string (day precision) + name + amount rounded to cents
+  const existingFingerprints = new Set(
+    data.expenses.map(e => {
+      const d = new Date(e.date);
+      return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}|${e.name}|${Math.round(e.amount * 100)}`;
+    })
+  );
+
+  let imported = 0;
+  let skipped  = 0;
+  const errors = [];
+
+  rows.slice(1).forEach((row, rowIdx) => {
+    // Skip short / empty rows
+    if (row.every(c => !c.trim())) return;
+
+    const rawDate   = COL.date      >= 0 ? row[COL.date]?.trim()      : '';
+    const rawName   = COL.name      >= 0 ? row[COL.name]?.trim()      : '';
+    const rawCat    = COL.category  >= 0 ? row[COL.category]?.trim()  : '';
+    const rawAmt    = COL.amount    >= 0 ? row[COL.amount]?.trim()    : '';
+    const rawNec    = COL.necessary >= 0 ? row[COL.necessary]?.trim() : '';
+    const rawVibe   = COL.vibe      >= 0 ? row[COL.vibe]?.trim()      : '';
+    const rawNotes  = COL.notes     >= 0 ? row[COL.notes]?.trim()     : '';
+
+    const date   = parseNZDate(rawDate);
+    const amount = parseFloat(rawAmt);
+
+    if (!date || isNaN(amount) || amount <= 0) {
+      errors.push(`Row ${rowIdx + 2}: invalid date or amount`);
+      return;
+    }
+
+    const name = rawName || rawCat || 'Expense';
+
+    // Resolve category id from label
+    const catId = CAT_LABEL_TO_ID[rawCat.toLowerCase()] || 'other';
+
+    // Resolve necessary (stored as raw key: yes / maybe / no)
+    const necMap = { yes:'yes', maybe:'maybe', no:'no' };
+    const necessary = necMap[rawNec.toLowerCase()] || null;
+
+    // Resolve vibe
+    const vibeMap = { happy:'happy', fine:'fine', guilty:'guilty', meh:'meh', 'treat!':'treat', treat:'treat' };
+    const vibe = vibeMap[rawVibe.toLowerCase()] || null;
+
+    // Dedup check
+    const fp = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}|${name}|${Math.round(amount * 100)}`;
+    if (existingFingerprints.has(fp)) {
+      skipped++;
+      return;
+    }
+    existingFingerprints.add(fp);
+
+    data.expenses.push({
+      id:        date.getTime() + Math.random(), // unique enough
+      amount,
+      name,
+      category:  catId,
+      date:      date.toISOString(),
+      necessary,
+      vibe,
+      notes:     rawNotes || null,
+    });
+    imported++;
+  });
+
+  if (imported === 0 && skipped === 0 && errors.length === 0) {
+    showToast('No data rows found in CSV.', 'error');
+    return;
+  }
+
+  saveData(data);
+  closeModal('settingsModal');
+  render();
+
+  const parts = [];
+  if (imported > 0) parts.push(`${imported} imported`);
+  if (skipped  > 0) parts.push(`${skipped} skipped (duplicates)`);
+  if (errors.length > 0) parts.push(`${errors.length} invalid`);
+  showToast('✅ ' + parts.join(' · '), 'success');
+}
 
 // ─── CATEGORY GRID ───────────────────────────────────────────────────────────
 
@@ -498,7 +727,7 @@ function groupByDay(expenses) {
   expenses.forEach(e => {
     const ed = new Date(e.date); ed.setHours(0,0,0,0);
     let label;
-    if (ed.getTime() === today.getTime())     label = 'Today';
+    if (ed.getTime() === today.getTime())          label = 'Today';
     else if (ed.getTime() === yesterday.getTime()) label = 'Yesterday';
     else label = ed.toLocaleDateString('en-NZ', { weekday:'long', day:'numeric', month:'short' });
     if (!groups[label]) groups[label] = [];
@@ -641,7 +870,6 @@ function renderHistory() {
     budget: getWeekBudget(ws, d), isCurrentWeek: true
   });
 
-  // Past weeks
   let hasAny = currentExp.length > 0;
   for (let i = 1; i <= 12; i++) {
     const ps = new Date(ws); ps.setDate(ws.getDate() - 7 * i);
