@@ -6,7 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Spendly">
-<meta name="theme-color" content="#6c5ce7">
+<meta name="theme-color" content="#6c5ce7" id="themeColorMeta">
+<meta name="color-scheme" content="light">
 <title>Spendly</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="apple-touch-icon" href="icon-ios-1254x1254.png">
@@ -24,6 +25,7 @@
     --text: #2d2d44;
     --muted: #9b97b8;
     --border: rgba(108,92,231,0.12);
+    --home-gap: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -72,7 +74,7 @@
   .tab.active { background:var(--card); color:var(--purple); box-shadow:0 2px 10px rgba(108,92,231,0.14); }
 
   /* ── BODY ── */
-  .body { flex:1; overflow-y:auto; padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 170px); -webkit-overflow-scrolling:touch; }
+  .body { flex:1; overflow-y:auto; padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 170px + var(--home-gap)); -webkit-overflow-scrolling:touch; }
   .section-label { font-size:11px; font-weight:800; color:var(--muted); letter-spacing:0.8px; text-transform:uppercase; margin:14px 0 8px; }
   .section-label:first-child { margin-top:4px; }
 
@@ -82,7 +84,7 @@
     width:100%; max-width:430px;
     background:var(--card); border-top:1px solid var(--border);
     display:flex; z-index:50;
-    padding-bottom:env(safe-area-inset-bottom,0px);
+    padding-bottom:calc(env(safe-area-inset-bottom,0px) + var(--home-gap));
   }
   .nav-btn {
     flex:1; display:flex; flex-direction:column; align-items:center;
@@ -97,7 +99,7 @@
 
   /* ── FAB ── */
   .fab {
-    position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 68px); left:50%; transform:translateX(-50%);
+    position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 68px + var(--home-gap)); left:50%; transform:translateX(-50%);
     width:calc(100% - 32px); max-width:398px;
     background:linear-gradient(135deg, var(--purple), var(--pink));
     color:white; border:none; border-radius:18px;
@@ -211,7 +213,7 @@
   .modal-overlay.open .modal { transform:translateY(0); }
   .modal-top    { padding:20px 20px 0; flex-shrink:0; }
   .modal-scroll { flex:1; overflow-y:auto; padding:0 20px; -webkit-overflow-scrolling:touch; }
-  .modal-bottom { padding:12px 20px calc(env(safe-area-inset-bottom,0px) + 16px); flex-shrink:0; }
+  .modal-bottom { padding:12px 20px calc(env(safe-area-inset-bottom,0px) + 16px + var(--home-gap)); flex-shrink:0; }
   .modal-handle { width:40px; height:4px; background:#e0e0e0; border-radius:99px; margin:0 auto 18px; }
   .modal h2 { font-size:20px; font-weight:900; color:var(--text); margin-bottom:4px; }
   .modal label { font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:6px; margin-top:16px; }
@@ -252,7 +254,7 @@
   .btn-danger { width:100%; padding:14px; border-radius:14px; border:1.5px solid rgba(225,112,85,0.3); background:rgba(225,112,85,0.07); font-family:'Nunito',sans-serif; font-size:15px; font-weight:800; color:var(--coral); cursor:pointer; margin-top:10px; }
 
   /* ── TOAST ── */
-  .toast { position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 156px); left:50%; transform:translateX(-50%) translateY(20px); background:#2d2d44; color:white; padding:12px 20px; border-radius:14px; font-size:14px; font-weight:700; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:200; white-space:nowrap; max-width:calc(100vw - 40px); text-align:center; }
+  .toast { position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 156px + var(--home-gap)); left:50%; transform:translateX(-50%) translateY(20px); background:#2d2d44; color:white; padding:12px 20px; border-radius:14px; font-size:14px; font-weight:700; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:200; white-space:nowrap; max-width:calc(100vw - 40px); text-align:center; }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
   .toast.toast-error   { background:var(--coral); }
   .toast.toast-success { background:var(--teal); }
@@ -452,6 +454,21 @@
   .fp-allocation-amt { font-size:13px; font-weight:900; color:var(--purple); }
   .fp-allocation-track { background:rgba(108,92,231,0.12); border-radius:99px; height:7px; overflow:hidden; }
   .fp-allocation-fill { height:7px; border-radius:99px; background:linear-gradient(90deg,var(--purple),#a855f7); }
+
+  /* ── FINPLAN EDITOR + LOAN GRAPH ── */
+  .fp-edit-card { background:var(--card); border-radius:20px; padding:14px 16px; margin-bottom:12px; border:1px dashed rgba(108,92,231,0.35); cursor:pointer; }
+  .fp-edit-card:active { background:var(--bg); }
+  .fp-edit-title { font-size:13px; font-weight:900; color:var(--purple); }
+  .fp-edit-sub { font-size:11px; font-weight:700; color:var(--muted); margin-top:2px; }
+
+  .fp-loan-meta { display:flex; justify-content:space-between; gap:10px; margin-top:10px; flex-wrap:wrap; }
+  .fp-loan-pill { background:var(--bg); border-radius:12px; padding:8px 10px; border:1px solid var(--border); flex:1; min-width:140px; }
+  .fp-loan-pill .lbl { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .fp-loan-pill .val { font-size:14px; font-weight:900; color:var(--text); margin-top:2px; }
+
+  .fp-loan-svg { width:100%; height:auto; display:block; margin-top:10px; }
+  .fp-loan-note { font-size:11px; font-weight:700; color:var(--muted); margin-top:10px; line-height:1.45; }
+
 </style>
 </head>
 <body>
@@ -716,6 +733,29 @@
   </div>
 </div>
 
+
+<!-- FINPLAN SECTIONS EDIT MODAL -->
+<div class="modal-overlay" id="finPlanSectionsModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2>🧩 Edit plan sections</h2>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:4px">Add / remove sections and customise emoji, heading, subheading, and bullets</div>
+    </div>
+    <div class="modal-scroll" id="finPlanSectionsEditList" style="padding-top:12px">
+      <!-- populated dynamically -->
+    </div>
+    <div class="modal-bottom">
+      <button class="btn-export" onclick="addFinPlanSection()" style="margin-bottom:10px">+ Add section</button>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('finPlanSectionsModal')">Cancel</button>
+        <button class="btn-add" onclick="saveFinPlanSections()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- PER-ACCOUNT HISTORY MODAL -->
 <div class="modal-overlay" id="acctHistoryModal">
   <div class="modal">
@@ -930,10 +970,12 @@ function updateTabs() {
   }
   bar.style.display = '';
   if (currentSection === 'expenses') {
+    setThemeColor('#6c5ce7');
     bar.innerHTML = [
       ['week','This week'], ['insights','Insights'], ['history','History']
     ].map(([t,l]) => `<button class="tab ${currentExpTab===t?'active':''}" onclick="showExpTab('${t}')">${l}</button>`).join('');
   } else {
+    setThemeColor('#16213e');
     bar.innerHTML = [
       ['overview','Overview'], ['accounts','Accounts'], ['plan','Plan'], ['payments','Payments']
     ].map(([t,l]) => `<button class="tab ${currentBudTab===t?'active':''}" onclick="showBudTab('${t}')">${l}</button>`).join('');
@@ -963,6 +1005,11 @@ function updateFab() {
   }
 }
 
+function setThemeColor(hex){
+  const el=document.getElementById('themeColorMeta');
+  if(el) el.setAttribute('content', hex);
+}
+
 function handleFab() {
   if (currentSection === 'expenses') { openAdd(); return; }
   if (currentBudTab === 'accounts') { openUpdateBalances(); return; }
@@ -977,6 +1024,7 @@ function updateHeader() {
     expH.style.display = ''; budH.style.display = 'none';
     hdr.classList.remove('budget-mode');
   } else if (currentSection === 'settings') {
+    setThemeColor('#16213e');
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
     document.getElementById('netWorthAmt').textContent = '';
@@ -986,6 +1034,7 @@ function updateHeader() {
     document.querySelector('#budgetHeader .budget-remaining').style.display = 'none';
     document.querySelector('#budgetHeader .budget-label').style.display = 'none';
   } else if (currentSection === 'finplan') {
+    setThemeColor('#6c5ce7');
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
     document.querySelector('#budgetHeader .budget-remaining').style.display = '';
@@ -2182,6 +2231,10 @@ function exportFullCSV() {
     csv += [esc(p.id),esc(p.name),esc(new Date(p.date).toLocaleDateString('en-NZ')),p.amount.toFixed(2),esc(p.type)].join(',')+'\n';
   });
 
+
+
+  csv += '\n[SECTION:FINPLAN_JSON]\n';
+  csv += esc(localStorage.getItem('spendly_finplan')||'') + '\n';
   downloadCSV(csv, `spendly-full-${todayStr()}.csv`);
 }
 
@@ -2374,6 +2427,13 @@ function importFullCSV(text) {
     if (payments.length) { b.payments = payments; budgetChanged = true; }
   }
 
+  if (sections['FINPLAN_JSON'] && sections['FINPLAN_JSON'].length) {
+    const raw = sections['FINPLAN_JSON'][0];
+    const parsed = parseCSV(raw);
+    const jsonStr = (parsed[0]&&parsed[0][0]) || raw;
+    if (jsonStr && jsonStr.trim()) localStorage.setItem('spendly_finplan', jsonStr);
+  }
+
   if (budgetChanged) { saveBudget(b); }
   closeModal('settingsModal'); render();
   showToast('✅ Full data imported', 'success');
@@ -2384,6 +2444,22 @@ function importFullCSV(text) {
 // ═══════════════════════════════════════════════════════════════════
 
 function renderFinancialPlan() {
+  const fp = loadFinPlan();
+  const sectionsHtml = fp.sections.map(sec => `
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:${sec.bg||'rgba(108,92,231,0.12)'}">${escHtml(sec.emoji||'📌')}</div>
+        <div>
+          <div class="fp-section-title">${escHtml(sec.title||'')}</div>
+          <div class="fp-section-subtitle">${escHtml(sec.subtitle||'')}</div>
+        </div>
+      </div>
+      ${(sec.type==='loan')
+        ? renderLoanGraphSection(fp)
+        : (sec.items||[]).map(t=>`<div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">${t}</div></div>`).join('')}
+    </div>
+  `).join('');
+
   document.getElementById('mainBody').innerHTML = `
     <div class="fp-hero">
       <div class="fp-hero-label">Financial Strategy</div>
@@ -2400,168 +2476,287 @@ function renderFinancialPlan() {
       </div>
     </div>
 
-    <div class="fp-section">
-      <div class="fp-section-header">
-        <div class="fp-section-icon" style="background:rgba(253,203,110,0.18)">🎓</div>
-        <div>
-          <div class="fp-section-title">Student Phase (2026)</div>
-          <div class="fp-section-subtitle">Maximise allowances &amp; minimise debt</div>
-        </div>
-      </div>
-      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Spend at least <strong>$15,160</strong> of the $26,756 Training Grant on approved costs to preserve full Student Allowance eligibility</div></div>
-      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Do not receive parental transfers weekly — defer total as a lump sum during the 6-week leave block</div></div>
-      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Estimated weekly cash flow: <strong>$715–$860</strong> (Allowance + Accommodation Supplement + Grant residual)</div></div>
-      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Student Loan Living Costs are unavailable with full allowance — advantageously avoids extra debt</div></div>
+    <div class="fp-edit-card" onclick="openFinPlanSectionsModal()">
+      <div class="fp-edit-title">🧩 Modular plan sections</div>
+      <div class="fp-edit-sub">Tap to edit/add/delete sections (emoji, heading, subheading, bullets)</div>
     </div>
 
-    <div class="fp-section">
-      <div class="fp-section-header">
-        <div class="fp-section-icon" style="background:rgba(108,92,231,0.12)">🏗️</div>
-        <div>
-          <div class="fp-section-title">Long-Term Wealth Architecture</div>
-          <div class="fp-section-subtitle">Structural tax &amp; compounding advantages</div>
-        </div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">PIE tax rate (max)</div>
-        <div class="fp-kv-val green">28%</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Employment income tax</div>
-        <div class="fp-kv-val red">33–39%</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Target management fee</div>
-        <div class="fp-kv-val green">0.07%</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Industry average fee</div>
-        <div class="fp-kv-val red">~1.00%</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Student loan balance</div>
-        <div class="fp-kv-val purple">$151,605</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Loan strategy</div>
-        <div class="fp-kv-val">12% mandatory only</div>
-      </div>
-      <div class="fp-item" style="margin-top:6px"><div class="fp-item-dot"></div><div class="fp-item-text">Interest-free loan declines in real value at 2–3% inflation annually — arbitrage favours investing over repaying</div></div>
+    ${sectionsHtml}
+  `;
+}
+
+function defaultFinPlan() {
+  return {
+    loan: {
+      startingBalance: 151605,
+      startYear: 2026,
+      repayStartYear: 2028,
+      years: 14,
+      pgy1Income: 113380,
+      tiIncome: 65000,
+      annualGrowthPct: 3.0,
+      repayPctOfIncome: 12.0
+    },
+    sections: [
+      {
+        id:'student',
+        emoji:'🎓',
+        bg:'rgba(253,203,110,0.18)',
+        title:'Student Phase',
+        subtitle:'5th year med (2026) — maximise allowances & minimise debt',
+        items:[
+          'Spend at least <strong>$15,160</strong> of the $26,756 Training Grant on approved costs to preserve full Student Allowance eligibility',
+          'Defer parental transfers as a lump sum during the 6-week leave block (avoid weekly allowance impacts)',
+          'Estimated weekly cash flow: <strong>$715–$860</strong> (Allowance + Accommodation Supplement + Grant residual)',
+          'Student Loan Living Costs are unavailable with full allowance — advantageously avoids extra debt'
+        ]
+      },
+      {
+        id:'loan',
+        type:'loan',
+        emoji:'🧾',
+        bg:'rgba(108,92,231,0.12)',
+        title:'Student loan projection',
+        subtitle:'A rough, editable forecast of how the balance may decline over time',
+        items:[]
+      },
+      {
+        id:'timeline',
+        emoji:'📅',
+        bg:'rgba(232,67,147,0.12)',
+        title:'Timeline (med school → TI → PGY1)',
+        subtitle:'Updated milestones (2026 = 5th year, 2027 = TI, 2028 = PGY1)',
+        items:[
+          '<strong>2026 (5th year):</strong> Confirm Prescribed Investor Rate via myIR · join NZMII as trainee intern',
+          '<strong>December 2026:</strong> Receive $26,756 Training Grant · allocate $15,160+ to approved expenses · allocate $10k travel · allocate $10k vehicle (hybrid wagon)',
+          '<strong>2027 (TI):</strong> Keep fixed costs tight · set up automatic investing schedule once income starts',
+          '<strong>2028 (PGY1):</strong> Implement 6% superannuation split · automate $3,500/month → Global PIE Fund · finalise income protection & health insurance'
+        ]
+      },
+      {
+        id:'risk',
+        emoji:'⚠️',
+        bg:'rgba(225,112,85,0.12)',
+        title:'Risk boundaries',
+        subtitle:'Hard limits to preserve timeline',
+        items:[
+          'Vehicle above <strong>$15,000</strong> before age 30 materially delays Work Optional date',
+          'Mortgage above <strong>$800,000</strong> before age 30 requires full reassessment of the timeline',
+          'Maintain disciplined capital allocation to preserve timeline integrity'
+        ]
+      },
+      {
+        id:'pgy1',
+        emoji:'💼',
+        bg:'rgba(0,184,148,0.12)',
+        title:'PGY1 Wealth-First Budget (2028)',
+        subtitle:'Projected gross ~$113,380 · >50% savings rate',
+        items:[
+          '<strong>Global PIE Fund:</strong> $3,500/mo (core investing)',
+          '<strong>KiwiSaver / Super:</strong> $567/mo (capture employer match)',
+          '<strong>Lifestyle & Rent:</strong> $2,451/mo (keep fixed costs controlled)',
+          'Target asset mix: <strong>100% global equities</strong> (while young, high human capital)'
+        ]
+      },
+      {
+        id:'protection',
+        emoji:'🛡️',
+        bg:'rgba(9,132,227,0.12)',
+        title:'Capital protection',
+        subtitle:'Insurance & income security',
+        items:[
+          '<strong>Indemnity:</strong> NZMII (free as student)',
+          '<strong>Income protection wait:</strong> 90 days · MAS',
+          '<strong>Health insurance:</strong> Hospital & Specialist (excess $500–$1,000)',
+          '<strong>Emergency fund bridge:</strong> $3,500 + sick leave'
+        ]
+      }
+    ]
+  };
+}
+
+function loadFinPlan() {
+  const raw = localStorage.getItem('spendly_finplan');
+  if (!raw) return defaultFinPlan();
+  try {
+    const fp = JSON.parse(raw);
+    if (!fp.sections || !Array.isArray(fp.sections)) fp.sections = defaultFinPlan().sections;
+    if (!fp.loan) fp.loan = defaultFinPlan().loan;
+    return fp;
+  } catch(e) {
+    return defaultFinPlan();
+  }
+}
+function saveFinPlan(fp) { localStorage.setItem('spendly_finplan', JSON.stringify(fp)); }
+
+function projectLoan(fp) {
+  const L = fp.loan || {};
+  const years = Math.max(3, Math.min(40, parseInt(L.years,10)||14));
+  const startYear = parseInt(L.startYear,10)||new Date().getFullYear();
+  const repayStart = parseInt(L.repayStartYear,10)||startYear;
+  let bal = Math.max(0, parseFloat(L.startingBalance)||0);
+  const pgy1Income = Math.max(0, parseFloat(L.pgy1Income)||0);
+  const tiIncome = Math.max(0, parseFloat(L.tiIncome)||0);
+  const g = (parseFloat(L.annualGrowthPct)||0)/100;
+  const r = (parseFloat(L.repayPctOfIncome)||0)/100;
+
+  const pts = [];
+  for (let i=0;i<years;i++) {
+    const y = startYear + i;
+    let income = 0;
+    if (y === (repayStart-1)) income = tiIncome;
+    if (y >= repayStart) {
+      const k = y - repayStart;
+      income = pgy1Income * Math.pow(1+g, k);
+    }
+    const repay = (y >= repayStart) ? income * r : 0;
+    pts.push({ year:y, balance:bal, income, repay });
+    bal = Math.max(0, bal - repay);
+  }
+  pts.push({ year:startYear+years, balance:bal, income:0, repay:0 });
+  return pts;
+}
+
+function renderLoanGraphSection(fp) {
+  const pts = projectLoan(fp);
+  const maxBal = Math.max(...pts.map(p=>p.balance), 1);
+  const w = 320, h = 140, pad = 16;
+  const x0 = pad, y0 = pad, x1 = w-pad, y1 = h-pad;
+  const span = pts.length-1;
+
+  const xs = (i)=> x0 + (i/span) * (x1-x0);
+  const ys = (bal)=> y1 - (bal/maxBal) * (y1-y0);
+
+  let d = '';
+  pts.forEach((p,i)=>{
+    const x = xs(i), y = ys(p.balance);
+    d += (i===0?`M ${x.toFixed(2)} ${y.toFixed(2)}`:` L ${x.toFixed(2)} ${y.toFixed(2)}`);
+  });
+
+  const start = pts[0], end = pts[pts.length-1];
+
+  return `
+    <svg class="fp-loan-svg" viewBox="0 0 ${w} ${h}" role="img" aria-label="Student loan projection">
+      <path d="M ${x0} ${y1} L ${x1} ${y1}" stroke="rgba(155,151,184,0.5)" stroke-width="1" fill="none"/>
+      <path d="M ${x0} ${y0} L ${x0} ${y1}" stroke="rgba(155,151,184,0.5)" stroke-width="1" fill="none"/>
+      <path d="${d}" stroke="var(--purple)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="${xs(0)}" cy="${ys(start.balance)}" r="3.5" fill="var(--purple)"/>
+      <circle cx="${xs(span)}" cy="${ys(end.balance)}" r="3.5" fill="var(--purple)"/>
+      <text x="${x0}" y="${y0-3}" font-size="9" font-weight="800" fill="rgba(155,151,184,0.9)">$${Math.round(maxBal).toLocaleString('en-NZ')}</text>
+      <text x="${x0}" y="${y1+12}" font-size="9" font-weight="800" fill="rgba(155,151,184,0.9)">${pts[0].year}</text>
+      <text x="${x1-22}" y="${y1+12}" font-size="9" font-weight="800" fill="rgba(155,151,184,0.9)">${pts[span].year}</text>
+    </svg>
+
+    <div class="fp-loan-meta">
+      <div class="fp-loan-pill"><div class="lbl">Starting balance</div><div class="val">$${Math.round(fp.loan.startingBalance).toLocaleString('en-NZ')}</div></div>
+      <div class="fp-loan-pill"><div class="lbl">Repayments start</div><div class="val">${escHtml(String(fp.loan.repayStartYear))}</div></div>
     </div>
 
-    <div class="fp-section">
-      <div class="fp-section-header">
-        <div class="fp-section-icon" style="background:rgba(0,184,148,0.12)">💼</div>
-        <div>
-          <div class="fp-section-title">PGY1 Wealth-First Budget (2027)</div>
-          <div class="fp-section-subtitle">Projected gross ~$113,380 · &gt;50% savings rate</div>
-        </div>
-      </div>
-      <div class="fp-allocation-bar">
-        <div class="fp-allocation-label"><span class="fp-allocation-name">Global PIE Fund</span><span class="fp-allocation-amt">$3,500/mo</span></div>
-        <div class="fp-allocation-track"><div class="fp-allocation-fill" style="width:75%"></div></div>
-      </div>
-      <div class="fp-allocation-bar">
-        <div class="fp-allocation-label"><span class="fp-allocation-name">KiwiSaver / Super</span><span class="fp-allocation-amt">$567/mo</span></div>
-        <div class="fp-allocation-track"><div class="fp-allocation-fill" style="width:12%"></div></div>
-      </div>
-      <div class="fp-allocation-bar">
-        <div class="fp-allocation-label"><span class="fp-allocation-name">Lifestyle &amp; Rent</span><span class="fp-allocation-amt">$2,451/mo</span></div>
-        <div class="fp-allocation-track"><div class="fp-allocation-fill" style="width:52%;background:linear-gradient(90deg,var(--coral),#f0a090)"></div></div>
-      </div>
-      <div class="fp-item" style="margin-top:4px"><div class="fp-item-dot"></div><div class="fp-item-text">Target asset mix: <strong>100% global equities</strong></div></div>
-      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Maximise 6% employer superannuation contribution match</div></div>
-    </div>
-
-    <div class="fp-section">
-      <div class="fp-section-header">
-        <div class="fp-section-icon" style="background:rgba(9,132,227,0.12)">🛡️</div>
-        <div>
-          <div class="fp-section-title">Capital Protection</div>
-          <div class="fp-section-subtitle">Insurance &amp; income security</div>
-        </div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Indemnity insurance</div>
-        <div class="fp-kv-val">NZMII (free as student)</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Income protection wait</div>
-        <div class="fp-kv-val">90 days · MAS</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">IP clauses</div>
-        <div class="fp-kv-val">Specialist + needlestick</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Health insurance</div>
-        <div class="fp-kv-val">Hospital &amp; Specialist</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Health excess</div>
-        <div class="fp-kv-val">$500–$1,000</div>
-      </div>
-      <div class="fp-kv-row">
-        <div class="fp-kv-label">Emergency fund bridge</div>
-        <div class="fp-kv-val">$3,500 + sick leave</div>
-      </div>
-    </div>
-
-    <div class="fp-section">
-      <div class="fp-section-header">
-        <div class="fp-section-icon" style="background:rgba(232,67,147,0.12)">📅</div>
-        <div>
-          <div class="fp-section-title">24-Month Execution Timeline</div>
-          <div class="fp-section-subtitle">Key milestones &amp; actions</div>
-        </div>
-      </div>
-      <div class="fp-timeline-item">
-        <div class="fp-timeline-dot-wrap"><div class="fp-timeline-dot"></div><div class="fp-timeline-line"></div></div>
-        <div class="fp-timeline-content">
-          <div class="fp-timeline-date">Early 2026</div>
-          <div class="fp-timeline-items">
-            <div class="fp-timeline-task">• Confirm Prescribed Investor Rate via myIR</div>
-            <div class="fp-timeline-task">• Join NZMII as trainee intern</div>
-          </div>
-        </div>
-      </div>
-      <div class="fp-timeline-item">
-        <div class="fp-timeline-dot-wrap"><div class="fp-timeline-dot"></div><div class="fp-timeline-line"></div></div>
-        <div class="fp-timeline-content">
-          <div class="fp-timeline-date">December 2026</div>
-          <div class="fp-timeline-items">
-            <div class="fp-timeline-task">• Receive $26,756 Training Grant</div>
-            <div class="fp-timeline-task">• Allocate $15,160+ to approved expenses</div>
-            <div class="fp-timeline-task">• $10K travel · $10K vehicle (hybrid wagon)</div>
-          </div>
-        </div>
-      </div>
-      <div class="fp-timeline-item">
-        <div class="fp-timeline-dot-wrap"><div class="fp-timeline-dot"></div></div>
-        <div class="fp-timeline-content">
-          <div class="fp-timeline-date">January 2027</div>
-          <div class="fp-timeline-items">
-            <div class="fp-timeline-task">• Implement 6% superannuation split</div>
-            <div class="fp-timeline-task">• Automate $3,500/month → Global PIE Fund</div>
-            <div class="fp-timeline-task">• Finalise Income Protection &amp; Health Insurance</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="fp-section">
-      <div class="fp-section-header">
-        <div class="fp-section-icon" style="background:rgba(225,112,85,0.12)">⚠️</div>
-        <div>
-          <div class="fp-section-title">Risk Boundaries</div>
-          <div class="fp-section-subtitle">Hard limits to preserve timeline</div>
-        </div>
-      </div>
-      <div class="fp-risk-item"><div class="fp-risk-icon">🚗</div><div class="fp-risk-text">Vehicle above <strong>$15,000</strong> before age 30 materially delays Work Optional date</div></div>
-      <div class="fp-risk-item"><div class="fp-risk-icon">🏠</div><div class="fp-risk-text">Mortgage above <strong>$800,000</strong> before age 30 requires full reassessment of the timeline</div></div>
-      <div class="fp-risk-item"><div class="fp-risk-icon">✅</div><div class="fp-risk-text">Maintain disciplined capital allocation to preserve timeline integrity</div></div>
+    <div class="fp-loan-note">
+      Assumptions (editable): repayments = <strong>${fp.loan.repayPctOfIncome}%</strong> of gross income, PGY1 income starts at <strong>$${Math.round(fp.loan.pgy1Income).toLocaleString('en-NZ')}</strong> with <strong>${fp.loan.annualGrowthPct}%</strong> annual growth. This is a simple illustrative model (not advice).
     </div>
   `;
+}
+
+// FinPlan sections editor
+let tempFinPlanSections = null;
+
+function openFinPlanSectionsModal() {
+  const fp = loadFinPlan();
+  tempFinPlanSections = JSON.parse(JSON.stringify(fp));
+  renderFinPlanSectionsEditList();
+  document.getElementById('finPlanSectionsModal').classList.add('open');
+}
+
+function renderFinPlanSectionsEditList() {
+  const list = document.getElementById('finPlanSectionsEditList');
+  if (!list || !tempFinPlanSections) return;
+  const secs = tempFinPlanSections.sections;
+  list.innerHTML = secs.map((s,idx)=>`
+    <div class="insight-card" style="margin-bottom:10px">
+      <div style="display:flex;gap:10px;align-items:center;justify-content:space-between">
+        <div style="font-weight:900;color:var(--text);font-size:13px">Section ${idx+1}</div>
+        <button class="btn-danger" style="width:auto;padding:10px 12px;font-size:13px" onclick="deleteFinPlanSection('${s.id}')">Delete</button>
+      </div>
+
+      <label style="margin-top:12px">Emoji</label>
+      <input type="text" maxlength="3" value="${escHtml(s.emoji||'')}" oninput="updateFinPlanSectionField('${s.id}','emoji',this.value)" placeholder="e.g. 🎓">
+
+      <label>Heading</label>
+      <input type="text" value="${escHtml(s.title||'')}" oninput="updateFinPlanSectionField('${s.id}','title',this.value)" placeholder="e.g. Student Phase">
+
+      <label>Subheading</label>
+      <input type="text" value="${escHtml(s.subtitle||'')}" oninput="updateFinPlanSectionField('${s.id}','subtitle',this.value)" placeholder="e.g. What matters most right now">
+
+      ${s.type==='loan'
+        ? `<div style="margin-top:12px;font-size:12px;color:var(--muted);font-weight:700;line-height:1.4">Loan graph section. Edit the assumptions below.</div>
+           <label>Starting balance</label>
+           <input type="number" value="${Number(tempFinPlanSections.loan.startingBalance)||0}" oninput="updateFinPlanLoanField('startingBalance',this.value)">
+           <label>Repayments start year</label>
+           <input type="number" value="${Number(tempFinPlanSections.loan.repayStartYear)||0}" oninput="updateFinPlanLoanField('repayStartYear',this.value)">
+           <label>PGY1 income (starting)</label>
+           <input type="number" value="${Number(tempFinPlanSections.loan.pgy1Income)||0}" oninput="updateFinPlanLoanField('pgy1Income',this.value)">
+           <label>Annual income growth (%)</label>
+           <input type="number" step="0.1" value="${Number(tempFinPlanSections.loan.annualGrowthPct)||0}" oninput="updateFinPlanLoanField('annualGrowthPct',this.value)">
+           <label>Repayment rate (% of income)</label>
+           <input type="number" step="0.1" value="${Number(tempFinPlanSections.loan.repayPctOfIncome)||0}" oninput="updateFinPlanLoanField('repayPctOfIncome',this.value)">
+           <label>Projection years</label>
+           <input type="number" value="${Number(tempFinPlanSections.loan.years)||14}" oninput="updateFinPlanLoanField('years',this.value)">`
+        : `<label>Bullets (one per line)</label>
+           <textarea class="plan-extra-textarea" style="min-height:110px" oninput="updateFinPlanSectionBullets('${s.id}',this.value)" placeholder="• Bullet 1\n• Bullet 2\n• ...">${(s.items||[]).map(x=>x.replace(/<[^>]+>/g,'')).join('\n')}</textarea>`
+      }
+    </div>
+  `).join('');
+}
+
+function updateFinPlanSectionField(id, key, val) {
+  const s = tempFinPlanSections.sections.find(x=>x.id===id);
+  if (!s) return;
+  s[key] = val;
+}
+
+function updateFinPlanSectionBullets(id, raw) {
+  const s = tempFinPlanSections.sections.find(x=>x.id===id);
+  if (!s) return;
+  const lines = String(raw||'').split('\n').map(l=>l.replace(/^•\s*/,'').trim()).filter(Boolean);
+  s.items = lines.map(l=>escHtml(l).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>'));
+}
+
+function updateFinPlanLoanField(key, val) {
+  if (!tempFinPlanSections) return;
+  tempFinPlanSections.loan[key] = parseFloat(val);
+}
+
+function deleteFinPlanSection(id) {
+  if (!tempFinPlanSections) return;
+  if (tempFinPlanSections.sections.find(s=>s.id===id)?.type==='loan') {
+    showToast('Loan section can be deleted, but you may want to keep it for the graph.','');
+  }
+  tempFinPlanSections.sections = tempFinPlanSections.sections.filter(s=>s.id!==id);
+  renderFinPlanSectionsEditList();
+}
+
+function addFinPlanSection() {
+  if (!tempFinPlanSections) return;
+  const id = 'fp'+Date.now();
+  tempFinPlanSections.sections.push({
+    id,
+    emoji:'📌',
+    bg:'rgba(108,92,231,0.12)',
+    title:'New section',
+    subtitle:'Tap to edit',
+    items:['Add your first bullet here']
+  });
+  renderFinPlanSectionsEditList();
+}
+
+function saveFinPlanSections() {
+  if (!tempFinPlanSections) return;
+  if (!tempFinPlanSections.sections.length) tempFinPlanSections = defaultFinPlan();
+  saveFinPlan(tempFinPlanSections);
+  closeModal('finPlanSectionsModal');
+  render();
+  showToast('✅ Plan sections saved','success');
 }
 
 // ═══════════════════════════════════════════════════════════════════
