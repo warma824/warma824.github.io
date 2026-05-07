@@ -27,7 +27,7 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-  html { background: #6c5ce7; height: 100%; font-family: 'Nunito', sans-serif; }
+  html { background: linear-gradient(145deg, #6c5ce7 0%, #a855f7 50%, #e84393 100%); height: 100%; font-family: 'Nunito', sans-serif; }
   body { height: 100%; background: var(--bg); color: var(--text); overflow: hidden; }
 
   #app { height: 100dvh; display: flex; flex-direction: column; max-width: 430px; margin: 0 auto; position: relative; overflow: hidden; background: var(--bg); }
@@ -67,12 +67,12 @@
   .bhc-val { font-size:14px; font-weight:900; color:white; margin-top:1px; }
 
   /* ── TABS ── */
-  .tabs { display:flex; gap:6px; padding:12px 16px 0; flex-shrink:0; background:var(--bg); }
+  .tabs { display:flex; gap:6px; padding:12px 16px 10px; flex-shrink:0; background:var(--bg); border-bottom:1px solid var(--border); }
   .tab { flex:1; text-align:center; font-size:12px; font-weight:800; padding:9px 4px; border-radius:12px; cursor:pointer; transition:all 0.2s; color:var(--muted); background:transparent; border:none; font-family:'Nunito',sans-serif; }
   .tab.active { background:var(--card); color:var(--purple); box-shadow:0 2px 10px rgba(108,92,231,0.14); }
 
   /* ── BODY ── */
-  .body { flex:1; overflow-y:auto; padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 160px); -webkit-overflow-scrolling:touch; }
+  .body { flex:1; overflow-y:auto; padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 170px); -webkit-overflow-scrolling:touch; }
   .section-label { font-size:11px; font-weight:800; color:var(--muted); letter-spacing:0.8px; text-transform:uppercase; margin:14px 0 8px; }
   .section-label:first-child { margin-top:4px; }
 
@@ -90,7 +90,7 @@
     font-family:'Nunito',sans-serif; font-size:10px; font-weight:800;
     color:var(--muted); cursor:pointer; gap:2px; transition:color 0.2s;
   }
-  .nav-icon { font-size:20px; line-height:1; }
+  .nav-icon { font-size:18px; line-height:1; }
   .nav-btn.active { color:var(--purple); }
   .nav-btn.active .nav-active-dot { width:4px; height:4px; border-radius:50%; background:var(--purple); display:block; margin:1px auto 0; }
   .nav-active-dot { display:none; }
@@ -377,6 +377,81 @@
 
   /* Edit account modal */
   .acct-delete-zone { margin-top:20px; padding-top:16px; border-top:1px solid var(--border); }
+
+  /* ── ACCOUNT TYPE/NAME DISPLAY ── */
+  .account-type { font-size:14px; font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .account-subname { font-size:11px; font-weight:700; color:var(--purple); margin-top:1px; }
+
+  /* ── EXTRA STEPS CARD ── */
+  .extra-steps-card { background:var(--card); border-radius:20px; padding:16px; margin-bottom:12px; border:1px solid var(--border); cursor:pointer; transition:border-color 0.2s; }
+  .extra-steps-card:active { border-color:rgba(108,92,231,0.4); }
+  .extra-steps-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .extra-steps-title { font-size:14px; font-weight:900; color:var(--text); }
+  .extra-steps-edit-hint { font-size:11px; font-weight:700; color:var(--purple); background:rgba(108,92,231,0.1); padding:3px 9px; border-radius:99px; }
+  .extra-step-item { display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); }
+  .extra-step-item:last-child { border-bottom:none; }
+  .extra-step-num { width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg,var(--purple),#a855f7); color:white; font-size:11px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+  .extra-step-text { font-size:13px; font-weight:700; color:var(--text); line-height:1.5; flex:1; }
+  .extra-steps-empty { font-size:13px; font-weight:700; color:var(--muted); text-align:center; padding:12px 0; }
+
+  /* ── EXTRA STEPS EDIT MODAL ── */
+  .steps-edit-item { display:flex; align-items:flex-start; gap:8px; margin-bottom:10px; }
+  .steps-edit-num { width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg,var(--purple),#a855f7); color:white; font-size:12px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:10px; }
+  .steps-edit-textarea { flex:1; padding:10px 12px; border:1.5px solid var(--border); border-radius:12px; font-size:14px; font-family:'Nunito',sans-serif; font-weight:700; color:var(--text); background:var(--bg); outline:none; resize:none; min-height:58px; line-height:1.45; }
+  .steps-edit-textarea:focus { border-color:var(--purple); }
+  .steps-edit-del { background:none; border:none; color:#ddd; font-size:18px; cursor:pointer; padding:4px; margin-top:8px; flex-shrink:0; }
+  .steps-edit-del:active { color:var(--coral); }
+
+  /* ── PER ACCOUNT HISTORY MODAL ── */
+  .acct-hist-tabs { display:flex; gap:6px; margin-bottom:14px; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .acct-hist-tabs::-webkit-scrollbar { display:none; }
+  .acct-hist-tab { flex-shrink:0; padding:7px 14px; border-radius:12px; font-size:12px; font-weight:800; border:1.5px solid var(--border); background:var(--bg); color:var(--muted); cursor:pointer; font-family:'Nunito',sans-serif; }
+  .acct-hist-tab.active { background:var(--card); color:var(--purple); border-color:rgba(108,92,231,0.3); }
+
+  /* ── FINANCIAL PLAN PAGE ── */
+  .fp-hero { background:linear-gradient(145deg,var(--purple) 0%,#a855f7 50%,var(--pink) 100%); border-radius:20px; padding:20px; margin-bottom:12px; color:white; position:relative; overflow:hidden; }
+  .fp-hero::before { content:''; position:absolute; width:160px; height:160px; background:rgba(255,255,255,0.07); border-radius:50%; top:-40px; right:-40px; }
+  .fp-hero-label { font-size:10px; font-weight:800; opacity:0.75; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px; }
+  .fp-hero-title { font-size:18px; font-weight:900; line-height:1.3; margin-bottom:8px; }
+  .fp-hero-target { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,0.15); border-radius:14px; padding:10px 14px; margin-top:4px; }
+  .fp-hero-target-label { font-size:11px; font-weight:800; opacity:0.8; }
+  .fp-hero-target-val { font-size:20px; font-weight:900; }
+  .fp-section { background:var(--card); border-radius:20px; padding:16px; margin-bottom:12px; border:1px solid var(--border); }
+  .fp-section-header { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .fp-section-icon { width:38px; height:38px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+  .fp-section-title { font-size:14px; font-weight:900; color:var(--text); }
+  .fp-section-subtitle { font-size:11px; font-weight:700; color:var(--muted); margin-top:1px; }
+  .fp-item { display:flex; align-items:flex-start; gap:8px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .fp-item:last-child { border-bottom:none; }
+  .fp-item-dot { width:6px; height:6px; border-radius:50%; background:var(--purple); margin-top:6px; flex-shrink:0; }
+  .fp-item-text { font-size:13px; font-weight:700; color:var(--text); line-height:1.5; flex:1; }
+  .fp-item-text strong { color:var(--purple); }
+  .fp-kv-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); }
+  .fp-kv-row:last-child { border-bottom:none; }
+  .fp-kv-label { font-size:13px; font-weight:700; color:var(--muted); }
+  .fp-kv-val { font-size:13px; font-weight:900; color:var(--text); }
+  .fp-kv-val.green { color:var(--teal); }
+  .fp-kv-val.red { color:var(--coral); }
+  .fp-kv-val.purple { color:var(--purple); }
+  .fp-timeline-item { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+  .fp-timeline-item:last-child { border-bottom:none; }
+  .fp-timeline-dot-wrap { display:flex; flex-direction:column; align-items:center; gap:0; flex-shrink:0; margin-top:3px; }
+  .fp-timeline-dot { width:10px; height:10px; border-radius:50%; background:var(--purple); }
+  .fp-timeline-line { width:2px; flex:1; background:var(--border); margin-top:4px; }
+  .fp-timeline-content { flex:1; padding-bottom:4px; }
+  .fp-timeline-date { font-size:11px; font-weight:800; color:var(--purple); text-transform:uppercase; letter-spacing:0.5px; }
+  .fp-timeline-items { margin-top:4px; }
+  .fp-timeline-task { font-size:13px; font-weight:700; color:var(--text); line-height:1.5; }
+  .fp-risk-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .fp-risk-item:last-child { border-bottom:none; }
+  .fp-risk-icon { font-size:16px; flex-shrink:0; margin-top:1px; }
+  .fp-risk-text { font-size:13px; font-weight:700; color:var(--text); line-height:1.5; flex:1; }
+  .fp-allocation-bar { background:var(--bg); border-radius:12px; padding:12px 14px; margin-bottom:8px; }
+  .fp-allocation-label { display:flex; justify-content:space-between; margin-bottom:6px; }
+  .fp-allocation-name { font-size:13px; font-weight:800; color:var(--text); }
+  .fp-allocation-amt { font-size:13px; font-weight:900; color:var(--purple); }
+  .fp-allocation-track { background:rgba(108,92,231,0.12); border-radius:99px; height:7px; overflow:hidden; }
+  .fp-allocation-fill { height:7px; border-radius:99px; background:linear-gradient(90deg,var(--purple),#a855f7); }
 </style>
 </head>
 <body>
@@ -433,6 +508,16 @@
     <button class="nav-btn" id="navBudget" onclick="switchSection('budget')">
       <span class="nav-icon">📊</span>
       <span>Budget</span>
+      <span class="nav-active-dot"></span>
+    </button>
+    <button class="nav-btn" id="navPlan" onclick="switchSection('finplan')">
+      <span class="nav-icon">📋</span>
+      <span>Plan</span>
+      <span class="nav-active-dot"></span>
+    </button>
+    <button class="nav-btn" id="navSettings" onclick="openSettings()">
+      <span class="nav-icon">⚙️</span>
+      <span>Settings</span>
       <span class="nav-active-dot"></span>
     </button>
   </nav>
@@ -608,6 +693,43 @@
         <button class="btn-cancel" onclick="closeModal('addPaymentModal')">Cancel</button>
         <button class="btn-add" onclick="savePayment()">Save payment</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXTRA STEPS EDIT MODAL -->
+<div class="modal-overlay" id="extraStepsModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2>✨ What to do with extra money</h2>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:4px">Add numbered steps in priority order</div>
+    </div>
+    <div class="modal-scroll" id="extraStepsEditList" style="padding-top:12px">
+      <!-- populated dynamically -->
+    </div>
+    <div class="modal-bottom">
+      <button class="btn-export" onclick="addExtraStep()" style="margin-bottom:10px">+ Add step</button>
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('extraStepsModal')">Cancel</button>
+        <button class="btn-add" onclick="saveExtraSteps()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PER-ACCOUNT HISTORY MODAL -->
+<div class="modal-overlay" id="acctHistoryModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2>Account History</h2>
+    </div>
+    <div class="modal-scroll" id="acctHistoryScroll">
+      <!-- populated dynamically -->
+    </div>
+    <div class="modal-bottom">
+      <button class="btn-cancel" onclick="closeModal('acctHistoryModal')">Close</button>
     </div>
   </div>
 </div>
@@ -793,6 +915,7 @@ function switchSection(sec) {
   currentSection = sec;
   document.getElementById('navExpenses').classList.toggle('active', sec === 'expenses');
   document.getElementById('navBudget').classList.toggle('active', sec === 'budget');
+  document.getElementById('navPlan').classList.toggle('active', sec === 'finplan');
   render();
 }
 
@@ -801,6 +924,12 @@ function showBudTab(tab) { currentBudTab = tab; render(); }
 
 function updateTabs() {
   const bar = document.getElementById('tabsBar');
+  if (currentSection === 'finplan') {
+    bar.innerHTML = '';
+    bar.style.display = 'none';
+    return;
+  }
+  bar.style.display = '';
   if (currentSection === 'expenses') {
     bar.innerHTML = [
       ['week','This week'], ['insights','Insights'], ['history','History']
@@ -814,6 +943,9 @@ function updateTabs() {
 
 function updateFab() {
   const fab = document.getElementById('fabBtn');
+  if (currentSection === 'finplan') {
+    fab.className = 'fab hidden'; return;
+  }
   if (currentSection === 'expenses') {
     fab.className = 'fab' + (currentExpTab === 'week' ? '' : ' hidden');
     fab.textContent = '+ Add expense';
@@ -845,6 +977,20 @@ function updateHeader() {
   if (currentSection === 'expenses') {
     expH.style.display = ''; budH.style.display = 'none';
     hdr.classList.remove('budget-mode');
+  } else if (currentSection === 'finplan') {
+    expH.style.display = 'none'; budH.style.display = '';
+    hdr.classList.add('budget-mode');
+    document.getElementById('netWorthAmt').textContent = '3.33M';
+    document.getElementById('budgetUpdatedLabel').textContent = 'Target';
+    document.getElementById('budgetHeaderChips').innerHTML = `
+      <div class="budget-header-chip">
+        <div class="bhc-label">Work Optional Age</div>
+        <div class="bhc-val">41–42</div>
+      </div>
+      <div class="budget-header-chip">
+        <div class="bhc-label">Capital Base</div>
+        <div class="bhc-val">$3.33M</div>
+      </div>`;
   } else {
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
@@ -854,20 +1000,10 @@ function updateHeader() {
     const dates = b.accounts.map(a => new Date(a.lastUpdated)).filter(d => !isNaN(d));
     const recent = dates.length ? new Date(Math.max(...dates)) : new Date();
     document.getElementById('budgetUpdatedLabel').textContent = 'Updated ' + formatDateShort(recent);
-    const wPlan = b.weeklyPlan;
-    const wInc = wPlan.income.reduce((s,i)=>s+i.amount,0);
-    const wExp = wPlan.expenses.reduce((s,e)=>s+e.amount,0);
-    document.getElementById('budgetHeaderChips').innerHTML = `
-      <div class="budget-header-chip">
-        <div class="bhc-label">Wkly income</div>
-        <div class="bhc-val">$${fmtAmt(wInc)}</div>
-      </div>
-      <div class="budget-header-chip">
-        <div class="bhc-label">Wkly expenses</div>
-        <div class="bhc-val">$${fmtAmt(wExp)}</div>
-      </div>`;
+    document.getElementById('budgetHeaderChips').innerHTML = '';
   }
 }
+
 
 // ═══════════════════════════════════════════════════════════════════
 // MAIN RENDER
@@ -881,6 +1017,8 @@ function render() {
     if (currentExpTab === 'week') renderWeek();
     else if (currentExpTab === 'insights') renderInsights();
     else renderHistory();
+  } else if (currentSection === 'finplan') {
+    renderFinancialPlan();
   } else {
     if (currentBudTab === 'overview') renderBudgetOverview();
     else if (currentBudTab === 'accounts') renderBudgetAccounts();
@@ -1227,11 +1365,16 @@ function renderBudgetOverview() {
   const wSav = wPlan.savings.reduce((s,s2)=>s+s2.amount,0);
   const wNet = wInc - wExp - wSav;
 
-  const accRows = b.accounts.map(a=>`
-    <div class="overview-acc-row">
-      <div class="overview-acc-name">${escHtml(a.name)}</div>
+  const accRows = b.accounts.map(a=>{
+    const parsed = parseAccountName(a.name);
+    return `<div class="overview-acc-row">
+      <div class="overview-acc-name">
+        <div style="font-size:13px;font-weight:800;color:var(--text)">${escHtml(parsed.type)}</div>
+        ${parsed.subname ? `<div style="font-size:11px;font-weight:700;color:var(--purple)">${escHtml(parsed.subname)}</div>` : ''}
+      </div>
       <div class="overview-acc-bal">$${fmtAmtFull(a.balance||0)}</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   const upcoming = b.payments.filter(p=>new Date(p.date)>=new Date()).sort((a,c)=>new Date(a.date)-new Date(c.date)).slice(0,3);
   const upcomingHtml = upcoming.length ? upcoming.map(p=>{
@@ -1243,9 +1386,12 @@ function renderBudgetOverview() {
   }).join('') : '<div style="font-size:13px;color:var(--muted);padding:8px 0;text-align:center">No upcoming payments</div>';
 
   document.getElementById('mainBody').innerHTML = `
-    <div class="overview-graph-card">
-      <div class="overview-graph-title">📈 Net Worth Over Time</div>
-      <div class="overview-graph-subtitle">${b.balanceHistory.length} snapshot${b.balanceHistory.length!==1?'s':''} recorded</div>
+    <div class="overview-graph-card" onclick="openAcctHistory()" style="cursor:pointer">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <div class="overview-graph-title">📈 Net Worth Over Time</div>
+        <div style="font-size:11px;font-weight:800;color:var(--purple);background:rgba(108,92,231,0.1);padding:3px 9px;border-radius:99px">Per account →</div>
+      </div>
+      <div class="overview-graph-subtitle">${b.balanceHistory.length} snapshot${b.balanceHistory.length!==1?'s':''} recorded · tap for account detail</div>
       <div class="nw-graph-wrap">${buildNWGraph(b.balanceHistory)}</div>
     </div>
 
@@ -1290,6 +1436,12 @@ function renderBudgetOverview() {
 
 const ACCOUNT_ICONS = ['🏦','💳','✈️','🛡️','📈','💼','🪙','🏠','💰','📊'];
 
+function parseAccountName(name) {
+  const match = name.match(/^(.+?)\s*\((.+)\)$/);
+  if (match) return { type: match[1].trim(), subname: match[2].trim() };
+  return { type: name, subname: null };
+}
+
 function renderBudgetAccounts() {
   const b = loadBudget();
   const total = b.accounts.reduce((s,a)=>s+(a.balance||0),0);
@@ -1298,10 +1450,12 @@ function renderBudgetAccounts() {
 
   const rows = b.accounts.map((a,i)=>{
     const icon = ACCOUNT_ICONS[i % ACCOUNT_ICONS.length];
+    const parsed = parseAccountName(a.name);
     return `<div class="account-item" onclick="openEditAccount('${a.id}')">
       <div class="account-icon">${icon}</div>
       <div class="account-info">
-        <div class="account-name">${escHtml(a.name)}</div>
+        <div class="account-type">${escHtml(parsed.type)}</div>
+        ${parsed.subname ? `<div class="account-subname">${escHtml(parsed.subname)}</div>` : ''}
         <div class="account-updated">Updated ${formatDateShort(new Date(a.lastUpdated))}</div>
       </div>
       <div class="account-balance">$${fmtAmtFull(a.balance||0)}</div>
@@ -1363,6 +1517,82 @@ function saveUpdatedBalances() {
   render();
   showToast(`✅ Balances updated · Net worth $${fmtAmtFull(snapshot.total)}`, 'success');
 }
+
+let acctHistorySelectedId = null;
+
+function openAcctHistory() {
+  const b = loadBudget();
+  if (!b.balanceHistory.length) { showToast('No balance history yet — update your balances first'); return; }
+  acctHistorySelectedId = b.accounts[0]?.id || null;
+  renderAcctHistoryModal(b);
+  document.getElementById('acctHistoryModal').classList.add('open');
+}
+
+function renderAcctHistoryModal(b) {
+  if (!b) b = loadBudget();
+  const tabs = b.accounts.map(a=>{
+    const parsed = parseAccountName(a.name);
+    return `<button class="acct-hist-tab ${a.id===acctHistorySelectedId?'active':''}" onclick="selectAcctHistTab('${a.id}')">${escHtml(parsed.type)}</button>`;
+  }).join('');
+
+  const acc = b.accounts.find(a=>a.id===acctHistorySelectedId);
+  const history = b.balanceHistory.filter(h=>h.accounts&&h.accounts[acctHistorySelectedId]!==undefined);
+  const parsed = acc ? parseAccountName(acc.name) : null;
+
+  let graphHtml = '';
+  if (history.length < 2) {
+    graphHtml = `<div class="graph-empty" style="padding:24px 0">📊<br>Need at least 2 snapshots<br>to show account trend</div>`;
+  } else {
+    const W=320, H=130;
+    const pad={top:16,right:16,bottom:32,left:56};
+    const pw=W-pad.left-pad.right, ph=H-pad.top-pad.bottom;
+    const vals = history.map(h=>h.accounts[acctHistorySelectedId]||0);
+    const dates = history.map(h=>new Date(h.date));
+    const minV=Math.min(...vals), maxV=Math.max(...vals);
+    const range=Math.max(maxV-minV,500);
+    const lo=minV-range*0.1, hi=maxV+range*0.1;
+    const xS=i=>history.length===1?pad.left+pw/2:pad.left+(i/(history.length-1))*pw;
+    const yS=v=>pad.top+ph-((v-lo)/(hi-lo))*ph;
+    const pts=history.map((h,i)=>({x:xS(i),y:yS(h.accounts[acctHistorySelectedId]||0)}));
+    const linePath=pts.map((p,i)=>`${i===0?'M':'L'}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+    const areaPath=`M${pad.left},${pad.top+ph} `+pts.map(p=>`L${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ')+` L${xS(history.length-1)},${pad.top+ph} Z`;
+    const yTicks=[lo,(lo+hi)/2,hi];
+    const yLabels=yTicks.map(v=>`
+      <text x="${pad.left-6}" y="${(yS(v)+4).toFixed(1)}" text-anchor="end" font-size="9" font-weight="700" fill="#9b97b8">$${(v/1000).toFixed(1)}k</text>
+      <line x1="${pad.left}" y1="${yS(v).toFixed(1)}" x2="${pad.left+pw}" y2="${yS(v).toFixed(1)}" stroke="#e8e4ff" stroke-width="1"/>`).join('');
+    const labelIdxs=history.length<=4?history.map((_,i)=>i):[0,Math.floor(history.length/3),Math.floor(2*history.length/3),history.length-1];
+    const xLabels=labelIdxs.map(i=>{const d=dates[i];const lbl=d.toLocaleDateString('en-NZ',{day:'numeric',month:'short'});return `<text x="${xS(i).toFixed(1)}" y="${(H-4).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="#9b97b8">${escHtml(lbl)}</text>`;}).join('');
+    const dots=pts.map((p,i)=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${i===pts.length-1?5:3.5}" fill="${i===pts.length-1?'#6c5ce7':'#a855f7'}" stroke="white" stroke-width="2"/>`).join('');
+    const changeVal=vals[vals.length-1]-vals[0];
+    const changePct=(changeVal/Math.max(Math.abs(vals[0]),1))*100;
+    graphHtml=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+      <defs><linearGradient id="aHGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6c5ce7" stop-opacity="0.25"/><stop offset="100%" stop-color="#6c5ce7" stop-opacity="0"/></linearGradient></defs>
+      ${yLabels}<path d="${areaPath}" fill="url(#aHGrad)"/><path d="${linePath}" fill="none" stroke="#6c5ce7" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}${xLabels}
+    </svg>
+    <div style="font-size:11px;font-weight:700;color:${changeVal>=0?'var(--teal)':'var(--coral)'};text-align:center;margin-top:6px">${changeVal>=0?'+':''}$${fmtAmt(Math.abs(changeVal))} (${changeVal>=0?'+':''}${changePct.toFixed(1)}%) since ${formatDate(new Date(history[0].date))}</div>`;
+  }
+
+  const snapshots = history.slice().reverse().slice(0,8).map(h=>{
+    const val = h.accounts[acctHistorySelectedId]||0;
+    return `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;font-weight:700">
+      <span style="color:var(--muted)">${formatDate(new Date(h.date))}</span>
+      <span style="color:var(--text)">$${fmtAmtFull(val)}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('acctHistoryScroll').innerHTML = `
+    <div class="acct-hist-tabs">${tabs}</div>
+    ${parsed?`<div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:12px">${escHtml(parsed.subname||parsed.type)} · Current: $${fmtAmtFull(acc.balance||0)}</div>`:''}
+    <div style="margin-bottom:12px">${graphHtml}</div>
+    ${snapshots ? `<div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Recent snapshots</div>${snapshots}` : ''}
+  `;
+}
+
+function selectAcctHistTab(id) {
+  acctHistorySelectedId = id;
+  renderAcctHistoryModal();
+}
+
 
 function openEditAccount(id) {
   editingAccountId = id;
@@ -1442,6 +1672,15 @@ function renderBudgetPlan() {
   const netLabel = Math.abs(net)<0.05?'✅ Zero-sum budget':net>0?'Unallocated funds':'Over-allocated';
   const netSign  = net>=0?'+':'−';
 
+  // Build extra steps display
+  const steps = getExtraSteps(b);
+  const stepsHtml = steps.length
+    ? steps.map((s,i)=>`<div class="extra-step-item">
+        <div class="extra-step-num">${i+1}</div>
+        <div class="extra-step-text">${escHtml(s)}</div>
+      </div>`).join('')
+    : `<div class="extra-steps-empty">Tap to add steps for allocating extra money</div>`;
+
   document.getElementById('mainBody').innerHTML = `
     <div class="plan-section">
       <div class="plan-sec-header">
@@ -1470,9 +1709,12 @@ function renderBudgetPlan() {
       <button class="plan-add-btn" onclick="addPlanItem('saving')">+ Add savings item</button>
     </div>
 
-    <div class="plan-extra-card">
-      <div class="plan-extra-title">✨ What to do with extra money</div>
-      <textarea class="plan-extra-textarea" onblur="saveExtraInstructions(this.value)">${escHtml(wp.extraInstructions||'')}</textarea>
+    <div class="extra-steps-card" onclick="openExtraStepsModal()">
+      <div class="extra-steps-header">
+        <div class="extra-steps-title">✨ What to do with extra money</div>
+        <div class="extra-steps-edit-hint">Edit</div>
+      </div>
+      ${stepsHtml}
     </div>
 
     <div class="plan-net-card ${netClass}">
@@ -1521,10 +1763,68 @@ function addPlanItem(type) {
   }, 60);
 }
 
-function saveExtraInstructions(val) {
+function getExtraSteps(b) {
+  const wp = b.weeklyPlan;
+  // Migrate from old extraInstructions text if needed
+  if (wp.extraSteps) return wp.extraSteps;
+  if (wp.extraInstructions) {
+    const lines = wp.extraInstructions.split('\n').map(l=>l.replace(/^[•\-\d.]\s*/,'')).filter(l=>l.trim());
+    return lines;
+  }
+  return [];
+}
+
+let tempExtraSteps = [];
+
+function openExtraStepsModal() {
   const b = loadBudget();
-  b.weeklyPlan.extraInstructions = val;
+  tempExtraSteps = [...getExtraSteps(b)];
+  renderExtraStepsEditList();
+  document.getElementById('extraStepsModal').classList.add('open');
+}
+
+function renderExtraStepsEditList() {
+  const container = document.getElementById('extraStepsEditList');
+  if (!tempExtraSteps.length) {
+    container.innerHTML = `<div style="text-align:center;color:var(--muted);font-size:13px;font-weight:700;padding:20px">No steps yet — add one below</div>`;
+    return;
+  }
+  container.innerHTML = tempExtraSteps.map((s,i)=>`
+    <div class="steps-edit-item">
+      <div class="steps-edit-num">${i+1}</div>
+      <textarea class="steps-edit-textarea" id="stepText_${i}" onblur="updateTempStep(${i},this.value)">${escHtml(s)}</textarea>
+      <button class="steps-edit-del" onclick="removeTempStep(${i})">✕</button>
+    </div>`).join('');
+}
+
+function updateTempStep(i, val) { tempExtraSteps[i] = val; }
+
+function removeTempStep(i) {
+  // Capture current textarea values first
+  document.querySelectorAll('.steps-edit-textarea').forEach((el,idx)=>{ tempExtraSteps[idx]=el.value; });
+  tempExtraSteps.splice(i,1);
+  renderExtraStepsEditList();
+}
+
+function addExtraStep() {
+  document.querySelectorAll('.steps-edit-textarea').forEach((el,idx)=>{ tempExtraSteps[idx]=el.value; });
+  tempExtraSteps.push('');
+  renderExtraStepsEditList();
+  setTimeout(()=>{
+    const all = document.querySelectorAll('.steps-edit-textarea');
+    if (all.length) all[all.length-1].focus();
+  }, 60);
+}
+
+function saveExtraSteps() {
+  document.querySelectorAll('.steps-edit-textarea').forEach((el,idx)=>{ tempExtraSteps[idx]=el.value; });
+  const steps = tempExtraSteps.map(s=>s.trim()).filter(s=>s);
+  const b = loadBudget();
+  b.weeklyPlan.extraSteps = steps;
+  delete b.weeklyPlan.extraInstructions;
   saveBudget(b);
+  closeModal('extraStepsModal');
+  render();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -2019,6 +2319,191 @@ function importFullCSV(text) {
   if (budgetChanged) { saveBudget(b); }
   closeModal('settingsModal'); render();
   showToast('✅ Full data imported', 'success');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// FINANCIAL PLAN PAGE
+// ═══════════════════════════════════════════════════════════════════
+
+function renderFinancialPlan() {
+  document.getElementById('mainBody').innerHTML = `
+    <div class="fp-hero">
+      <div class="fp-hero-label">Financial Strategy</div>
+      <div class="fp-hero-title">Work Optional Status</div>
+      <div class="fp-hero-target">
+        <div>
+          <div class="fp-hero-target-label">Target capital base</div>
+          <div class="fp-hero-target-val">$3,330,000</div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="fp-hero-target-label">Target age</div>
+          <div class="fp-hero-target-val">41–42</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(253,203,110,0.18)">🎓</div>
+        <div>
+          <div class="fp-section-title">Student Phase (2026)</div>
+          <div class="fp-section-subtitle">Maximise allowances &amp; minimise debt</div>
+        </div>
+      </div>
+      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Spend at least <strong>$15,160</strong> of the $26,756 Training Grant on approved costs to preserve full Student Allowance eligibility</div></div>
+      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Do not receive parental transfers weekly — defer total as a lump sum during the 6-week leave block</div></div>
+      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Estimated weekly cash flow: <strong>$715–$860</strong> (Allowance + Accommodation Supplement + Grant residual)</div></div>
+      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Student Loan Living Costs are unavailable with full allowance — advantageously avoids extra debt</div></div>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(108,92,231,0.12)">🏗️</div>
+        <div>
+          <div class="fp-section-title">Long-Term Wealth Architecture</div>
+          <div class="fp-section-subtitle">Structural tax &amp; compounding advantages</div>
+        </div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">PIE tax rate (max)</div>
+        <div class="fp-kv-val green">28%</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Employment income tax</div>
+        <div class="fp-kv-val red">33–39%</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Target management fee</div>
+        <div class="fp-kv-val green">0.07%</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Industry average fee</div>
+        <div class="fp-kv-val red">~1.00%</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Student loan balance</div>
+        <div class="fp-kv-val purple">$151,605</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Loan strategy</div>
+        <div class="fp-kv-val">12% mandatory only</div>
+      </div>
+      <div class="fp-item" style="margin-top:6px"><div class="fp-item-dot"></div><div class="fp-item-text">Interest-free loan declines in real value at 2–3% inflation annually — arbitrage favours investing over repaying</div></div>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(0,184,148,0.12)">💼</div>
+        <div>
+          <div class="fp-section-title">PGY1 Wealth-First Budget (2027)</div>
+          <div class="fp-section-subtitle">Projected gross ~$113,380 · &gt;50% savings rate</div>
+        </div>
+      </div>
+      <div class="fp-allocation-bar">
+        <div class="fp-allocation-label"><span class="fp-allocation-name">Global PIE Fund</span><span class="fp-allocation-amt">$3,500/mo</span></div>
+        <div class="fp-allocation-track"><div class="fp-allocation-fill" style="width:75%"></div></div>
+      </div>
+      <div class="fp-allocation-bar">
+        <div class="fp-allocation-label"><span class="fp-allocation-name">KiwiSaver / Super</span><span class="fp-allocation-amt">$567/mo</span></div>
+        <div class="fp-allocation-track"><div class="fp-allocation-fill" style="width:12%"></div></div>
+      </div>
+      <div class="fp-allocation-bar">
+        <div class="fp-allocation-label"><span class="fp-allocation-name">Lifestyle &amp; Rent</span><span class="fp-allocation-amt">$2,451/mo</span></div>
+        <div class="fp-allocation-track"><div class="fp-allocation-fill" style="width:52%;background:linear-gradient(90deg,var(--coral),#f0a090)"></div></div>
+      </div>
+      <div class="fp-item" style="margin-top:4px"><div class="fp-item-dot"></div><div class="fp-item-text">Target asset mix: <strong>100% global equities</strong></div></div>
+      <div class="fp-item"><div class="fp-item-dot"></div><div class="fp-item-text">Maximise 6% employer superannuation contribution match</div></div>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(9,132,227,0.12)">🛡️</div>
+        <div>
+          <div class="fp-section-title">Capital Protection</div>
+          <div class="fp-section-subtitle">Insurance &amp; income security</div>
+        </div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Indemnity insurance</div>
+        <div class="fp-kv-val">NZMII (free as student)</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Income protection wait</div>
+        <div class="fp-kv-val">90 days · MAS</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">IP clauses</div>
+        <div class="fp-kv-val">Specialist + needlestick</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Health insurance</div>
+        <div class="fp-kv-val">Hospital &amp; Specialist</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Health excess</div>
+        <div class="fp-kv-val">$500–$1,000</div>
+      </div>
+      <div class="fp-kv-row">
+        <div class="fp-kv-label">Emergency fund bridge</div>
+        <div class="fp-kv-val">$3,500 + sick leave</div>
+      </div>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(232,67,147,0.12)">📅</div>
+        <div>
+          <div class="fp-section-title">24-Month Execution Timeline</div>
+          <div class="fp-section-subtitle">Key milestones &amp; actions</div>
+        </div>
+      </div>
+      <div class="fp-timeline-item">
+        <div class="fp-timeline-dot-wrap"><div class="fp-timeline-dot"></div><div class="fp-timeline-line"></div></div>
+        <div class="fp-timeline-content">
+          <div class="fp-timeline-date">Early 2026</div>
+          <div class="fp-timeline-items">
+            <div class="fp-timeline-task">• Confirm Prescribed Investor Rate via myIR</div>
+            <div class="fp-timeline-task">• Join NZMII as trainee intern</div>
+          </div>
+        </div>
+      </div>
+      <div class="fp-timeline-item">
+        <div class="fp-timeline-dot-wrap"><div class="fp-timeline-dot"></div><div class="fp-timeline-line"></div></div>
+        <div class="fp-timeline-content">
+          <div class="fp-timeline-date">December 2026</div>
+          <div class="fp-timeline-items">
+            <div class="fp-timeline-task">• Receive $26,756 Training Grant</div>
+            <div class="fp-timeline-task">• Allocate $15,160+ to approved expenses</div>
+            <div class="fp-timeline-task">• $10K travel · $10K vehicle (hybrid wagon)</div>
+          </div>
+        </div>
+      </div>
+      <div class="fp-timeline-item">
+        <div class="fp-timeline-dot-wrap"><div class="fp-timeline-dot"></div></div>
+        <div class="fp-timeline-content">
+          <div class="fp-timeline-date">January 2027</div>
+          <div class="fp-timeline-items">
+            <div class="fp-timeline-task">• Implement 6% superannuation split</div>
+            <div class="fp-timeline-task">• Automate $3,500/month → Global PIE Fund</div>
+            <div class="fp-timeline-task">• Finalise Income Protection &amp; Health Insurance</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(225,112,85,0.12)">⚠️</div>
+        <div>
+          <div class="fp-section-title">Risk Boundaries</div>
+          <div class="fp-section-subtitle">Hard limits to preserve timeline</div>
+        </div>
+      </div>
+      <div class="fp-risk-item"><div class="fp-risk-icon">🚗</div><div class="fp-risk-text">Vehicle above <strong>$15,000</strong> before age 30 materially delays Work Optional date</div></div>
+      <div class="fp-risk-item"><div class="fp-risk-icon">🏠</div><div class="fp-risk-text">Mortgage above <strong>$800,000</strong> before age 30 requires full reassessment of the timeline</div></div>
+      <div class="fp-risk-item"><div class="fp-risk-icon">✅</div><div class="fp-risk-text">Maintain disciplined capital allocation to preserve timeline integrity</div></div>
+    </div>
+  `;
 }
 
 // ═══════════════════════════════════════════════════════════════════
