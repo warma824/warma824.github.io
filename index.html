@@ -467,7 +467,6 @@
           <div class="budget-remaining"><span class="currency">$</span><span id="remainingAmt">0</span></div>
           <div class="budget-label" id="budgetLabel">left this week</div>
         </div>
-        <button class="settings-btn" onclick="openSettings()">⚙️</button>
       </div>
       <div class="progress-wrap">
         <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
@@ -486,7 +485,6 @@
           <div class="budget-remaining"><span class="currency">$</span><span id="netWorthAmt">0</span></div>
           <div class="budget-label">total net worth</div>
         </div>
-        <button class="settings-btn" onclick="openSettings()">⚙️</button>
       </div>
       <div class="budget-header-chips" id="budgetHeaderChips"></div>
     </div>
@@ -916,6 +914,7 @@ function switchSection(sec) {
   document.getElementById('navExpenses').classList.toggle('active', sec === 'expenses');
   document.getElementById('navBudget').classList.toggle('active', sec === 'budget');
   document.getElementById('navPlan').classList.toggle('active', sec === 'finplan');
+  document.getElementById('navSettings').classList.toggle('active', sec === 'settings');
   render();
 }
 
@@ -924,7 +923,7 @@ function showBudTab(tab) { currentBudTab = tab; render(); }
 
 function updateTabs() {
   const bar = document.getElementById('tabsBar');
-  if (currentSection === 'finplan') {
+  if (currentSection === 'finplan' || currentSection === 'settings') {
     bar.innerHTML = '';
     bar.style.display = 'none';
     return;
@@ -943,7 +942,7 @@ function updateTabs() {
 
 function updateFab() {
   const fab = document.getElementById('fabBtn');
-  if (currentSection === 'finplan') {
+  if (currentSection === 'finplan' || currentSection === 'settings') {
     fab.className = 'fab hidden'; return;
   }
   if (currentSection === 'expenses') {
@@ -977,9 +976,20 @@ function updateHeader() {
   if (currentSection === 'expenses') {
     expH.style.display = ''; budH.style.display = 'none';
     hdr.classList.remove('budget-mode');
+  } else if (currentSection === 'settings') {
+    expH.style.display = 'none'; budH.style.display = '';
+    hdr.classList.add('budget-mode');
+    document.getElementById('netWorthAmt').textContent = '';
+    document.getElementById('budgetUpdatedLabel').textContent = 'Settings';
+    document.getElementById('budgetHeaderChips').innerHTML = '';
+    // Hide the big amount display for settings
+    document.querySelector('#budgetHeader .budget-remaining').style.display = 'none';
+    document.querySelector('#budgetHeader .budget-label').style.display = 'none';
   } else if (currentSection === 'finplan') {
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
+    document.querySelector('#budgetHeader .budget-remaining').style.display = '';
+    document.querySelector('#budgetHeader .budget-label').style.display = '';
     document.getElementById('netWorthAmt').textContent = '3.33M';
     document.getElementById('budgetUpdatedLabel').textContent = 'Target';
     document.getElementById('budgetHeaderChips').innerHTML = `
@@ -994,6 +1004,8 @@ function updateHeader() {
   } else {
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
+    document.querySelector('#budgetHeader .budget-remaining').style.display = '';
+    document.querySelector('#budgetHeader .budget-label').style.display = '';
     const b = loadBudget();
     const total = b.accounts.reduce((s, a) => s + (a.balance||0), 0);
     document.getElementById('netWorthAmt').textContent = fmtAmtFull(total);
@@ -1019,6 +1031,8 @@ function render() {
     else renderHistory();
   } else if (currentSection === 'finplan') {
     renderFinancialPlan();
+  } else if (currentSection === 'settings') {
+    renderSettings();
   } else {
     if (currentBudTab === 'overview') renderBudgetOverview();
     else if (currentBudTab === 'accounts') renderBudgetAccounts();
@@ -2001,10 +2015,54 @@ function openAdd(prefill) {
 }
 
 function openSettings() {
-  const d=loadData(), ws=getWeekStart();
-  document.getElementById('defaultBudgetInput').value  = d.defaultBudget;
-  document.getElementById('thisWeekBudgetInput').value = getWeekBudget(ws,d);
-  document.getElementById('settingsModal').classList.add('open');
+  switchSection('settings');
+}
+
+function renderSettings() {
+  const d = loadData(), ws = getWeekStart();
+  const defBudget = d.defaultBudget || 150;
+  const wkBudget = getWeekBudget(ws, d);
+  document.getElementById('mainBody').innerHTML = `
+    <div class="fp-section" style="margin-top:4px">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(108,92,231,0.12)">💸</div>
+        <div><div class="fp-section-title">Weekly Budget</div><div class="fp-section-subtitle">Controls your spending tracker</div></div>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Default weekly budget</div>
+          <div class="settings-hint">Used for weeks without a custom amount</div>
+        </div>
+        <input class="settings-input" type="number" id="defaultBudgetInput" inputmode="decimal" placeholder="150" value="${defBudget}">
+      </div>
+      <div class="settings-row" style="border-bottom:none">
+        <div>
+          <div class="settings-label">This week's budget</div>
+          <div class="settings-hint">Overrides default for this week only</div>
+        </div>
+        <input class="settings-input" type="number" id="thisWeekBudgetInput" inputmode="decimal" placeholder="150" value="${wkBudget}">
+      </div>
+      <button class="btn-save" style="margin-top:12px" onclick="saveExpenseBudget()">Save budgets</button>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(0,184,148,0.12)">📦</div>
+        <div><div class="fp-section-title">Data</div><div class="fp-section-subtitle">Import and export your records</div></div>
+      </div>
+      <button class="btn-export" onclick="exportFullCSV()" style="margin-top:0">📤 Export full data (CSV)</button>
+      <button class="btn-export" onclick="exportExpensesCSV()" style="color:var(--muted)">📤 Export expenses only (CSV)</button>
+      <button class="btn-import" onclick="document.getElementById('csvFileInput').click()">📥 Import from CSV</button>
+    </div>
+
+    <div class="fp-section">
+      <div class="fp-section-header">
+        <div class="fp-section-icon" style="background:rgba(225,112,85,0.1)">⚠️</div>
+        <div><div class="fp-section-title">Danger Zone</div><div class="fp-section-subtitle">Irreversible actions</div></div>
+      </div>
+      <button class="btn-danger" style="margin-top:0" onclick="confirmClearAll()">🗑 Clear all data</button>
+    </div>
+  `;
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
@@ -2014,7 +2072,7 @@ function confirmClearAll() {
     localStorage.removeItem('spendly_data');
     localStorage.removeItem('spendly_shortcuts');
     localStorage.removeItem('spendly_budget');
-    closeModal('settingsModal'); render();
+    switchSection('expenses');
     showToast('All data cleared.');
   }
 }
@@ -2025,7 +2083,7 @@ function saveExpenseBudget() {
   const wkVal =parseFloat(document.getElementById('thisWeekBudgetInput').value);
   if (!isNaN(defVal)&&defVal>0) d.defaultBudget=defVal;
   if (!isNaN(wkVal) &&wkVal>0) { const ws=getWeekStart(); d.weekBudgets[ws.toISOString()]=wkVal; }
-  saveData(d); render(); closeModal('settingsModal');
+  saveData(d); showToast('✅ Budgets saved', 'success');
 }
 
 function addExpense() {
