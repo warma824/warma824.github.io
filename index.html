@@ -491,7 +491,41 @@
   .sm-item-sub { font-size:11px; font-weight:600; color:var(--muted); margin-top:1px; }
   .sm-item-arrow { color:var(--muted); font-size:16px; flex-shrink:0; }
 
-  /* Loan graph */
+  /* ── SAVINGS GOALS ── */
+  .goal-card { background:var(--card); border-radius:20px; padding:16px; margin-bottom:14px; border:1px solid var(--border); cursor:pointer; transition:transform 0.1s; animation:slideIn 0.25s ease; }
+  .goal-card:active { transform:scale(0.98); }
+  .goal-card.goal-done { border-color:rgba(0,184,148,0.3); background:linear-gradient(135deg,#f0fdf9,#ffffff); }
+  .goal-card-top { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+  .goal-emoji { font-size:28px; line-height:1; flex-shrink:0; }
+  .goal-info { flex:1; min-width:0; }
+  .goal-name { font-size:15px; font-weight:900; color:var(--text); }
+  .goal-due { font-size:11px; font-weight:700; color:var(--muted); margin-top:2px; }
+  .goal-due.goal-overdue { color:var(--coral); }
+  .goal-pct { font-size:18px; font-weight:900; color:var(--purple); flex-shrink:0; }
+  .goal-done-badge { font-size:13px; font-weight:800; color:var(--teal); background:rgba(0,184,148,0.12); padding:4px 10px; border-radius:99px; flex-shrink:0; }
+  .goal-progress-track { background:var(--bg); border-radius:99px; height:8px; overflow:hidden; margin-bottom:12px; }
+  .goal-progress-bar { height:8px; border-radius:99px; background:linear-gradient(90deg,var(--purple),var(--pink)); transition:width 0.6s cubic-bezier(.34,1.56,.64,1); }
+  .goal-progress-done { background:linear-gradient(90deg,var(--teal),#00d2b4); }
+  .goal-amounts { display:flex; gap:8px; margin-bottom:10px; }
+  .goal-amount-chip { flex:1; background:var(--bg); border-radius:12px; padding:8px 10px; text-align:center; }
+  .gac-label { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .gac-val { font-size:14px; font-weight:900; color:var(--text); margin-top:2px; }
+  .goal-weekly-banner { display:flex; align-items:flex-start; gap:8px; background:rgba(108,92,231,0.08); border-radius:12px; padding:10px 12px; margin-bottom:10px; }
+  .goal-weekly-success { background:rgba(0,184,148,0.1); }
+  .goal-weekly-overdue { background:rgba(225,112,85,0.1); }
+  .gwb-icon { font-size:16px; flex-shrink:0; line-height:1.3; }
+  .gwb-text { font-size:12px; font-weight:700; color:var(--text); line-height:1.5; }
+  .goal-deposits-label { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+  .goal-deposits-list { margin-bottom:10px; }
+  .goal-deposit-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:1px solid var(--border); font-size:12px; }
+  .goal-deposit-row:last-child { border-bottom:none; }
+  .goal-deposit-date { color:var(--muted); font-weight:700; flex-shrink:0; min-width:56px; }
+  .goal-deposit-note { flex:1; font-weight:700; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .goal-deposit-amt { font-weight:900; color:var(--teal); flex-shrink:0; }
+  .goal-deposit-btn { width:100%; padding:10px; border-radius:12px; border:1.5px dashed rgba(108,92,231,0.3); background:rgba(108,92,231,0.05); font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; color:var(--purple); cursor:pointer; margin-top:2px; }
+  .goal-deposit-btn:active { background:rgba(108,92,231,0.1); }
+  .deposit-suggestion { font-size:12px; font-weight:700; color:var(--purple); background:rgba(108,92,231,0.08); border-radius:10px; padding:8px 12px; margin-bottom:4px; }
+
   .loan-graph-card { background:var(--card); border-radius:20px; padding:16px; margin-bottom:12px; border:1px solid var(--border); }
   .loan-graph-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
   .loan-graph-title { font-size:13px; font-weight:800; color:var(--text); }
@@ -832,6 +866,65 @@
   </div>
 </div>
 
+<!-- SAVINGS GOAL MODAL -->
+<div class="modal-overlay" id="goalModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2 id="goalModalTitle">New savings goal</h2>
+    </div>
+    <div class="modal-scroll">
+      <label>Name</label>
+      <input type="text" id="goalNameInput" placeholder="e.g. Dentist appointment">
+      <label>Emoji</label>
+      <input type="text" id="goalEmojiInput" placeholder="🎯" style="font-size:24px;text-align:center;max-width:80px">
+      <label>Target amount ($)</label>
+      <input type="number" id="goalAmountInput" inputmode="decimal" placeholder="0.00" step="0.01">
+      <label>Expense date</label>
+      <input type="date" id="goalDateInput">
+      <div id="goalDeleteZone" class="acct-delete-zone" style="display:none;margin-top:16px">
+        <button class="btn-danger" onclick="deleteGoal()">Delete this goal</button>
+      </div>
+      <div style="height:10px"></div>
+    </div>
+    <div class="modal-bottom">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('goalModal')">Cancel</button>
+        <button class="btn-add" onclick="saveGoal()">Save goal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DEPOSIT MODAL -->
+<div class="modal-overlay" id="depositModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2>💰 Add deposit</h2>
+      <div style="font-size:13px;color:var(--muted);margin-top:2px;margin-bottom:4px">For: <strong id="depositGoalName"></strong></div>
+    </div>
+    <div class="modal-scroll">
+      <div class="deposit-suggestion" id="depositSuggestion"></div>
+      <label>Amount ($)</label>
+      <input type="number" id="depositAmountInput" inputmode="decimal" placeholder="0.00" step="0.01">
+      <label>Note (optional)</label>
+      <input type="text" id="depositNoteInput" placeholder="e.g. Weekly savings transfer">
+      <label>Date</label>
+      <input type="date" id="depositDateInput">
+      <label style="margin-top:16px">Deposit history</label>
+      <div id="depositHistoryList" style="padding-bottom:4px"></div>
+      <div style="height:8px"></div>
+    </div>
+    <div class="modal-bottom">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('depositModal')">Cancel</button>
+        <button class="btn-add" onclick="saveDeposit()">Save deposit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // CONSTANTS & EXPENSE DATA
@@ -1035,7 +1128,7 @@ function updateTabs() {
     ].map(([t,l]) => `<button class="tab ${currentExpTab===t?'active':''}" onclick="showExpTab('${t}')">${l}</button>`).join('');
   } else {
     bar.innerHTML = [
-      ['overview','Overview'], ['accounts','Accounts'], ['plan','Plan'], ['payments','Payments']
+      ['overview','Overview'], ['accounts','Accounts'], ['plan','Plan'], ['payments','Payments'], ['goals','Goals']
     ].map(([t,l]) => `<button class="tab ${currentBudTab===t?'active':''}" onclick="showBudTab('${t}')">${l}</button>`).join('');
   }
 }
@@ -1057,6 +1150,9 @@ function updateFab() {
     } else if (currentBudTab === 'payments') {
       fab.className = 'fab budget-fab';
       fab.textContent = '+ Add payment';
+    } else if (currentBudTab === 'goals') {
+      fab.className = 'fab budget-fab';
+      fab.textContent = '🎯 New savings goal';
     } else {
       fab.className = 'fab budget-fab hidden';
     }
@@ -1067,6 +1163,7 @@ function handleFab() {
   if (currentSection === 'expenses') { openAdd(); return; }
   if (currentBudTab === 'accounts') { openUpdateBalances(); return; }
   if (currentBudTab === 'payments') { openAddPayment(null); return; }
+  if (currentBudTab === 'goals') { openGoalModal(null); return; }
 }
 
 function updateHeader() {
@@ -1137,6 +1234,7 @@ function render() {
     if (currentBudTab === 'overview') renderBudgetOverview();
     else if (currentBudTab === 'accounts') renderBudgetAccounts();
     else if (currentBudTab === 'plan') renderBudgetPlan();
+    else if (currentBudTab === 'goals') renderBudgetGoals();
     else renderBudgetPayments();
   }
 }
@@ -2166,6 +2264,7 @@ function renderSettings() {
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id) { document.getElementById(id).classList.add('open'); }
 
 function confirmClearAll() {
   if (confirm('Clear ALL data (expenses, shortcuts, budget)? This cannot be undone.')) {
@@ -3101,6 +3200,225 @@ function deletePlanSection(id) {
   closeModal('planSectionModal');
   render();
   showToast('Section deleted');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SAVINGS GOALS
+// ═══════════════════════════════════════════════════════════════════
+
+function loadGoals() {
+  const r = localStorage.getItem('spendly_goals');
+  return r ? JSON.parse(r) : [];
+}
+function saveGoals(g) { localStorage.setItem('spendly_goals', JSON.stringify(g)); }
+
+function goalSaved(goal) {
+  return (goal.deposits || []).reduce((s, d) => s + d.amount, 0);
+}
+
+function goalWeeksLeft(goal) {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const due = new Date(goal.dueDate); due.setHours(0,0,0,0);
+  const days = Math.ceil((due - now) / 86400000);
+  return Math.max(0, Math.ceil(days / 7));
+}
+
+function goalWeeklyNeeded(goal) {
+  const remaining = Math.max(0, goal.targetAmount - goalSaved(goal));
+  const weeks = goalWeeksLeft(goal);
+  if (weeks === 0) return remaining;
+  return remaining / weeks;
+}
+
+function renderBudgetGoals() {
+  const goals = loadGoals();
+  let html = '';
+
+  if (!goals.length) {
+    html = `<div class="empty-state" style="margin-top:40px">
+      <div class="emoji">🎯</div>
+      <p>No savings goals yet</p>
+      <small>Tap the button below to create your first goal</small>
+    </div>`;
+  } else {
+    goals.forEach(goal => {
+      const saved = goalSaved(goal);
+      const pct = Math.min(100, goal.targetAmount > 0 ? Math.round((saved / goal.targetAmount) * 100) : 0);
+      const remaining = Math.max(0, goal.targetAmount - saved);
+      const weeksLeft = goalWeeksLeft(goal);
+      const weeklyNeeded = goalWeeklyNeeded(goal);
+      const due = new Date(goal.dueDate);
+      const dueFmt = due.toLocaleDateString('en-NZ', { day:'numeric', month:'short', year:'numeric' });
+      const dueRel = formatDateRelativeFuture(goal.dueDate);
+      const done = saved >= goal.targetAmount;
+      const overdue = weeksLeft === 0 && !done;
+
+      const recentDeposits = (goal.deposits || []).slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);
+
+      html += `<div class="goal-card ${done?'goal-done':''}" onclick="openGoalModal('${goal.id}')">
+        <div class="goal-card-top">
+          <div class="goal-emoji">${escHtml(goal.emoji||'🎯')}</div>
+          <div class="goal-info">
+            <div class="goal-name">${escHtml(goal.name)}</div>
+            <div class="goal-due ${overdue?'goal-overdue':''}">${overdue?'⚠️ Overdue':'📅 '+dueRel+' · '+dueFmt}</div>
+          </div>
+          ${done?`<div class="goal-done-badge">✅ Done!</div>`:`<div class="goal-pct">${pct}%</div>`}
+        </div>
+
+        <div class="goal-progress-track"><div class="goal-progress-bar ${done?'goal-progress-done':''}" style="width:${pct}%"></div></div>
+
+        <div class="goal-amounts">
+          <div class="goal-amount-chip">
+            <div class="gac-label">Saved</div>
+            <div class="gac-val" style="color:var(--teal)">$${fmtAmt(saved)}</div>
+          </div>
+          <div class="goal-amount-chip">
+            <div class="gac-label">Remaining</div>
+            <div class="gac-val">$${fmtAmt(remaining)}</div>
+          </div>
+          <div class="goal-amount-chip">
+            <div class="gac-label">Target</div>
+            <div class="gac-val">$${fmtAmt(goal.targetAmount)}</div>
+          </div>
+        </div>
+
+        ${!done && weeksLeft > 0 ? `<div class="goal-weekly-banner">
+          <span class="gwb-icon">📆</span>
+          <span class="gwb-text">Deposit <strong>$${fmtAmt(weeklyNeeded)}/week</strong> for the next <strong>${weeksLeft} week${weeksLeft!==1?'s':''}</strong> to hit your goal</span>
+        </div>` : done ? `<div class="goal-weekly-banner goal-weekly-success">
+          <span class="gwb-icon">🎉</span>
+          <span class="gwb-text">Goal reached! You saved $${fmtAmt(saved)} for ${escHtml(goal.name)}</span>
+        </div>` : overdue ? `<div class="goal-weekly-banner goal-weekly-overdue">
+          <span class="gwb-icon">⚠️</span>
+          <span class="gwb-text">Expense date passed — still $${fmtAmt(remaining)} short</span>
+        </div>` : ''}
+
+        ${recentDeposits.length ? `<div class="goal-deposits-label">Recent deposits</div>
+        <div class="goal-deposits-list">
+          ${recentDeposits.map(dep => `<div class="goal-deposit-row">
+            <span class="goal-deposit-date">${formatDateShort(new Date(dep.date))}</span>
+            <span class="goal-deposit-note">${escHtml(dep.note||'Deposit')}</span>
+            <span class="goal-deposit-amt">+$${fmtAmt(dep.amount)}</span>
+          </div>`).join('')}
+        </div>` : ''}
+
+        <button class="goal-deposit-btn" onclick="event.stopPropagation();openDepositModal('${goal.id}')">+ Add deposit</button>
+      </div>`;
+    });
+  }
+
+  document.getElementById('mainBody').innerHTML = html;
+}
+
+let editingGoalId = null;
+
+function openGoalModal(id) {
+  editingGoalId = id;
+  const goals = loadGoals();
+  const goal = id ? goals.find(g => g.id === id) : null;
+  document.getElementById('goalModalTitle').textContent = goal ? 'Edit goal' : 'New savings goal';
+  document.getElementById('goalNameInput').value = goal ? goal.name : '';
+  document.getElementById('goalEmojiInput').value = goal ? (goal.emoji || '🎯') : '🎯';
+  document.getElementById('goalAmountInput').value = goal ? goal.targetAmount : '';
+  document.getElementById('goalDateInput').value = goal ? goal.dueDate.slice(0,10) : '';
+  document.getElementById('goalDeleteZone').style.display = goal ? '' : 'none';
+  openModal('goalModal');
+}
+
+function saveGoal() {
+  const name = document.getElementById('goalNameInput').value.trim();
+  const emoji = document.getElementById('goalEmojiInput').value.trim() || '🎯';
+  const amount = parseFloat(document.getElementById('goalAmountInput').value);
+  const date = document.getElementById('goalDateInput').value;
+  if (!name) { showToast('Please enter a goal name'); return; }
+  if (!amount || amount <= 0) { showToast('Please enter a valid target amount'); return; }
+  if (!date) { showToast('Please select the expense date'); return; }
+  const goals = loadGoals();
+  if (editingGoalId) {
+    const idx = goals.findIndex(g => g.id === editingGoalId);
+    if (idx >= 0) { goals[idx].name = name; goals[idx].emoji = emoji; goals[idx].targetAmount = amount; goals[idx].dueDate = date+'T00:00:00.000Z'; }
+  } else {
+    goals.push({ id:'goal'+Date.now(), name, emoji, targetAmount: amount, dueDate: date+'T00:00:00.000Z', deposits:[], createdAt: new Date().toISOString() });
+  }
+  saveGoals(goals);
+  closeModal('goalModal');
+  render();
+  showToast(editingGoalId ? '✅ Goal updated' : '🎯 Goal created', 'success');
+}
+
+function deleteGoal() {
+  if (!confirm('Delete this goal? This cannot be undone.')) return;
+  const goals = loadGoals().filter(g => g.id !== editingGoalId);
+  saveGoals(goals);
+  closeModal('goalModal');
+  render();
+  showToast('Goal deleted');
+}
+
+let depositingGoalId = null;
+
+function openDepositModal(goalId) {
+  depositingGoalId = goalId;
+  const goals = loadGoals();
+  const goal = goals.find(g => g.id === goalId);
+  if (!goal) return;
+  document.getElementById('depositGoalName').textContent = goal.name;
+  document.getElementById('depositAmountInput').value = '';
+  document.getElementById('depositNoteInput').value = '';
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('depositDateInput').value = today;
+
+  // Show suggested weekly amount
+  const weekly = goalWeeklyNeeded(goal);
+  document.getElementById('depositSuggestion').textContent = weekly > 0
+    ? `Suggested: $${fmtAmt(weekly)} (on track for goal)`
+    : 'Goal is fully funded!';
+
+  // Show deposit history
+  const deps = (goal.deposits || []).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  document.getElementById('depositHistoryList').innerHTML = deps.length
+    ? deps.map(d => `<div class="goal-deposit-row">
+        <span class="goal-deposit-date">${formatDateShort(new Date(d.date))}</span>
+        <span class="goal-deposit-note">${escHtml(d.note||'Deposit')}</span>
+        <span class="goal-deposit-amt">+$${fmtAmt(d.amount)}</span>
+        <button onclick="removeDeposit('${goalId}','${d.id}')" style="background:none;border:none;color:#ddd;font-size:13px;cursor:pointer;padding:0 0 0 6px" title="Remove">✕</button>
+      </div>`).join('')
+    : '<div style="font-size:12px;color:var(--muted);padding:4px 0">No deposits yet</div>';
+
+  openModal('depositModal');
+}
+
+function saveDeposit() {
+  const amount = parseFloat(document.getElementById('depositAmountInput').value);
+  const note = document.getElementById('depositNoteInput').value.trim();
+  const date = document.getElementById('depositDateInput').value;
+  if (!amount || amount <= 0) { showToast('Please enter a valid amount'); return; }
+  if (!date) { showToast('Please select a date'); return; }
+  const goals = loadGoals();
+  const goal = goals.find(g => g.id === depositingGoalId);
+  if (!goal) return;
+  if (!goal.deposits) goal.deposits = [];
+  goal.deposits.push({ id:'dep'+Date.now(), amount, note, date: date+'T00:00:00.000Z' });
+  saveGoals(goals);
+  closeModal('depositModal');
+  render();
+  const saved = goalSaved(goal);
+  if (saved >= goal.targetAmount) {
+    showToast('🎉 Goal reached! Amazing work!', 'success');
+  } else {
+    showToast(`💰 $${fmtAmt(amount)} deposited`, 'success');
+  }
+}
+
+function removeDeposit(goalId, depId) {
+  if (!confirm('Remove this deposit?')) return;
+  const goals = loadGoals();
+  const goal = goals.find(g => g.id === goalId);
+  if (!goal) return;
+  goal.deposits = (goal.deposits || []).filter(d => d.id !== depId);
+  saveGoals(goals);
+  openDepositModal(goalId); // refresh modal
+  render();
 }
 
 // ═══════════════════════════════════════════════════════════════════
