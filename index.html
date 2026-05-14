@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Spendly">
+<meta name="apple-mobile-web-app-title" content="Balance">
 <meta name="theme-color" content="#6c5ce7">
-<title>Spendly</title>
+<title>Balance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="apple-touch-icon" href="icon-ios-1254x1254.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -34,17 +34,17 @@
 
   /* ── HEADER ── */
   .header {
-    background: linear-gradient(145deg, var(--purple) 0%, #a855f7 50%, var(--pink) 100%);
+    background: #6c5ce7;
     padding: 0 20px 18px;
     padding-top: max(env(safe-area-inset-top), 54px);
     position: relative; overflow: hidden; flex-shrink: 0;
     transition: background 0.3s;
   }
   .header.budget-mode {
-    background: linear-gradient(145deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: #1a1a2e;
   }
-  .header::before { content:''; position:absolute; width:200px; height:200px; background:rgba(255,255,255,0.07); border-radius:50%; top:-60px; right:-40px; pointer-events:none; }
-  .header::after  { content:''; position:absolute; width:120px; height:120px; background:rgba(255,255,255,0.05); border-radius:50%; top:30px;  right:60px; pointer-events:none; }
+  .header::before { display:none; }
+  .header::after  { display:none; }
   .header-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; position:relative; z-index:1; }
   .header-week-pill { display:inline-flex; align-items:center; background:rgba(255,255,255,0.18); border-radius:99px; padding:4px 12px; margin-bottom:8px; position:relative; z-index:1; }
   .header-week { color:rgba(255,255,255,0.92); font-size:12px; font-weight:800; letter-spacing:0.2px; }
@@ -72,7 +72,7 @@
   .tab.active { background:var(--card); color:var(--purple); box-shadow:0 2px 10px rgba(108,92,231,0.14); }
 
   /* ── BODY ── */
-  .body { flex:1; overflow-y:auto; padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 170px); -webkit-overflow-scrolling:touch; }
+  .body { flex:1; overflow-y:auto; padding:12px 16px calc(env(safe-area-inset-bottom,0px) + 200px); -webkit-overflow-scrolling:touch; }
   .section-label { font-size:11px; font-weight:800; color:var(--muted); letter-spacing:0.8px; text-transform:uppercase; margin:14px 0 8px; }
   .section-label:first-child { margin-top:4px; }
 
@@ -97,7 +97,7 @@
 
   /* ── FAB ── */
   .fab {
-    position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 68px); left:50%; transform:translateX(-50%);
+    position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 80px); left:50%; transform:translateX(-50%);
     width:calc(100% - 32px); max-width:398px;
     background:linear-gradient(135deg, var(--purple), var(--pink));
     color:white; border:none; border-radius:18px;
@@ -252,7 +252,7 @@
   .btn-danger { width:100%; padding:14px; border-radius:14px; border:1.5px solid rgba(225,112,85,0.3); background:rgba(225,112,85,0.07); font-family:'Nunito',sans-serif; font-size:15px; font-weight:800; color:var(--coral); cursor:pointer; margin-top:10px; }
 
   /* ── TOAST ── */
-  .toast { position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 156px); left:50%; transform:translateX(-50%) translateY(20px); background:#2d2d44; color:white; padding:12px 20px; border-radius:14px; font-size:14px; font-weight:700; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:200; white-space:nowrap; max-width:calc(100vw - 40px); text-align:center; }
+  .toast { position:fixed; bottom:calc(env(safe-area-inset-bottom,0px) + 176px); left:50%; transform:translateX(-50%) translateY(20px); background:#2d2d44; color:white; padding:12px 20px; border-radius:14px; font-size:14px; font-weight:700; opacity:0; pointer-events:none; transition:opacity 0.2s, transform 0.2s; z-index:200; white-space:nowrap; max-width:calc(100vw - 40px); text-align:center; }
   .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
   .toast.toast-error   { background:var(--coral); }
   .toast.toast-success { background:var(--teal); }
@@ -322,6 +322,7 @@
   .plan-name-input { flex:1; min-width:0; padding:7px 10px; border:1.5px solid transparent; border-radius:10px; font-size:13px; font-family:'Nunito',sans-serif; font-weight:700; color:var(--text); background:transparent; outline:none; }
   .plan-name-input:focus { border-color:var(--border); background:var(--bg); }
   .plan-amt-wrap { display:flex; align-items:center; gap:2px; flex-shrink:0; }
+  .plan-freq-hint { font-size:11px; font-weight:800; color:var(--purple); opacity:0.75; padding:2px 0 4px; }
   .plan-amt-prefix { font-size:13px; font-weight:800; color:var(--muted); }
   .plan-amt-input { width:80px; padding:7px 8px; border:1.5px solid transparent; border-radius:10px; font-size:13px; font-family:'Nunito',sans-serif; font-weight:900; color:var(--text); background:transparent; outline:none; text-align:right; }
   .plan-amt-input:focus { border-color:var(--border); background:var(--bg); }
@@ -619,7 +620,7 @@
   <div class="modal">
     <div class="modal-top">
       <div class="modal-handle"></div>
-      <h2>Add expense</h2>
+      <h2 id="addModalTitle">Add expense</h2>
     </div>
     <div class="modal-scroll">
       <label>Amount ($)</label>
@@ -656,44 +657,12 @@
     <div class="modal-bottom">
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('addModal')">Cancel</button>
-        <button class="btn-add" onclick="addExpense()">Add</button>
+        <button class="btn-add" id="addModalBtn" onclick="addExpense()">Add</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SETTINGS -->
-<div class="modal-overlay" id="settingsModal">
-  <div class="modal">
-    <div class="modal-top">
-      <div class="modal-handle"></div>
-      <h2>Settings</h2>
-    </div>
-    <div class="modal-scroll">
-      <div class="settings-row">
-        <div>
-          <div class="settings-label">Default weekly budget</div>
-          <div class="settings-hint">Used for weeks without a custom amount</div>
-        </div>
-        <input class="settings-input" type="number" id="defaultBudgetInput" inputmode="decimal" placeholder="150">
-      </div>
-      <div class="settings-row">
-        <div>
-          <div class="settings-label">This week's budget</div>
-          <div class="settings-hint">Overrides default for this week only</div>
-        </div>
-        <input class="settings-input" type="number" id="thisWeekBudgetInput" inputmode="decimal" placeholder="150">
-      </div>
-    </div>
-    <div class="modal-bottom">
-      <button class="btn-save" onclick="saveExpenseBudget()">Save budgets</button>
-      <button class="btn-export" onclick="exportFullCSV()">📤 Export full data (CSV)</button>
-      <button class="btn-export" onclick="exportExpensesCSV()" style="color:var(--muted)">📤 Export expenses only (CSV)</button>
-      <button class="btn-import" onclick="document.getElementById('csvFileInput').click()">📥 Import from CSV</button>
-      <button class="btn-danger" onclick="confirmClearAll()">🗑 Clear all data</button>
-    </div>
-  </div>
-</div>
 
 <!-- ══════════════════════════════════
      BUDGET MODALS
@@ -953,21 +922,35 @@ const VIBE_LABELS       = { happy:'😊 Happy', fine:'😐 Fine', guilty:'😬 G
 // EXPENSE DATA
 // ═══════════════════════════════════════════════════════════════════
 
+const DATA_VERSION = 2;
+
 function loadData() {
   const raw = localStorage.getItem('spendly_data');
-  if (!raw) return { defaultBudget:150, weekBudgets:{}, expenses:[] };
-  const d = JSON.parse(raw);
+  if (!raw) return { defaultBudget:250, weekBudgets:{}, expenses:[], weekStartDay:3 };
+  let d;
+  try { d = JSON.parse(raw); } catch(e) { console.error('loadData parse error', e); return { defaultBudget:250, weekBudgets:{}, expenses:[], weekStartDay:3 }; }
   if (d.budget !== undefined && d.defaultBudget === undefined) { d.defaultBudget = d.budget; delete d.budget; }
   if (!d.weekBudgets) d.weekBudgets = {};
-  if (!d.defaultBudget) d.defaultBudget = 150;
+  // Version migration
+  if (!d._version || d._version < DATA_VERSION) {
+    if (d.weekStartDay === undefined) d.weekStartDay = 3;
+    if (!d.weekBudgets) d.weekBudgets = {};
+    if (!d.defaultBudget) d.defaultBudget = 250;
+    d._version = DATA_VERSION;
+  }
+  if (!d.defaultBudget) d.defaultBudget = 250;
   return d;
 }
-function saveData(d) { localStorage.setItem('spendly_data', JSON.stringify(d)); }
-function loadShortcuts() { const r = localStorage.getItem('spendly_shortcuts'); return r ? JSON.parse(r) : []; }
+function saveData(d) { d._version = DATA_VERSION; localStorage.setItem('spendly_data', JSON.stringify(d)); }
+function loadShortcuts() {
+  const r = localStorage.getItem('spendly_shortcuts');
+  if (!r) return [];
+  try { return JSON.parse(r); } catch(e) { console.error('loadShortcuts parse error', e); return []; }
+}
 function saveShortcuts(s) { localStorage.setItem('spendly_shortcuts', JSON.stringify(s)); }
 function getWeekBudget(weekStart, data) {
   const key = weekStart.toISOString();
-  return (data.weekBudgets && data.weekBudgets[key] != null) ? data.weekBudgets[key] : (data.defaultBudget || 150);
+  return (data.weekBudgets && data.weekBudgets[key] != null) ? data.weekBudgets[key] : (data.defaultBudget || 250);
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1021,8 +1004,8 @@ const DEFAULT_BUDGET = {
 
 function loadBudget() {
   const raw = localStorage.getItem('spendly_budget');
-  if (raw) return JSON.parse(raw);
-  return JSON.parse(JSON.stringify(DEFAULT_BUDGET));
+  if (!raw) return JSON.parse(JSON.stringify(DEFAULT_BUDGET));
+  try { return JSON.parse(raw); } catch(e) { console.error('loadBudget parse error', e); return JSON.parse(JSON.stringify(DEFAULT_BUDGET)); }
 }
 function saveBudget(b) { localStorage.setItem('spendly_budget', JSON.stringify(b)); }
 
@@ -1031,9 +1014,11 @@ function saveBudget(b) { localStorage.setItem('spendly_budget', JSON.stringify(b
 // ═══════════════════════════════════════════════════════════════════
 
 function getWeekStart(from) {
+  const data = loadData();
+  const wsd = (data.weekStartDay !== undefined) ? data.weekStartDay : 3;
   const d = from ? new Date(from) : new Date();
   const day = d.getDay();
-  const diff = day >= 3 ? day - 3 : day + 4;
+  const diff = day >= wsd ? day - wsd : day + (7 - wsd);
   const start = new Date(d);
   start.setDate(d.getDate() - diff);
   start.setHours(5, 0, 0, 0);
@@ -1084,6 +1069,7 @@ let saveAsShortcut    = false;
 let editingAccountId  = null;
 let editingPaymentId  = null;
 let selectedPayType   = 'income';
+let editingExpenseId  = null;
 
 // ═══════════════════════════════════════════════════════════════════
 // TOAST
@@ -1170,21 +1156,30 @@ function updateHeader() {
   const expH = document.getElementById('expensesHeader');
   const budH = document.getElementById('budgetHeader');
   const hdr  = document.getElementById('header');
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+  function setTheme(colour) {
+    if (themeMeta) themeMeta.setAttribute('content', colour);
+    document.documentElement.style.background = colour;
+  }
+
   if (currentSection === 'expenses') {
     expH.style.display = ''; budH.style.display = 'none';
     hdr.classList.remove('budget-mode');
+    setTheme('#6c5ce7');
   } else if (currentSection === 'settings') {
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
+    setTheme('#1a1a2e');
     document.getElementById('netWorthAmt').textContent = '';
     document.getElementById('budgetUpdatedLabel').textContent = 'Settings';
     document.getElementById('budgetHeaderChips').innerHTML = '';
-    // Hide the big amount display for settings
     document.querySelector('#budgetHeader .budget-remaining').style.display = 'none';
     document.querySelector('#budgetHeader .budget-label').style.display = 'none';
   } else if (currentSection === 'finplan') {
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
+    setTheme('#1a1a2e');
     document.querySelector('#budgetHeader .budget-remaining').style.display = '';
     document.querySelector('#budgetHeader .budget-label').style.display = '';
     document.getElementById('netWorthAmt').textContent = '3.33M';
@@ -1201,6 +1196,7 @@ function updateHeader() {
   } else {
     expH.style.display = 'none'; budH.style.display = '';
     hdr.classList.add('budget-mode');
+    setTheme('#1a1a2e');
     document.querySelector('#budgetHeader .budget-remaining').style.display = '';
     document.querySelector('#budgetHeader .budget-label').style.display = '';
     const b = loadBudget();
@@ -1267,7 +1263,7 @@ function renderExpenseItem(e) {
   if (e.necessary) chips.push(`<span class="exp-chip">${NECESSARY_LABELS[e.necessary]}</span>`);
   if (e.vibe)      chips.push(`<span class="exp-chip">${VIBE_LABELS[e.vibe]}</span>`);
   if (e.notes)     chips.push(`<span class="exp-chip">💬 ${e.notes.slice(0,32)}${e.notes.length>32?'…':''}</span>`);
-  return `<div class="expense-item">
+  return `<div class="expense-item" onclick="openEditExpense(${e.id})">
     <div class="cat-icon" style="background:${cat.color}22">${cat.emoji}</div>
     <div class="exp-info">
       <div class="exp-name">${escHtml(e.name)}</div>
@@ -1276,7 +1272,7 @@ function renderExpenseItem(e) {
     </div>
     <div class="exp-right">
       <div class="exp-amt">$${fmtAmt(e.amount)}</div>
-      <button class="delete-btn" onclick="deleteExpense(${e.id})">✕</button>
+      <button class="delete-btn" onclick="event.stopPropagation();deleteExpense(${e.id})">✕</button>
     </div>
   </div>`;
 }
@@ -1299,6 +1295,26 @@ function renderShortcutsRow() {
   </div>`;
 }
 
+function computeStreak(d, ws) {
+  let streak = 0;
+  for (let i = 1; i <= 260; i++) {
+    const ps = new Date(ws); ps.setDate(ws.getDate() - 7 * i);
+    const pe = new Date(ps); pe.setDate(ps.getDate() + 7);
+    const exp = d.expenses.filter(e => { const t = new Date(e.date); return t >= ps && t < pe; });
+    // Skip weeks with no recorded expenses — don't count for or against streak
+    if (!exp.length) {
+      // If we've already started counting, break — gap in history ends streak
+      if (streak > 0) break;
+      continue;
+    }
+    const spent = exp.reduce((s, e) => s + e.amount, 0);
+    const budget = getWeekBudget(ps, d);
+    if (spent <= budget) streak++;
+    else break;
+  }
+  return streak;
+}
+
 function renderWeek() {
   const d=loadData(), ws=getWeekStart(), we=getWeekEnd(ws);
   const budget=getWeekBudget(ws,d);
@@ -1306,15 +1322,32 @@ function renderWeek() {
   const spent=weekExp.reduce((s,e)=>s+e.amount,0);
   const remaining=budget-spent;
   const pct=Math.min(100,(spent/budget)*100);
+
+  // Spending velocity
+  const now = new Date();
+  const daysElapsed = (now - ws) / (1000 * 60 * 60 * 24);
+  let velocityText = '';
+  if (daysElapsed >= 1 && spent > 0 && remaining >= 0) {
+    const projectedSpend = spent / daysElapsed * 7;
+    velocityText = ` · on track for $${fmtAmt(projectedSpend)}`;
+  }
+
   document.getElementById('weekLabel').textContent    = 'Week of '+formatDate(ws);
   document.getElementById('remainingAmt').textContent = Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
-  document.getElementById('budgetLabel').textContent  = remaining>=0?'left this week':'over budget';
+  document.getElementById('budgetLabel').textContent  = remaining>=0?'left this week'+velocityText:'over budget';
   document.getElementById('spentLabel').textContent   = '$'+fmtAmt(spent)+' spent';
   document.getElementById('pctLabel').textContent     = Math.round(pct)+'% used';
   document.getElementById('progressBar').style.width  = pct+'%';
   document.getElementById('header').className         = 'header'+(remaining<0?' over-budget':'');
   const body=document.getElementById('mainBody');
   let html = renderShortcutsRow();
+
+  // Streak pill
+  const streak = computeStreak(d, ws);
+  if (streak >= 1) {
+    html += `<div style="display:inline-flex;align-items:center;background:rgba(253,203,110,0.22);border-radius:99px;padding:4px 12px;margin-bottom:8px"><span style="color:#b8860b;font-size:12px;font-weight:800;letter-spacing:0.2px">🔥 ${streak}-week streak under budget</span></div>`;
+  }
+
   if (!weekExp.length) {
     html += `<div class="empty-state"><div class="emoji">🎉</div><p>No expenses yet!</p><small>Tap + Add expense to get started</small></div>`;
     body.innerHTML = html; return;
@@ -1333,9 +1366,19 @@ function renderInsights() {
   const weekExp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;});
   const spent=weekExp.reduce((s,e)=>s+e.amount,0);
   const remaining=budget-spent, pct=Math.min(100,(spent/budget)*100), ok=remaining>=0;
+
+  // Spending velocity
+  const now2 = new Date();
+  const daysElapsed2 = (now2 - ws) / (1000 * 60 * 60 * 24);
+  let velocityText2 = '';
+  if (daysElapsed2 >= 1 && spent > 0 && ok) {
+    const projectedSpend2 = spent / daysElapsed2 * 7;
+    velocityText2 = ` · on track for $${fmtAmt(projectedSpend2)}`;
+  }
+
   document.getElementById('weekLabel').textContent   = 'Week of '+formatDate(ws);
   document.getElementById('remainingAmt').textContent= Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
-  document.getElementById('budgetLabel').textContent = ok?'left this week':'over budget';
+  document.getElementById('budgetLabel').textContent = ok?'left this week'+velocityText2:'over budget';
   document.getElementById('spentLabel').textContent  = '$'+fmtAmt(spent)+' spent';
   document.getElementById('pctLabel').textContent    = Math.round(pct)+'% used';
   document.getElementById('progressBar').style.width = pct+'%';
@@ -1479,17 +1522,30 @@ function renderHistory() {
   const currentExp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;});
   let html=historyWeekCard({start:ws,end:we,expenses:currentExp,budget:getWeekBudget(ws,d),isCurrentWeek:true});
   let hasAny=currentExp.length>0;
-  for (let i=1;i<=12;i++) {
-    const ps=new Date(ws);ps.setDate(ws.getDate()-7*i);
-    const pe=new Date(ps);pe.setDate(ps.getDate()+7);
-    const exp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ps&&t<pe;});
-    if (!exp.length) continue;
-    hasAny=true;
-    html+=historyWeekCard({start:ps,end:pe,expenses:exp,budget:getWeekBudget(ps,d),isCurrentWeek:false});
+
+  // Compute max weeks to look back (from oldest expense)
+  const allPastExp = d.expenses.filter(e => new Date(e.date) < ws);
+  let nonEmptyCount = 0;
+  if (allPastExp.length > 0) {
+    const oldest = new Date(Math.min(...allPastExp.map(e => new Date(e.date))));
+    const maxWeeks = Math.ceil((ws.getTime() - oldest.getTime()) / (7 * 24 * 3600 * 1000)) + 1;
+    for (let i = 1; i <= maxWeeks; i++) {
+      const ps=new Date(ws);ps.setDate(ws.getDate()-7*i);
+      const pe=new Date(ps);pe.setDate(ps.getDate()+7);
+      const exp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ps&&t<pe;});
+      if (!exp.length) continue;
+      hasAny=true;
+      nonEmptyCount++;
+      html+=historyWeekCard({start:ps,end:pe,expenses:exp,budget:getWeekBudget(ps,d),isCurrentWeek:false});
+    }
   }
+
   if (!hasAny) {
     document.getElementById('mainBody').innerHTML=`<div class="empty-state"><div class="emoji">📅</div><p>No history yet</p><small>Come back next week!</small></div>`;
     return;
+  }
+  if (nonEmptyCount > 0) {
+    html += `<div style="text-align:center;padding:10px 0 4px;font-size:11px;font-weight:700;color:var(--muted)">Showing all ${nonEmptyCount} week${nonEmptyCount!==1?'s':''} of history</div>`;
   }
   document.getElementById('mainBody').innerHTML=html;
 }
@@ -1629,16 +1685,6 @@ function renderBudgetOverview() {
         <div class="oc-sub">${Math.abs(wNet)<0.05?'zero-sum ✅':wNet>0?'unallocated':'over-allocated'}</div>
       </div>
     </div>
-
-    <div class="overview-accounts">
-      <div class="overview-acc-title">🏦 Account balances</div>
-      ${accRows}
-    </div>
-
-    <div class="overview-accounts">
-      <div class="overview-acc-title">📅 Upcoming payments</div>
-      ${upcomingHtml}
-    </div>
   `;
 }
 
@@ -1675,11 +1721,6 @@ function renderBudgetAccounts() {
   }).join('');
 
   document.getElementById('mainBody').innerHTML = `
-    <div class="account-total-card">
-      <div class="atc-label">Total Net Worth</div>
-      <div class="atc-total">$${fmtAmtFull(total)}</div>
-      <div class="atc-sub">Last updated ${formatDateShort(recent)} · ${b.accounts.length} accounts</div>
-    </div>
     ${rows}
     <div style="text-align:center;padding:4px 0 8px">
       <button onclick="openEditAccount(null)" style="background:none;border:1.5px dashed var(--border);border-radius:14px;padding:12px 24px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;width:100%">+ Add account</button>
@@ -1859,18 +1900,62 @@ function deleteAccount() {
 // BUDGET: PLAN
 // ═══════════════════════════════════════════════════════════════════
 
+const FREQ_OPTS = [
+  { id:'week',       label:'/ week',        mult:1         },
+  { id:'fortnight',  label:'/ fortnight',   mult:2         },
+  { id:'month',      label:'/ month',       mult:52/12     },
+  { id:'year',       label:'/ year',        mult:52        },
+];
+function freqMult(f) { return (FREQ_OPTS.find(o=>o.id===f)||FREQ_OPTS[0]).mult; }
+function toWeekly(rawAmt, freq) { return rawAmt / freqMult(freq); }
+
 function renderPlanRows(items, type) {
-  return items.map(item=>`
-    <div class="plan-row">
+  return items.map(item => {
+    const freq   = item.freq   || 'week';
+    const rawAmt = item.rawAmt != null ? item.rawAmt : item.amount;
+    const wkly   = toWeekly(rawAmt, freq);
+    const freqSel = FREQ_OPTS.map(o=>`<option value="${o.id}"${freq===o.id?' selected':''}>${o.label}</option>`).join('');
+    const hint = freq !== 'week' ? `<span class="plan-freq-hint" style="margin-left:6px">≈ $${fmtAmt(wkly)}/wk</span>` : '';
+    return `<div class="plan-row" style="flex-direction:column;align-items:stretch;gap:4px">
       <input class="plan-name-input" value="${escHtml(item.name)}" placeholder="Name…"
-        onblur="savePlanItem('${type}','${item.id}',this.closest('.plan-row'))">
-      <div class="plan-amt-wrap">
-        <span class="plan-amt-prefix">$</span>
-        <input class="plan-amt-input" type="number" step="0.01" value="${item.amount.toFixed(2)}"
-          onblur="savePlanItem('${type}','${item.id}',this.closest('.plan-row'))">
+        onblur="savePlanItem('${type}','${item.id}',this.closest('.plan-row'))"
+        style="width:100%;padding-left:2px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="plan-amt-wrap" style="flex-shrink:0">
+          <span class="plan-amt-prefix">$</span>
+          <input class="plan-amt-input" type="number" step="0.01" value="${fmtAmt(rawAmt)}"
+            onblur="savePlanItem('${type}','${item.id}',this.closest('.plan-row'))"
+            onchange="updatePlanRowHint(this)">
+        </div>
+        <select class="plan-freq-sel" onchange="savePlanItem('${type}','${item.id}',this.closest('.plan-row'));updatePlanRowHint(this)"
+          style="font-size:11px;font-weight:800;color:var(--muted);background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:4px 6px;cursor:pointer;font-family:'Nunito',sans-serif;flex-shrink:0">
+          ${freqSel}
+        </select>
+        ${hint}
+        <button class="plan-delete" style="margin-left:auto" onclick="deletePlanItem('${type}','${item.id}')">✕</button>
       </div>
-      <button class="plan-delete" onclick="deletePlanItem('${type}','${item.id}')">✕</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+}
+
+function updatePlanRowHint(el) {
+  const row = el.closest('.plan-row');
+  if (!row) return;
+  const amtEl  = row.querySelector('.plan-amt-input');
+  const freqEl = row.querySelector('.plan-freq-sel');
+  if (!amtEl || !freqEl) return;
+  const raw  = parseFloat(amtEl.value) || 0;
+  const freq = freqEl.value;
+  const wkly = toWeekly(raw, freq);
+  let hintEl = row.querySelector('.plan-freq-hint');
+  if (freq === 'week') { if (hintEl) hintEl.remove(); return; }
+  if (!hintEl) {
+    hintEl = document.createElement('span');
+    hintEl.className = 'plan-freq-hint';
+    hintEl.style.marginLeft = '6px';
+    freqEl.parentNode.insertBefore(hintEl, freqEl.nextSibling);
+  }
+  hintEl.textContent = `≈ $${fmtAmt(wkly)}/wk`;
 }
 
 function renderBudgetPlan() {
@@ -1884,7 +1969,6 @@ function renderBudgetPlan() {
   const netLabel = Math.abs(net)<0.05?'✅ Zero-sum budget':net>0?'Unallocated funds':'Over-allocated';
   const netSign  = net>=0?'+':'−';
 
-  // Build extra steps display
   const steps = getExtraSteps(b);
   const stepsHtml = steps.length
     ? steps.map((s,i)=>`<div class="extra-step-item">
@@ -1941,15 +2025,23 @@ function renderBudgetPlan() {
 function savePlanItem(type, id, row) {
   const nameEl = row.querySelector('.plan-name-input');
   const amtEl  = row.querySelector('.plan-amt-input');
+  const freqEl = row.querySelector('.plan-freq-sel');
   if (!nameEl || !amtEl) return;
-  const name = nameEl.value.trim();
-  const amount = parseFloat(amtEl.value);
-  if (!name || isNaN(amount)) return;
+  const name   = nameEl.value.trim();
+  const rawAmt = parseFloat(amtEl.value);
+  const freq   = freqEl ? freqEl.value : 'week';
+  if (!name || isNaN(rawAmt)) return;
+  const weeklyAmt = toWeekly(rawAmt, freq);
   const b = loadBudget();
   const key = type==='income'?'income':type==='expense'?'expenses':'savings';
   const item = b.weeklyPlan[key].find(i=>i.id===id);
-  if (item) { item.name=name; item.amount=amount; saveBudget(b); }
-  // Update totals in header without full re-render
+  if (item) {
+    item.name    = name;
+    item.amount  = weeklyAmt;
+    item.rawAmt  = rawAmt;
+    item.freq    = freq;
+    saveBudget(b);
+  }
   updateHeader();
 }
 
@@ -2201,6 +2293,10 @@ function toggleSaveShortcut() {
 }
 
 function openAdd(prefill) {
+  editingExpenseId = null;
+  document.getElementById('addModalTitle').textContent = 'Add expense';
+  document.getElementById('addModalBtn').textContent = 'Add';
+  document.getElementById('shortcutToggleRow').style.display = '';
   document.getElementById('inputAmt').value   = prefill ? prefill.amount : '';
   document.getElementById('inputName').value  = prefill ? prefill.name   : '';
   document.getElementById('inputNotes').value = '';
@@ -2212,14 +2308,48 @@ function openAdd(prefill) {
   setTimeout(()=>document.getElementById('inputAmt').focus(), 350);
 }
 
+function openEditExpense(id) {
+  const d = loadData();
+  const e = d.expenses.find(ex => ex.id === id);
+  if (!e) return;
+  editingExpenseId = id;
+  document.getElementById('addModalTitle').textContent = 'Edit expense';
+  document.getElementById('addModalBtn').textContent = 'Save';
+  document.getElementById('shortcutToggleRow').style.display = 'none';
+  document.getElementById('inputAmt').value = e.amount;
+  document.getElementById('inputName').value = e.name;
+  document.getElementById('inputNotes').value = e.notes || '';
+  selectedCat = e.category || 'food';
+  selectedNec = e.necessary || null;
+  selectedVibe = e.vibe || null;
+  saveAsShortcut = false;
+  initCatGrid();
+  // Pre-select necessary
+  document.querySelectorAll('#necessaryRow .rfl-btn').forEach(b => {
+    b.classList.remove('selected'); b.style.borderColor=''; b.style.color='';
+    if (b.getAttribute('onclick').includes(`'${selectedNec}'`)) { b.classList.add('selected'); b.style.borderColor='#6c5ce7'; b.style.color='#6c5ce7'; }
+  });
+  // Pre-select vibe
+  document.querySelectorAll('#vibeRow .vibe-btn').forEach(b => {
+    b.classList.remove('selected'); b.style.borderColor=''; b.style.color='';
+    if (b.getAttribute('onclick').includes(`'${selectedVibe}'`)) { b.classList.add('selected'); b.style.borderColor='#6c5ce7'; b.style.color='#6c5ce7'; }
+  });
+  document.getElementById('shortcutToggle').classList.remove('on');
+  document.getElementById('addModal').classList.add('open');
+  setTimeout(()=>document.getElementById('inputAmt').focus(), 350);
+}
+
 function openSettings() {
   switchSection('settings');
 }
 
 function renderSettings() {
   const d = loadData(), ws = getWeekStart();
-  const defBudget = d.defaultBudget || 150;
+  const defBudget = d.defaultBudget || 250;
   const wkBudget = getWeekBudget(ws, d);
+  const weekStartDay = (d.weekStartDay !== undefined) ? d.weekStartDay : 3;
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dayOptions = dayNames.map((name,i) => `<option value="${i}"${weekStartDay===i?' selected':''}>${name}</option>`).join('');
   document.getElementById('mainBody').innerHTML = `
     <div class="fp-section" style="margin-top:4px">
       <div class="fp-section-header">
@@ -2231,16 +2361,23 @@ function renderSettings() {
           <div class="settings-label">Default weekly budget</div>
           <div class="settings-hint">Used for weeks without a custom amount</div>
         </div>
-        <input class="settings-input" type="number" id="defaultBudgetInput" inputmode="decimal" placeholder="150" value="${defBudget}">
+        <input class="settings-input" type="number" id="defaultBudgetInput" inputmode="decimal" placeholder="250" value="${defBudget}">
       </div>
-      <div class="settings-row" style="border-bottom:none">
+      <div class="settings-row">
         <div>
           <div class="settings-label">This week's budget</div>
           <div class="settings-hint">Overrides default for this week only</div>
         </div>
-        <input class="settings-input" type="number" id="thisWeekBudgetInput" inputmode="decimal" placeholder="150" value="${wkBudget}">
+        <input class="settings-input" type="number" id="thisWeekBudgetInput" inputmode="decimal" placeholder="250" value="${wkBudget}">
       </div>
-      <button class="btn-save" style="margin-top:12px" onclick="saveExpenseBudget()">Save budgets</button>
+      <div class="settings-row" style="border-bottom:none">
+        <div>
+          <div class="settings-label">Week starts on</div>
+          <div class="settings-hint">Day your weekly tracker resets</div>
+        </div>
+        <select class="settings-input" id="weekStartDayInput" style="width:130px;text-align:left;padding-left:10px">${dayOptions}</select>
+      </div>
+      <button class="btn-save" style="margin-top:12px" onclick="saveExpenseBudget()">Save settings</button>
     </div>
 
     <div class="fp-section">
@@ -2248,9 +2385,8 @@ function renderSettings() {
         <div class="fp-section-icon" style="background:rgba(0,184,148,0.12)">📦</div>
         <div><div class="fp-section-title">Data</div><div class="fp-section-subtitle">Import and export your records</div></div>
       </div>
-      <button class="btn-export" onclick="exportFullCSV()" style="margin-top:0">📤 Export full data (CSV)</button>
-      <button class="btn-export" onclick="exportExpensesCSV()" style="color:var(--muted)">📤 Export expenses only (CSV)</button>
-      <button class="btn-import" onclick="document.getElementById('csvFileInput').click()">📥 Import from CSV</button>
+      <button class="btn-export" onclick="exportFullCSV()" style="margin-top:0">📤 Export CSV</button>
+      <button class="btn-import" onclick="document.getElementById('csvFileInput').click()">📥 Import CSV</button>
     </div>
 
     <div class="fp-section">
@@ -2282,7 +2418,9 @@ function saveExpenseBudget() {
   const wkVal =parseFloat(document.getElementById('thisWeekBudgetInput').value);
   if (!isNaN(defVal)&&defVal>0) d.defaultBudget=defVal;
   if (!isNaN(wkVal) &&wkVal>0) { const ws=getWeekStart(); d.weekBudgets[ws.toISOString()]=wkVal; }
-  saveData(d); showToast('✅ Budgets saved', 'success');
+  const wsdEl = document.getElementById('weekStartDayInput');
+  if (wsdEl) { const wsdVal = parseInt(wsdEl.value); if (!isNaN(wsdVal)) d.weekStartDay = wsdVal; }
+  saveData(d); showToast('✅ Settings saved', 'success');
 }
 
 function addExpense() {
@@ -2292,15 +2430,28 @@ function addExpense() {
   if (isNaN(amt)||amt<=0) { document.getElementById('inputAmt').focus(); return; }
   const label = name || CATS.find(c=>c.id===selectedCat).label;
   const d = loadData();
-  d.expenses.push({ id:Date.now(), amount:amt, name:label, category:selectedCat, date:new Date().toISOString(), necessary:selectedNec, vibe:selectedVibe, notes:notes||null });
-  saveData(d);
-  if (saveAsShortcut) {
-    const shortcuts=loadShortcuts();
-    if (!shortcuts.some(s=>s.name===label&&s.amount===amt&&s.category===selectedCat)) {
-      shortcuts.push({id:Date.now(),name:label,amount:amt,category:selectedCat});
-      saveShortcuts(shortcuts);
+  if (editingExpenseId !== null) {
+    const idx = d.expenses.findIndex(e => e.id === editingExpenseId);
+    if (idx >= 0) {
+      d.expenses[idx].amount = amt;
+      d.expenses[idx].name = label;
+      d.expenses[idx].category = selectedCat;
+      d.expenses[idx].necessary = selectedNec;
+      d.expenses[idx].vibe = selectedVibe;
+      d.expenses[idx].notes = notes || null;
+    }
+    editingExpenseId = null;
+  } else {
+    d.expenses.push({ id:Date.now(), amount:amt, name:label, category:selectedCat, date:new Date().toISOString(), necessary:selectedNec, vibe:selectedVibe, notes:notes||null });
+    if (saveAsShortcut) {
+      const shortcuts=loadShortcuts();
+      if (!shortcuts.some(s=>s.name===label&&s.amount===amt&&s.category===selectedCat)) {
+        shortcuts.push({id:Date.now(),name:label,amount:amt,category:selectedCat});
+        saveShortcuts(shortcuts);
+      }
     }
   }
+  saveData(d);
   closeModal('addModal'); render();
 }
 
@@ -2327,19 +2478,9 @@ function deleteShortcut(id,e) {
 function esc(v) { return v!=null?`"${String(v).replace(/"/g,'""')}"`:'' }
 function csvRow(arr) { return arr.map(v=>typeof v==='number'?v.toFixed(2):esc(v)).join(',') }
 
-function exportExpensesCSV() {
-  const d=loadData();
-  const rows=[['Date','Week Start','Name','Category','Amount ($)','Necessary','Vibe','Notes']];
-  d.expenses.slice().sort((a,b)=>new Date(a.date)-new Date(b.date)).forEach(e=>{
-    const cat=catFor(e);
-    rows.push([new Date(e.date).toLocaleDateString('en-NZ'),getWeekStart(e.date).toLocaleDateString('en-NZ'),esc(e.name),esc(cat.label),e.amount.toFixed(2),e.necessary||'',e.vibe||'',esc(e.notes||'')]);
-  });
-  downloadCSV(rows.map(r=>r.join(',')).join('\n'), `spendly-expenses-${todayStr()}.csv`);
-}
-
 function exportFullCSV() {
   const d=loadData(), b=loadBudget();
-  let csv = '[SPENDLY_EXPORT_V2]\n\n';
+  let csv = '[BALANCE_EXPORT_V2]\n\n';
 
   csv += '[SECTION:EXPENSES]\n';
   csv += 'Date,Week Start,Name,Category,Amount ($),Necessary,Vibe,Notes\n';
@@ -2355,9 +2496,9 @@ function exportFullCSV() {
   });
 
   csv += '\n[SECTION:BALANCE_HISTORY]\n';
-  csv += 'Date,Total Net Worth\n';
+  csv += 'Date,Total Net Worth,AccountsJSON\n';
   b.balanceHistory.forEach(h=>{
-    csv += [esc(h.date),h.total.toFixed(2)].join(',')+'\n';
+    csv += [esc(h.date),h.total.toFixed(2),esc(JSON.stringify(h.accounts||{}))].join(',')+'\n';
   });
 
   csv += '\n[SECTION:WEEKLY_PLAN_INCOME]\n';
@@ -2391,7 +2532,7 @@ function exportFullCSV() {
     csv += esc(JSON.stringify(sec)) + '\n';
   });
 
-  downloadCSV(csv, `spendly-full-${todayStr()}.csv`);
+  downloadCSV(csv, `balance-full-${todayStr()}.csv`);
 }
 
 function todayStr() { return new Date().toISOString().slice(0,10); }
@@ -2451,8 +2592,7 @@ function handleCSVFile(event) {
 }
 
 function importCSV(text) {
-  // Detect full vs expenses-only export
-  if (text.trim().startsWith('[SPENDLY_EXPORT_V2]')) {
+  if (text.trim().startsWith('[BALANCE_EXPORT_V2]') || text.trim().startsWith('[SPENDLY_EXPORT_V2]')) {
     importFullCSV(text);
   } else {
     importExpensesCSV(text);
@@ -2490,7 +2630,7 @@ function importExpensesCSV(text) {
     d.expenses.push({id:date.getTime()+Math.random(),amount,name,category:catId,date:date.toISOString(),necessary,vibe,notes:rawNotes||null});
     imported++;
   });
-  saveData(d); closeModal('settingsModal'); render();
+  saveData(d); render();
   const parts=[];
   if(imported>0)parts.push(`${imported} imported`);
   if(skipped>0)parts.push(`${skipped} skipped`);
@@ -2540,8 +2680,10 @@ function importFullCSV(text) {
     sections['BALANCE_HISTORY'].slice(1).forEach(row => {
       const cols = parseCSV(row)[0];
       if (!cols || cols.length < 2) return;
-      const [date, total] = cols;
-      if (!isNaN(parseFloat(total))) newHistory.push({ date, total: parseFloat(total), accounts: {} });
+      const [date, total, accountsJson] = cols;
+      let accounts = {};
+      if (accountsJson) { try { accounts = JSON.parse(accountsJson); } catch(e) {} }
+      if (!isNaN(parseFloat(total))) newHistory.push({ date, total: parseFloat(total), accounts });
     });
     if (newHistory.length) { b.balanceHistory = newHistory; budgetChanged = true; }
   }
@@ -2613,7 +2755,7 @@ function importFullCSV(text) {
   }
 
   if (planChanged) { savePlan(planObj); }
-  closeModal('settingsModal'); render();
+  render();
   showToast('✅ Full data imported', 'success');
 }
 
@@ -2628,9 +2770,7 @@ const DEFAULT_PLAN_SECTIONS = [
     type:'bullets',
     items:[
       {id:'fi1', text:'Spend at least <strong>$15,160</strong> of the $26,756 Training Grant on approved costs to preserve full Student Allowance eligibility'},
-      {id:'fi2', text:'Do not receive parental transfers weekly — defer total as a lump sum during the 6-week leave block'},
-      {id:'fi3', text:'Estimated weekly cash flow: <strong>$715–$860</strong> (Allowance + Accommodation Supplement + Grant residual)'},
-      {id:'fi4', text:'Student Loan Living Costs are unavailable with full allowance — advantageously avoids extra debt'},
+      {id:'fi2', text:'Defer parental transfers as a lump sum for the entire TI year (until Student Allowance stops at graduation)'},
     ]
   },
   {
@@ -2682,10 +2822,10 @@ const DEFAULT_PLAN_SECTIONS = [
     title:'Execution Timeline', subtitle:'Key milestones & actions',
     type:'timeline',
     items:[
-      {id:'ti1', date:'Early 2026', tasks:['5th year begins — final year of medical school','Confirm Prescribed Investor Rate via myIR','Join NZMII as trainee intern']},
-      {id:'ti2', date:'November 2026', tasks:['Begin Trainee Intern (TI) — first paid medical role','Student Allowance ceases at TI start']},
-      {id:'ti3', date:'December 2026', tasks:['Receive $26,756 Training Grant','Allocate $15,160+ to approved expenses','~$10,000 towards travel · ~$5,000 towards vehicle']},
-      {id:'ti4', date:'November 2027', tasks:['TI year concludes','Begin 2-month leave block before PGY1','Defer parental lump sum during leave period']},
+      {id:'ti1', date:'Early 2026', tasks:['5th year begins — final year of medical school','Confirm Prescribed Investor Rate via myIR']},
+      {id:'ti2', date:'November 2026', tasks:['Begin Trainee Intern (TI) — first paid medical role','Join NZMII at start of TI year','Student Allowance continues until graduation (end of TI year)']},
+      {id:'ti3', date:'December 2026', tasks:['Receive $26,756 Training Grant','Allocate $15,160+ to approved expenses','~$10,000 towards travel','~$5,000 towards vehicle']},
+      {id:'ti4', date:'November 2027', tasks:['TI year concludes — Student Allowance stops at graduation','Defer parental lump sum deposited during TI year as a lump sum now']},
       {id:'ti5', date:'January 2028', tasks:['PGY1 begins — implement Wealth-First Budget','Activate 6% superannuation split','Automate $3,500/month → Global PIE Fund','Finalise Income Protection & Health Insurance']},
     ]
   },
@@ -2706,21 +2846,30 @@ const DEFAULT_LOAN_PARAMS = {
   startDate: '2026-05-01',
   phases: [
     { label:'5th Year (Student)', endDate:'2026-11-01', grossIncome:20000 },
-    { label:'Trainee Intern',     endDate:'2027-11-01', grossIncome:90000 },
+    { label:'Trainee Intern',     endDate:'2027-11-01', grossIncome:0     },
     { label:'Leave / Break',      endDate:'2028-01-01', grossIncome:0     },
     { label:'PGY1+',              endDate:'2040-01-01', grossIncome:113380 },
   ],
   repaymentRate: 0.12,
   threshold: 22828,
+  inflationRate: 0.025,
 };
 
 function loadPlan() {
   const r = localStorage.getItem('spendly_plan');
+  let p = null;
   if (r) {
-    const p = JSON.parse(r);
-    return { sections: p.sections || DEFAULT_PLAN_SECTIONS, loanParams: p.loanParams || DEFAULT_LOAN_PARAMS };
+    try { p = JSON.parse(r); } catch(e) { console.error('loadPlan parse error', e); }
   }
-  return { sections: JSON.parse(JSON.stringify(DEFAULT_PLAN_SECTIONS)), loanParams: JSON.parse(JSON.stringify(DEFAULT_LOAN_PARAMS)) };
+  if (!p) p = {};
+  // Plan version migration
+  if (!p._planVersion || p._planVersion < 2) {
+    p.sections = JSON.parse(JSON.stringify(DEFAULT_PLAN_SECTIONS));
+    p._planVersion = 2;
+  }
+  if (!p.loanParams) p.loanParams = JSON.parse(JSON.stringify(DEFAULT_LOAN_PARAMS));
+  if (p.loanParams.inflationRate === undefined) p.loanParams.inflationRate = 0.025;
+  return { sections: p.sections, loanParams: p.loanParams, _planVersion: p._planVersion };
 }
 function savePlan(p) { localStorage.setItem('spendly_plan', JSON.stringify(p)); }
 
@@ -2734,6 +2883,7 @@ function calcLoanProjection(params) {
   let date = new Date(params.startDate);
   const phases = params.phases.slice().sort((a,b)=>new Date(a.endDate)-new Date(b.endDate));
   let payoffDate = null;
+  const monthlyInflationDeflator = 1 - ((params.inflationRate || 0.025) / 12);
 
   // Monthly simulation
   for (let month = 0; month <= 180; month++) {
@@ -2746,6 +2896,8 @@ function calcLoanProjection(params) {
     const gross = phase.grossIncome;
     const annualRepayment = gross > params.threshold ? (gross - params.threshold) * params.repaymentRate : 0;
     const monthlyRepayment = annualRepayment / 12;
+    // Reduce real balance by inflation deflation first, then subtract repayment
+    balance = balance * monthlyInflationDeflator;
     balance = Math.max(0, balance - monthlyRepayment);
     date = new Date(date);
     date.setMonth(date.getMonth() + 1);
@@ -2805,7 +2957,8 @@ function buildLoanGraph(params) {
     <circle cx="${xS(0).toFixed(1)}" cy="${yS(points[0].balance).toFixed(1)}" r="4" fill="#e17055" stroke="white" stroke-width="2"/>
     <circle cx="${xS(points.length-1).toFixed(1)}" cy="${yS(points[points.length-1].balance).toFixed(1)}" r="5" fill="#00b894" stroke="white" stroke-width="2"/>
     ${xLabels}
-  </svg>${payoffNote}`;
+  </svg>${payoffNote}
+  <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px;font-weight:600">Real balance shown. Adjusted for 2.5% annual inflation.</div>`;
 }
 
 function openLoanParams() {
@@ -2829,6 +2982,9 @@ function openLoanParams() {
         <input class="se-input-sm" id="lp_ph${i}_end" type="date" value="${ph.endDate.slice(0,10)}"></div>
       </div></div>`;
   });
+  html += `
+    <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-top:14px;margin-bottom:6px">Inflation adjustment (%)</label>
+    <input class="se-input" id="lp_inflation" type="number" step="0.1" value="${((lp.inflationRate||0.025)*100).toFixed(1)}" inputmode="decimal">`;
   html += '<div style="height:8px"></div>';
   document.getElementById('loanParamsBody').innerHTML = html;
   document.getElementById('loanParamsModal').classList.add('open');
@@ -2840,6 +2996,8 @@ function saveLoanParams() {
   lp.startBalance = parseFloat(document.getElementById('lp_startBalance').value) || lp.startBalance;
   lp.repaymentRate = (parseFloat(document.getElementById('lp_rate').value) || 12) / 100;
   lp.threshold = parseFloat(document.getElementById('lp_threshold').value) || lp.threshold;
+  const inflationInput = document.getElementById('lp_inflation');
+  if (inflationInput) lp.inflationRate = (parseFloat(inflationInput.value) || 2.5) / 100;
   lp.phases.forEach((ph,i)=>{
     const inc = parseFloat(document.getElementById(`lp_ph${i}_income`)?.value);
     const end = document.getElementById(`lp_ph${i}_end`)?.value;
@@ -2858,21 +3016,7 @@ function saveLoanParams() {
 
 function renderFinancialPlan() {
   const plan = loadPlan();
-  let html = `
-    <div class="fp-hero">
-      <div class="fp-hero-label">Financial Strategy</div>
-      <div class="fp-hero-title">Work Optional Status</div>
-      <div class="fp-hero-target">
-        <div>
-          <div class="fp-hero-target-label">Target capital base</div>
-          <div class="fp-hero-target-val">$3,330,000</div>
-        </div>
-        <div style="margin-left:auto;text-align:right">
-          <div class="fp-hero-target-label">Target age</div>
-          <div class="fp-hero-target-val">41–42</div>
-        </div>
-      </div>
-    </div>`;
+  let html = ``;
 
   // Loan graph
   html += `<div class="loan-graph-card">
@@ -2883,7 +3027,7 @@ function renderFinancialPlan() {
     <div class="loan-params-grid">
       <div class="loan-param"><div class="loan-param-label">Balance</div><div class="loan-param-val">$${(plan.loanParams.startBalance/1000).toFixed(1)}k</div></div>
       <div class="loan-param"><div class="loan-param-label">Rate</div><div class="loan-param-val">${(plan.loanParams.repaymentRate*100).toFixed(0)}% mandatory</div></div>
-      <div class="loan-param"><div class="loan-param-label">TI income (est.)</div><div class="loan-param-val">$${(plan.loanParams.phases[1].grossIncome/1000).toFixed(0)}k/yr</div></div>
+      <div class="loan-param"><div class="loan-param-label">TI income</div><div class="loan-param-val">Grant only</div></div>
       <div class="loan-param"><div class="loan-param-label">PGY1 income (est.)</div><div class="loan-param-val">$${(plan.loanParams.phases[3].grossIncome/1000).toFixed(0)}k/yr</div></div>
     </div>
     ${buildLoanGraph(plan.loanParams)}
@@ -3043,7 +3187,7 @@ function renderPlanSectionEditor() {
   switch(sec.type) {
     case 'bullets':
       itemsHtml = (sec.items||[]).map((it,i)=>`<div class="se-item">
-        <div class="se-item-main"><textarea class="se-input" style="height:60px;resize:none" onblur="tempPlanSection.items[${i}].text=this.value">${escHtml(it.text)}</textarea></div>
+        <div class="se-item-main"><textarea class="se-input" style="height:60px;resize:none" data-key="items" data-index="${i}" data-field="text">${escHtml(it.text)}</textarea></div>
         <button class="se-item-del" onclick="removePlanItem('items',${i})">✕</button>
       </div>`).join('') +
       `<button class="se-add-btn" onclick="addPlanItem_('items',{id:'i'+Date.now(),text:''})">+ Add bullet</button>`;
@@ -3052,10 +3196,10 @@ function renderPlanSectionEditor() {
       itemsHtml = (sec.items||[]).map((it,i)=>`<div class="se-item">
         <div class="se-item-main">
           <div class="se-row">
-            <input class="se-input-sm" placeholder="Label" value="${escHtml(it.label)}" style="flex:1" onblur="tempPlanSection.items[${i}].label=this.value">
-            <input class="se-input-sm" placeholder="Value" value="${escHtml(it.value)}" style="flex:1;margin-left:6px" onblur="tempPlanSection.items[${i}].value=this.value">
+            <input class="se-input-sm" placeholder="Label" value="${escHtml(it.label)}" style="flex:1" data-key="items" data-index="${i}" data-field="label">
+            <input class="se-input-sm" placeholder="Value" value="${escHtml(it.value)}" style="flex:1;margin-left:6px" data-key="items" data-index="${i}" data-field="value">
           </div>
-          <select class="se-input-sm" style="margin-top:4px" onchange="tempPlanSection.items[${i}].color=this.value">
+          <select class="se-input-sm" style="margin-top:4px" data-key="items" data-index="${i}" data-field="color">
             ${['','green','red','purple'].map(c=>`<option value="${c}"${it.color===c?' selected':''}>${c||'default'}</option>`).join('')}
           </select>
         </div>
@@ -3066,11 +3210,11 @@ function renderPlanSectionEditor() {
     case 'timeline':
       itemsHtml = (sec.items||[]).map((it,i)=>`<div style="background:var(--bg);border-radius:12px;padding:10px;margin-bottom:8px">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-          <input class="se-input-sm" placeholder="Date label" value="${escHtml(it.date)}" style="flex:1" onblur="tempPlanSection.items[${i}].date=this.value">
+          <input class="se-input-sm" placeholder="Date label" value="${escHtml(it.date)}" style="flex:1" data-key="items" data-index="${i}" data-field="date">
           <button onclick="removePlanItem('items',${i})" style="background:none;border:none;color:#ccc;font-size:16px;cursor:pointer;padding:4px">✕</button>
         </div>
         ${(it.tasks||[]).map((t,j)=>`<div style="display:flex;gap:4px;margin-bottom:4px">
-          <input class="se-input-sm" style="flex:1" value="${escHtml(t)}" onblur="tempPlanSection.items[${i}].tasks[${j}]=this.value">
+          <input class="se-input-sm" style="flex:1" value="${escHtml(t)}" data-key="items" data-index="${i}" data-field="tasks" data-taskindex="${j}">
           <button onclick="removePlanTask(${i},${j})" style="background:none;border:none;color:#ccc;font-size:14px;cursor:pointer;padding:4px;flex-shrink:0">✕</button>
         </div>`).join('')}
         <button onclick="addPlanTask(${i})" style="font-size:11px;font-weight:800;color:var(--purple);background:none;border:none;cursor:pointer;padding:4px 0">+ Add task</button>
@@ -3081,10 +3225,10 @@ function renderPlanSectionEditor() {
       itemsHtml = (sec.items||[]).map((it,i)=>`<div class="se-item">
         <div class="se-item-main">
           <div class="se-row">
-            <input class="se-input-sm" placeholder="Name" value="${escHtml(it.name)}" style="flex:1" onblur="tempPlanSection.items[${i}].name=this.value">
-            <input class="se-input-sm" placeholder="Label (e.g. $500/mo)" value="${escHtml(it.amount)}" style="flex:1;margin-left:6px" onblur="tempPlanSection.items[${i}].amount=this.value">
+            <input class="se-input-sm" placeholder="Name" value="${escHtml(it.name)}" style="flex:1" data-key="items" data-index="${i}" data-field="name">
+            <input class="se-input-sm" placeholder="Label (e.g. $500/mo)" value="${escHtml(it.amount)}" style="flex:1;margin-left:6px" data-key="items" data-index="${i}" data-field="amount">
           </div>
-          <input class="se-input-sm" style="margin-top:4px" type="number" placeholder="Bar width %" value="${it.width}" onblur="tempPlanSection.items[${i}].width=parseInt(this.value)||50">
+          <input class="se-input-sm" style="margin-top:4px" type="number" placeholder="Bar width %" value="${it.width}" data-key="items" data-index="${i}" data-field="width" data-numtype="int">
         </div>
         <button class="se-item-del" onclick="removePlanItem('items',${i})">✕</button>
       </div>`).join('') +
@@ -3094,8 +3238,8 @@ function renderPlanSectionEditor() {
       itemsHtml = (sec.items||[]).map((it,i)=>`<div class="se-item">
         <div class="se-item-main">
           <div class="se-row">
-            <input class="se-input-sm" placeholder="Icon" value="${escHtml(it.icon)}" style="width:60px;flex-shrink:0" onblur="tempPlanSection.items[${i}].icon=this.value">
-            <input class="se-input-sm" placeholder="Text" value="${escHtml(it.text)}" style="flex:1;margin-left:6px" onblur="tempPlanSection.items[${i}].text=this.value">
+            <input class="se-input-sm" placeholder="Icon" value="${escHtml(it.icon)}" style="width:60px;flex-shrink:0" data-key="items" data-index="${i}" data-field="icon">
+            <input class="se-input-sm" placeholder="Text" value="${escHtml(it.text)}" style="flex:1;margin-left:6px" data-key="items" data-index="${i}" data-field="text">
           </div>
         </div>
         <button class="se-item-del" onclick="removePlanItem('items',${i})">✕</button>
@@ -3107,25 +3251,51 @@ function renderPlanSectionEditor() {
   document.getElementById('planSectionModalBody').innerHTML = `
     <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-top:12px;margin-bottom:6px">Emoji & Colours</label>
     <div class="se-row">
-      <input class="se-input" id="se_emoji" placeholder="Emoji" value="${escHtml(sec.emoji)}" style="width:70px;flex-shrink:0;text-align:center;font-size:22px" onblur="tempPlanSection.emoji=this.value">
-      <input class="se-input" id="se_bg" placeholder="Icon bg (CSS color)" value="${escHtml(sec.bgColor)}" style="flex:1;margin-left:8px;font-size:13px" onblur="tempPlanSection.bgColor=this.value">
+      <input class="se-input" id="se_emoji" placeholder="Emoji" value="${escHtml(sec.emoji)}" style="width:70px;flex-shrink:0;text-align:center;font-size:22px">
+      <input class="se-input" id="se_bg" placeholder="Icon bg (CSS color)" value="${escHtml(sec.bgColor)}" style="flex:1;margin-left:8px;font-size:13px">
     </div>
     <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-top:12px;margin-bottom:6px">Heading</label>
-    <input class="se-input" id="se_title" placeholder="Section title" value="${escHtml(sec.title)}" onblur="tempPlanSection.title=this.value">
-    <input class="se-input" id="se_subtitle" placeholder="Subtitle (optional)" value="${escHtml(sec.subtitle)}" onblur="tempPlanSection.subtitle=this.value">
+    <input class="se-input" id="se_title" placeholder="Section title" value="${escHtml(sec.title)}">
+    <input class="se-input" id="se_subtitle" placeholder="Subtitle (optional)" value="${escHtml(sec.subtitle)}">
     <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-top:12px;margin-bottom:6px">Section type</label>
     <div class="se-type-grid">${typeGrid}</div>
     <label style="font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-top:14px;margin-bottom:8px">Content</label>
     ${itemsHtml}
     ${editingPlanSectionId ? `<div class="se-danger"><button class="btn-danger" onclick="deletePlanSection('${sec.id}')">Delete this section</button></div>` : ''}
     <div style="height:8px"></div>`;
+
+  // Attach delegated listener
+  const body = document.getElementById('planSectionModalBody');
+  body.addEventListener('input', handlePlanEditorInput);
+  body.addEventListener('change', handlePlanEditorInput);
+}
+
+function handlePlanEditorInput(e) {
+  const el = e.target;
+  const key = el.dataset.key;
+  const field = el.dataset.field;
+  const idx = el.dataset.index !== undefined ? parseInt(el.dataset.index) : null;
+  const taskIdx = el.dataset.taskindex !== undefined ? parseInt(el.dataset.taskindex) : null;
+  const numtype = el.dataset.numtype;
+
+  if (!key && !field) return; // header inputs handled by flushPlanEditorInputs
+
+  let val = el.value;
+  if (numtype === 'int') val = parseInt(val) || 0;
+
+  if (key === 'items' && idx !== null) {
+    if (!tempPlanSection.items[idx]) return;
+    if (field === 'tasks' && taskIdx !== null) {
+      if (!tempPlanSection.items[idx].tasks) tempPlanSection.items[idx].tasks = [];
+      tempPlanSection.items[idx].tasks[taskIdx] = val;
+    } else {
+      tempPlanSection.items[idx][field] = val;
+    }
+  }
 }
 
 function setPlanSectionType(type) {
-  // Flush current textarea values before switching
-  document.querySelectorAll('#planSectionModalBody input, #planSectionModalBody textarea, #planSectionModalBody select').forEach(el=>{
-    if (el.onblur) el.onblur.call(el);
-  });
+  flushPlanEditorInputs();
   tempPlanSection.type = type;
   if (!tempPlanSection.items) tempPlanSection.items = [];
   renderPlanSectionEditor();
@@ -3133,11 +3303,7 @@ function setPlanSectionType(type) {
 
 function addPlanItem_(key, item) {
   if (!tempPlanSection[key]) tempPlanSection[key]=[];
-  // Flush existing inputs first
-  document.querySelectorAll('#planSectionModalBody input, #planSectionModalBody textarea').forEach(el=>{
-    const onblur = el.getAttribute('onblur');
-    if (onblur) { try { eval(onblur.replace(/this/g, JSON.stringify(el.value)).replace(/parseInt.*?;/,'').replace(/this\.value/g,JSON.stringify(el.value))); } catch(e){} }
-  });
+  flushPlanEditorInputs();
   tempPlanSection[key].push(item);
   renderPlanSectionEditor();
 }
@@ -3162,9 +3328,6 @@ function removePlanTask(itemIdx, taskIdx) {
 }
 
 function flushPlanEditorInputs() {
-  // Manually read all current input values into tempPlanSection
-  const body = document.getElementById('planSectionModalBody');
-  if (!body) return;
   const e = id => document.getElementById(id);
   if (e('se_emoji'))    tempPlanSection.emoji    = e('se_emoji').value;
   if (e('se_bg'))       tempPlanSection.bgColor  = e('se_bg').value;
@@ -3174,11 +3337,6 @@ function flushPlanEditorInputs() {
 
 function savePlanSection() {
   flushPlanEditorInputs();
-  // Final read of all inline inputs
-  document.querySelectorAll('#planSectionModalBody input[onblur], #planSectionModalBody textarea[onblur], #planSectionModalBody select[onchange]').forEach(el=>{
-    try { if(el.onblur) el.onblur.call(el); if(el.onchange) el.onchange.call(el); } catch(e){}
-  });
-
   const plan = loadPlan();
   if (editingPlanSectionId) {
     const idx = plan.sections.findIndex(s=>s.id===editingPlanSectionId);
@@ -3208,7 +3366,8 @@ function deletePlanSection(id) {
 
 function loadGoals() {
   const r = localStorage.getItem('spendly_goals');
-  return r ? JSON.parse(r) : [];
+  if (!r) return [];
+  try { return JSON.parse(r); } catch(e) { console.error('loadGoals parse error', e); return []; }
 }
 function saveGoals(g) { localStorage.setItem('spendly_goals', JSON.stringify(g)); }
 
