@@ -536,6 +536,41 @@
   .loan-param-label { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
   .loan-param-val { font-size:15px; font-weight:900; color:var(--text); }
   .loan-milestone { font-size:12px; font-weight:800; padding:8px 12px; border-radius:10px; background:rgba(0,184,148,0.1); color:var(--teal); margin-top:8px; text-align:center; }
+
+  /* ── DAILY LIMIT CARD ── */
+  .daily-limit-card { display:flex; align-items:center; justify-content:space-between; background:var(--card); border-radius:16px; padding:12px 14px; margin-bottom:10px; border:1px solid var(--border); }
+  .dlc-left { flex:1; min-width:0; }
+  .dlc-label { font-size:10px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+  .dlc-amt { font-size:22px; font-weight:900; color:var(--purple); line-height:1; }
+  .dlc-amt.dlc-over { color:var(--coral); }
+  .dlc-sub { font-size:11px; font-weight:700; color:var(--muted); margin-top:4px; }
+  .dlc-ring-wrap { position:relative; width:52px; height:52px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .dlc-ring-pct { position:absolute; font-size:10px; font-weight:900; }
+
+  /* ── REVIEW NUDGE ── */
+  .review-nudge { display:flex; align-items:center; gap:10px; background:rgba(108,92,231,0.07); border:1.5px solid rgba(108,92,231,0.2); border-radius:14px; padding:12px 14px; margin-bottom:10px; cursor:pointer; transition:border-color 0.2s; }
+  .review-nudge:active { border-color:rgba(108,92,231,0.5); }
+  .rn-icon { font-size:20px; flex-shrink:0; }
+  .rn-body { flex:1; min-width:0; }
+  .rn-title { font-size:12px; font-weight:800; color:var(--text); line-height:1.4; }
+  .rn-hint { font-size:11px; font-weight:700; color:var(--purple); margin-top:2px; }
+  .rn-arrow { font-size:18px; color:var(--purple); font-weight:900; flex-shrink:0; }
+
+  /* ── WEEK NOTE ── */
+  .week-note-row { margin-bottom:10px; }
+  .week-note-input { width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:12px; font-size:13px; font-family:'Nunito',sans-serif; font-weight:700; color:var(--text); background:var(--card); outline:none; resize:none; min-height:42px; line-height:1.5; transition:border-color 0.2s; box-sizing:border-box; }
+  .week-note-input:focus { border-color:var(--purple); min-height:72px; }
+  .history-note { font-size:12px; font-weight:700; color:var(--muted); background:var(--bg); border-radius:8px; padding:6px 10px; margin-top:8px; line-height:1.5; }
+
+  /* ── INSIGHTS TOGGLE ── */
+  .insights-toggle-row { display:flex; gap:6px; margin-bottom:10px; margin-top:4px; }
+  .ins-toggle-btn { flex:1; padding:9px 4px; border-radius:12px; border:1.5px solid var(--border); background:var(--card); font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; color:var(--muted); cursor:pointer; transition:all 0.2s; }
+  .ins-toggle-btn.active { background:var(--purple); color:white; border-color:var(--purple); }
+
+  /* ── SPEND SEARCH ── */
+  .spend-search-card { margin-bottom:10px; }
+  .spend-search-input { flex:1; width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:12px; font-size:14px; font-family:'Nunito',sans-serif; font-weight:700; color:var(--text); background:var(--bg); outline:none; box-sizing:border-box; }
+  .spend-search-input:focus { border-color:var(--purple); }
 </style>
 </head>
 <body>
@@ -894,6 +929,28 @@
   </div>
 </div>
 
+<!-- WEEK NOTE MODAL -->
+<div class="modal-overlay" id="weekNoteModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2>📝 Week note</h2>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;margin-bottom:4px" id="weekNoteModalLabel"></div>
+    </div>
+    <div class="modal-scroll">
+      <label>Note</label>
+      <textarea id="weekNoteModalInput" placeholder="e.g. Ate at home most of this week, flatmate paid me back $40…" style="height:110px"></textarea>
+      <div style="height:8px"></div>
+    </div>
+    <div class="modal-bottom">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('weekNoteModal')">Cancel</button>
+        <button class="btn-add" onclick="saveWeekNoteModal()">Save note</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ═══════════════════════════════════════════════════════════════════
 // CONSTANTS & EXPENSE DATA
@@ -948,6 +1005,43 @@ function loadShortcuts() {
   try { return JSON.parse(r); } catch(e) { console.error('loadShortcuts parse error', e); return []; }
 }
 function saveShortcuts(s) { localStorage.setItem('spendly_shortcuts', JSON.stringify(s)); }
+
+// ═══════════════════════════════════════════════════════════════════
+// WEEK NOTES
+// ═══════════════════════════════════════════════════════════════════
+
+function weekNoteKey(weekStart) {
+  const d = weekStart instanceof Date ? weekStart : new Date(weekStart);
+  return 'spendly_note_' + d.toISOString().slice(0,10);
+}
+function loadWeekNote(weekStart) {
+  return localStorage.getItem(weekNoteKey(weekStart)) || '';
+}
+function saveWeekNote(weekStartIso, text) {
+  const key = weekNoteKey(new Date(weekStartIso));
+  if (text.trim()) localStorage.setItem(key, text.trim());
+  else localStorage.removeItem(key);
+}
+
+let weekNoteModalTargetIso = null;
+function openWeekNoteModal(weekStartIso) {
+  weekNoteModalTargetIso = weekStartIso;
+  const note = loadWeekNote(new Date(weekStartIso));
+  const ws = new Date(weekStartIso);
+  const we = getWeekEnd(ws);
+  document.getElementById('weekNoteModalLabel').textContent = formatDate(ws) + ' – ' + formatDate(we);
+  document.getElementById('weekNoteModalInput').value = note;
+  openModal('weekNoteModal');
+  setTimeout(() => document.getElementById('weekNoteModalInput').focus(), 350);
+}
+function saveWeekNoteModal() {
+  if (!weekNoteModalTargetIso) return;
+  const text = document.getElementById('weekNoteModalInput').value;
+  saveWeekNote(weekNoteModalTargetIso, text);
+  closeModal('weekNoteModal');
+  render();
+  showToast('Note saved ✅', 'success');
+}
 function getWeekBudget(weekStart, data) {
   const key = weekStart.toISOString();
   return (data.weekBudgets && data.weekBudgets[key] != null) ? data.weekBudgets[key] : (data.defaultBudget || 250);
@@ -1323,18 +1417,34 @@ function renderWeek() {
   const remaining=budget-spent;
   const pct=Math.min(100,(spent/budget)*100);
 
-  // Spending velocity
+  // Spending pace
   const now = new Date();
   const daysElapsed = (now - ws) / (1000 * 60 * 60 * 24);
-  let velocityText = '';
-  if (daysElapsed >= 1 && spent > 0 && remaining >= 0) {
-    const projectedSpend = spent / daysElapsed * 7;
-    velocityText = ` · on track for $${fmtAmt(projectedSpend)}`;
+  const daysLeft = Math.max(0, 7 - daysElapsed);
+  let paceText = '';
+  if (daysElapsed >= 0.5 && spent > 0 && remaining >= 0) {
+    const dailyRate = spent / daysElapsed;
+    const budgetDailyRate = budget / 7;
+    const ratio = dailyRate / budgetDailyRate;
+    if (ratio < 0.75) paceText = ' · 🐢 well under pace';
+    else if (ratio < 0.95) paceText = ' · 👍 slightly under pace';
+    else if (ratio < 1.1) paceText = ' · ✅ on pace';
+    else if (ratio < 1.3) paceText = ' · ⚠️ slightly over pace';
+    else paceText = ' · 🔴 over pace';
   }
+
+  // Daily spending limit
+  const todaySpent = d.expenses.filter(e => {
+    const ed = new Date(e.date); ed.setHours(0,0,0,0);
+    const td = new Date(); td.setHours(0,0,0,0);
+    return ed.getTime() === td.getTime();
+  }).reduce((s,e) => s+e.amount, 0);
+  const daysLeftCeil = Math.max(1, Math.ceil(daysLeft));
+  const dailyLimit = remaining >= 0 ? remaining / daysLeftCeil : 0;
 
   document.getElementById('weekLabel').textContent    = 'Week of '+formatDate(ws);
   document.getElementById('remainingAmt').textContent = Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
-  document.getElementById('budgetLabel').textContent  = remaining>=0?'left this week'+velocityText:'over budget';
+  document.getElementById('budgetLabel').textContent  = remaining>=0?'left this week'+paceText:'over budget';
   document.getElementById('spentLabel').textContent   = '$'+fmtAmt(spent)+' spent';
   document.getElementById('pctLabel').textContent     = Math.round(pct)+'% used';
   document.getElementById('progressBar').style.width  = pct+'%';
@@ -1342,11 +1452,60 @@ function renderWeek() {
   const body=document.getElementById('mainBody');
   let html = renderShortcutsRow();
 
+  // Daily limit card
+  if (remaining > 0) {
+    const todayPct = Math.min(100, (todaySpent / dailyLimit) * 100);
+    const todayOk = todaySpent <= dailyLimit;
+    html += `<div class="daily-limit-card">
+      <div class="dlc-left">
+        <div class="dlc-label">Today's limit</div>
+        <div class="dlc-amt ${todayOk?'':'dlc-over'}">$${fmtAmt(dailyLimit)}</div>
+        <div class="dlc-sub">$${fmtAmt(todaySpent)} spent today · ${daysLeftCeil}d left</div>
+      </div>
+      <div class="dlc-ring-wrap">
+        <svg width="52" height="52" viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="21" fill="none" stroke="var(--bg)" stroke-width="5"/>
+          <circle cx="26" cy="26" r="21" fill="none" stroke="${todayOk?'var(--purple)':'var(--coral)'}" stroke-width="5"
+            stroke-dasharray="${(2*Math.PI*21).toFixed(1)}"
+            stroke-dashoffset="${((1-todayPct/100)*2*Math.PI*21).toFixed(1)}"
+            stroke-linecap="round" transform="rotate(-90 26 26)"/>
+        </svg>
+        <div class="dlc-ring-pct" style="color:${todayOk?'var(--purple)':'var(--coral)'}">${Math.round(todayPct)}%</div>
+      </div>
+    </div>`
+  }
+
   // Streak pill
   const streak = computeStreak(d, ws);
   if (streak >= 1) {
     html += `<div style="display:inline-flex;align-items:center;background:rgba(253,203,110,0.22);border-radius:99px;padding:4px 12px;margin-bottom:8px"><span style="color:#b8860b;font-size:12px;font-weight:800;letter-spacing:0.2px">🔥 ${streak}-week streak under budget</span></div>`;
   }
+
+  // Weekly review nudge: show if last week had expenses and no note, and current week has started recently
+  const lastWs = new Date(ws); lastWs.setDate(ws.getDate() - 7);
+  const lastWe = new Date(ws);
+  const lastWeekExp = d.expenses.filter(e => { const t = new Date(e.date); return t >= lastWs && t < lastWe; });
+  const hoursIntoWeek = (now - ws) / (1000 * 60 * 60);
+  const lastWeekNote = loadWeekNote(lastWs);
+  if (lastWeekExp.length > 0 && hoursIntoWeek < 48 && !lastWeekNote) {
+    const lastSpent = lastWeekExp.reduce((s,e)=>s+e.amount,0);
+    const lastBudget = getWeekBudget(lastWs, d);
+    const lastOk = lastSpent <= lastBudget;
+    html += `<div class="review-nudge" onclick="openWeekNoteModal('${lastWs.toISOString()}')">
+      <div class="rn-icon">${lastOk?'✅':'📝'}</div>
+      <div class="rn-body">
+        <div class="rn-title">Last week: $${fmtAmt(lastSpent)} of $${fmtAmt(lastBudget)} — ${lastOk?'under budget 🎉':'over budget'}</div>
+        <div class="rn-hint">Tap to add a weekly note before you forget</div>
+      </div>
+      <div class="rn-arrow">›</div>
+    </div>`;
+  }
+
+  // Week note for current week
+  const currentNote = loadWeekNote(ws);
+  html += `<div class="week-note-row">
+    <textarea class="week-note-input" id="weekNoteInput" placeholder="📝 Add a note for this week…" onblur="saveWeekNote('${ws.toISOString()}', this.value)">${escHtml(currentNote)}</textarea>
+  </div>`;
 
   if (!weekExp.length) {
     html += `<div class="empty-state"><div class="emoji">🎉</div><p>No expenses yet!</p><small>Tap + Add expense to get started</small></div>`;
@@ -1360,6 +1519,8 @@ function renderWeek() {
   body.innerHTML = html;
 }
 
+let insightsScope = 'week'; // 'week' | 'alltime'
+
 function renderInsights() {
   const d=loadData(), ws=getWeekStart(), we=getWeekEnd(ws);
   const budget=getWeekBudget(ws,d);
@@ -1367,29 +1528,41 @@ function renderInsights() {
   const spent=weekExp.reduce((s,e)=>s+e.amount,0);
   const remaining=budget-spent, pct=Math.min(100,(spent/budget)*100), ok=remaining>=0;
 
-  // Spending velocity
+  // Spending pace
   const now2 = new Date();
   const daysElapsed2 = (now2 - ws) / (1000 * 60 * 60 * 24);
-  let velocityText2 = '';
-  if (daysElapsed2 >= 1 && spent > 0 && ok) {
-    const projectedSpend2 = spent / daysElapsed2 * 7;
-    velocityText2 = ` · on track for $${fmtAmt(projectedSpend2)}`;
+  let paceText2 = '';
+  if (daysElapsed2 >= 0.5 && spent > 0 && ok) {
+    const dailyRate2 = spent / daysElapsed2;
+    const budgetDailyRate2 = budget / 7;
+    const ratio2 = dailyRate2 / budgetDailyRate2;
+    if (ratio2 < 0.75) paceText2 = ' · 🐢 well under pace';
+    else if (ratio2 < 0.95) paceText2 = ' · 👍 slightly under pace';
+    else if (ratio2 < 1.1) paceText2 = ' · ✅ on pace';
+    else if (ratio2 < 1.3) paceText2 = ' · ⚠️ slightly over pace';
+    else paceText2 = ' · 🔴 over pace';
   }
 
   document.getElementById('weekLabel').textContent   = 'Week of '+formatDate(ws);
   document.getElementById('remainingAmt').textContent= Math.abs(remaining).toFixed(2).replace(/\.00$/,'');
-  document.getElementById('budgetLabel').textContent = ok?'left this week'+velocityText2:'over budget';
+  document.getElementById('budgetLabel').textContent = ok?'left this week'+paceText2:'over budget';
   document.getElementById('spentLabel').textContent  = '$'+fmtAmt(spent)+' spent';
   document.getElementById('pctLabel').textContent    = Math.round(pct)+'% used';
   document.getElementById('progressBar').style.width = pct+'%';
   document.getElementById('header').className        = 'header'+(ok?'':' over-budget');
 
+  // Pick dataset based on scope toggle
+  const scopeExp = insightsScope === 'alltime' ? d.expenses : weekExp;
+  const scopeLabel = insightsScope === 'alltime' ? 'All time' : 'This week';
+  const scopeTotal = scopeExp.reduce((s,e)=>s+e.amount,0);
+
+  // Category breakdown
   const byCat={};
-  weekExp.forEach(e=>{byCat[e.category]=(byCat[e.category]||0)+e.amount;});
+  scopeExp.forEach(e=>{byCat[e.category]=(byCat[e.category]||0)+e.amount;});
   const catBreakdown=CATS.filter(c=>byCat[c.id]).sort((a,b)=>byCat[b.id]-byCat[a.id]);
   const maxCatAmt=catBreakdown.length?byCat[catBreakdown[0].id]:1;
   const catBarsHtml=catBreakdown.length?catBreakdown.map(c=>{
-    const amt=byCat[c.id], p=Math.round((amt/Math.max(spent,0.01))*100);
+    const amt=byCat[c.id], p=Math.round((amt/Math.max(scopeTotal,0.01))*100);
     return `<div class="cat-bar-row">
       <div class="cat-bar-icon" style="background:${c.color}22">${c.emoji}</div>
       <div class="cat-bar-info">
@@ -1398,6 +1571,7 @@ function renderInsights() {
       </div></div>`;
   }).join(''):'<div style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0">No expenses logged yet</div>';
 
+  // Reflection summary (always this-week for context)
   const necCounts={yes:0,maybe:0,no:0}, vibeCounts={}, necAmts={yes:0,maybe:0,no:0};
   weekExp.forEach(e=>{
     if (e.necessary){necCounts[e.necessary]++;necAmts[e.necessary]+=e.amount;}
@@ -1434,12 +1608,42 @@ function renderInsights() {
       <div class="trend-bar-label">${w.label}</div><div class="trend-bar-amt">$${fmtAmt(w.spent)}</div></div>`;
   }).join('');
 
+  // All-time summary extras
+  let allTimeSummaryHtml = '';
+  if (insightsScope === 'alltime' && d.expenses.length > 0) {
+    const totalAllTime = d.expenses.reduce((s,e)=>s+e.amount,0);
+    const weeks2 = new Set(d.expenses.map(e => getWeekStart(new Date(e.date)).toISOString())).size;
+    const avgWeekly = weeks2 > 0 ? totalAllTime / weeks2 : 0;
+    allTimeSummaryHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div style="background:var(--bg);border-radius:12px;padding:10px 12px">
+        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Total spent</div>
+        <div style="font-size:18px;font-weight:900;color:var(--text);margin-top:2px">$${fmtAmtFull(totalAllTime)}</div>
+      </div>
+      <div style="background:var(--bg);border-radius:12px;padding:10px 12px">
+        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Avg per week</div>
+        <div style="font-size:18px;font-weight:900;color:var(--text);margin-top:2px">$${fmtAmt(avgWeekly)}</div>
+      </div>
+    </div>`;
+  }
+
   document.getElementById('mainBody').innerHTML = `
-    <div class="insight-card" style="margin-top:4px">
-      <div class="insight-card-title">📊 Spending by category</div>${catBarsHtml}
+    <div class="insights-toggle-row">
+      <button class="ins-toggle-btn ${insightsScope==='week'?'active':''}" onclick="setInsightsScope('week')">This week</button>
+      <button class="ins-toggle-btn ${insightsScope==='alltime'?'active':''}" onclick="setInsightsScope('alltime')">All time</button>
+    </div>
+    <div class="insight-card spend-search-card" style="margin-top:0">
+      <div class="insight-card-title">🔍 What did I spend on…</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="spend-search-input" id="spendSearchInput" type="text" placeholder="e.g. coffee, Countdown, gym…" oninput="runSpendSearch()" autocomplete="off">
+      </div>
+      <div id="spendSearchResult" style="margin-top:10px"></div>
+    </div>
+    <div class="insight-card" style="margin-top:0">
+      <div class="insight-card-title">📊 Spending by category <span style="font-size:11px;font-weight:700;color:var(--muted);margin-left:4px">${scopeLabel}</span></div>
+      ${allTimeSummaryHtml}${catBarsHtml}
     </div>
     <div class="insight-card">
-      <div class="insight-card-title">🧠 Reflection summary</div>
+      <div class="insight-card-title">🧠 Reflection summary <span style="font-size:11px;font-weight:700;color:var(--muted);margin-left:4px">This week</span></div>
       <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;line-height:1.5">${guiltMsg}</div>
       ${totalTagged>0?`<div class="guilt-bar-wrap">
         <div class="guilt-bar-label"><span>✅ Yes (${yesPct}%)</span><span>🤔 Maybe (${maybePct}%)</span><span>❌ No (${guiltyPct}%)</span></div>
@@ -1455,6 +1659,56 @@ function renderInsights() {
       <div class="insight-card-title">📈 4-week trend</div>
       <div class="trend-bars">${trendBarsHtml}</div>
     </div>`;
+}
+
+function setInsightsScope(scope) {
+  insightsScope = scope;
+  renderInsights();
+}
+
+function runSpendSearch() {
+  const q = (document.getElementById('spendSearchInput').value || '').trim().toLowerCase();
+  const resultEl = document.getElementById('spendSearchResult');
+  if (!q) { resultEl.innerHTML = ''; return; }
+  const d = loadData();
+  const matches = d.expenses.filter(e => e.name.toLowerCase().includes(q));
+  if (!matches.length) {
+    resultEl.innerHTML = `<div style="font-size:13px;color:var(--muted);padding:4px 0">No expenses matching "${escHtml(q)}"</div>`;
+    return;
+  }
+  const total = matches.reduce((s,e)=>s+e.amount,0);
+  const count = matches.length;
+  const recent = matches.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,3);
+  const recentHtml = recent.map(e => {
+    const cat = catFor(e);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:14px">${cat.emoji}</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${escHtml(e.name)}</div>
+        <div style="font-size:11px;color:var(--muted)">${formatDateShort(new Date(e.date))}</div>
+      </div>
+      <div style="font-size:13px;font-weight:900;color:var(--text);flex-shrink:0">$${fmtAmt(e.amount)}</div>
+    </div>`;
+  }).join('');
+  resultEl.innerHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <div style="flex:1;background:var(--bg);border-radius:10px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Total</div>
+        <div style="font-size:17px;font-weight:900;color:var(--purple)">$${fmtAmt(total)}</div>
+      </div>
+      <div style="flex:1;background:var(--bg);border-radius:10px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Times</div>
+        <div style="font-size:17px;font-weight:900;color:var(--text)">${count}×</div>
+      </div>
+      <div style="flex:1;background:var(--bg);border-radius:10px;padding:8px 10px">
+        <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px">Avg</div>
+        <div style="font-size:17px;font-weight:900;color:var(--text)">$${fmtAmt(total/count)}</div>
+      </div>
+    </div>
+    <div style="font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Recent</div>
+    ${recentHtml}
+    ${count > 3 ? `<div style="font-size:11px;color:var(--muted);font-weight:700;padding-top:6px">+ ${count-3} more</div>` : ''}
+  `;
 }
 
 function renderHistoryItems(expenses) {
@@ -1487,6 +1741,8 @@ function historyWeekCard({start,end,expenses,budget,isCurrentWeek}) {
   const diffColor=isCurrentWeek?(ok?'#6c5ce7':'#e17055'):(ok?'#00b894':'#e17055');
   const diffLabel=isCurrentWeek?(ok?'Remaining':'Over by'):(ok?'Saved':'Over by');
   const borderStyle=isCurrentWeek?'border:1.5px solid rgba(108,92,231,0.28);':'';
+  const note = loadWeekNote(start);
+  const noteHtml = note ? `<div class="history-note">📝 ${escHtml(note)}</div>` : '';
   return `<div class="history-week ${expanded?'expanded':''}" style="${borderStyle}" onclick="toggleWeek('${key}')">
     <div class="history-week-header">
       <div class="history-week-title">${formatDate(start)} – ${formatDate(end)}</div>
@@ -1498,6 +1754,7 @@ function historyWeekCard({start,end,expenses,budget,isCurrentWeek}) {
       <div><div class="hlabel">Budget</div><div class="hval">$${fmtAmt(budget)}</div></div>
     </div>
     <div class="history-bar"><div class="history-bar-fill" style="width:${pct}%"></div></div>
+    ${noteHtml}
     <div class="history-items">${renderHistoryItems(expenses)}</div>
   </div>`;
 }
@@ -2395,6 +2652,7 @@ function renderSettings() {
         <div><div class="fp-section-title">Danger Zone</div><div class="fp-section-subtitle">Irreversible actions</div></div>
       </div>
       <button class="btn-danger" style="margin-top:0" onclick="confirmClearAll()">🗑 Clear all data</button>
+      <button class="btn-danger" onclick="confirmClearPlan()">📋 Reset plan to default</button>
     </div>
   `;
 }
@@ -2409,6 +2667,14 @@ function confirmClearAll() {
     localStorage.removeItem('spendly_budget');
     switchSection('expenses');
     showToast('All data cleared.');
+  }
+}
+
+function confirmClearPlan() {
+  if (confirm('Reset plan data to default? Your custom sections and entries will be lost. This cannot be undone.')) {
+    localStorage.removeItem('spendly_plan');
+    showToast('Plan reset to default.');
+    renderSettings();
   }
 }
 
