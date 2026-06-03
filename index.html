@@ -353,8 +353,8 @@
   .plan-amt-prefix { font-size:13px; font-weight:800; color:var(--muted); }
   .plan-amt-input { width:80px; padding:7px 8px; border:1.5px solid transparent; border-radius:10px; font-size:13px; font-family:'Nunito',sans-serif; font-weight:900; color:var(--text); background:transparent; outline:none; text-align:right; }
   .plan-amt-input:focus { border-color:var(--border); background:var(--bg); }
-  .plan-delete { background:none; border:none; color:var(--border); font-size:14px; cursor:pointer; padding:4px; flex-shrink:0; line-height:1; }
-  .plan-delete:active { color:var(--coral); }
+  .plan-delete { background:none; border:none; color:var(--muted); font-size:13px; cursor:pointer; padding:4px; flex-shrink:0; line-height:1; opacity:0.45; transition:opacity 0.15s, color 0.15s; }
+  .plan-delete:active { color:var(--coral); opacity:1; }
   .plan-add-btn { width:100%; padding:10px; border:1.5px dashed var(--border); border-radius:12px; background:transparent; font-family:'Nunito',sans-serif; font-size:13px; font-weight:800; color:var(--muted); cursor:pointer; margin-top:10px; transition:all 0.2s; }
   .plan-add-btn:active { background:var(--bg); }
   .plan-extra-card { background:var(--card); border-radius:20px; padding:16px; margin-bottom:12px; border:1px solid var(--border); }
@@ -598,6 +598,39 @@
   .spend-search-card { margin-bottom:10px; }
   .spend-search-input { flex:1; width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:12px; font-size:14px; font-family:'Nunito',sans-serif; font-weight:700; color:var(--text); background:var(--bg); outline:none; box-sizing:border-box; }
   .spend-search-input:focus { border-color:var(--purple); }
+
+  /* ── WEEK NOTE BUTTON ── */
+  .week-note-btn { width:100%; padding:10px 14px; border:1.5px dashed var(--border); border-radius:12px; background:var(--card); font-family:'Nunito',sans-serif; font-size:13px; font-weight:700; color:var(--muted); cursor:pointer; display:flex; align-items:center; gap:8px; text-align:left; transition:border-color 0.2s; }
+  .week-note-btn:active { border-color:rgba(108,92,231,0.4); }
+  .week-note-btn-filled { border-style:solid; border-color:rgba(108,92,231,0.25); background:rgba(108,92,231,0.04); color:var(--text); }
+  .wnb-icon { font-size:15px; flex-shrink:0; }
+  .wnb-placeholder { flex:1; color:var(--muted); }
+  .wnb-preview { flex:1; color:var(--text); font-weight:700; line-height:1.4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .wnb-edit-hint { font-size:11px; font-weight:800; color:var(--purple); background:rgba(108,92,231,0.1); padding:2px 8px; border-radius:99px; flex-shrink:0; }
+
+  /* ── HISTORY MONTH NAVIGATION ── */
+  .history-month-nav { display:flex; align-items:center; justify-content:space-between; background:var(--card); border-radius:14px; padding:10px 14px; margin-bottom:12px; border:1px solid var(--border); }
+  .hmn-label { font-size:14px; font-weight:900; color:var(--text); }
+  .hmn-btn { background:var(--bg); border:1.5px solid var(--border); border-radius:10px; width:34px; height:34px; font-size:18px; font-weight:900; color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:'Nunito',sans-serif; transition:background 0.15s; flex-shrink:0; }
+  .hmn-btn:active { background:rgba(108,92,231,0.12); border-color:rgba(108,92,231,0.3); }
+  .hmn-btn:disabled { color:var(--border); cursor:default; }
+
+  /* ── ACCOUNT SINGLE UPDATE BUTTON ── */
+  .acct-update-btn { background:rgba(108,92,231,0.1); border:none; color:var(--purple); border-radius:10px; padding:6px 10px; font-size:11px; font-weight:900; cursor:pointer; flex-shrink:0; font-family:'Nunito',sans-serif; margin-left:8px; transition:background 0.15s; }
+  .acct-update-btn:active { background:rgba(108,92,231,0.25); }
+
+  /* ── GOAL SUMMARY CARD ── */
+  .goal-summary-card { background:linear-gradient(135deg,rgba(108,92,231,0.07),rgba(168,85,247,0.07)); border:1.5px solid rgba(108,92,231,0.18); border-radius:20px; padding:16px; margin-bottom:14px; }
+  .goal-summary-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .goal-summary-title { font-size:14px; font-weight:900; color:var(--text); }
+  .goal-summary-pct { font-size:20px; font-weight:900; color:var(--purple); }
+
+  /* ── GOAL DEPOSIT/WITHDRAWAL ── */
+  .goal-deposit-amt.withdrawal { color:var(--coral); }
+  .deposit-type-row { display:flex; gap:8px; margin-bottom:4px; }
+  .deposit-type-btn { flex:1; padding:10px 4px; border-radius:14px; border:1.5px solid var(--border); background:var(--bg); font-family:'Nunito',sans-serif; font-size:12px; font-weight:800; color:var(--muted); cursor:pointer; text-align:center; transition:all 0.15s; }
+  .deposit-type-btn.selected { background:var(--card); }
+  .deposit-type-btn .dt-emoji { font-size:18px; display:block; margin-bottom:3px; }
 </style>
 </head>
 <body>
@@ -922,15 +955,43 @@
   </div>
 </div>
 
+<!-- SINGLE ACCOUNT BALANCE UPDATE -->
+<div class="modal-overlay" id="singleBalModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-handle"></div>
+      <h2>Update balance</h2>
+      <div id="singleBalAcctName" style="font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:4px"></div>
+    </div>
+    <div class="modal-scroll">
+      <label>New balance ($)</label>
+      <input type="number" id="singleBalInput" inputmode="decimal" placeholder="0.00" step="0.01">
+      <div id="singleBalPrev" style="font-size:12px;color:var(--muted);margin-top:6px;font-weight:700"></div>
+      <div style="height:12px"></div>
+    </div>
+    <div class="modal-bottom">
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="closeModal('singleBalModal')">Cancel</button>
+        <button class="btn-add" onclick="saveSingleBalance()">Save &amp; record</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- DEPOSIT MODAL -->
 <div class="modal-overlay" id="depositModal">
   <div class="modal">
     <div class="modal-top">
       <div class="modal-handle"></div>
-      <h2>💰 Add deposit</h2>
+      <h2 id="depositModalTitle">💰 Add deposit</h2>
       <div style="font-size:13px;color:var(--muted);margin-top:2px;margin-bottom:4px">For: <strong id="depositGoalName"></strong></div>
     </div>
     <div class="modal-scroll">
+      <label>Type</label>
+      <div class="deposit-type-row" id="depositTypeRow">
+        <button class="deposit-type-btn selected" id="depositTypeDepBtn" onclick="selectDepositType('deposit',this)"><span class="dt-emoji">💰</span>Deposit</button>
+        <button class="deposit-type-btn" id="depositTypeWdBtn" onclick="selectDepositType('withdrawal',this)"><span class="dt-emoji">📤</span>Withdraw</button>
+      </div>
       <div class="deposit-suggestion" id="depositSuggestion"></div>
       <label>Amount ($)</label>
       <input type="number" id="depositAmountInput" inputmode="decimal" placeholder="0.00" step="0.01">
@@ -938,14 +999,14 @@
       <input type="text" id="depositNoteInput" placeholder="e.g. Weekly savings transfer">
       <label>Date</label>
       <input type="date" id="depositDateInput">
-      <label style="margin-top:16px">Deposit history</label>
+      <label style="margin-top:16px">History</label>
       <div id="depositHistoryList" style="padding-bottom:4px"></div>
       <div style="height:8px"></div>
     </div>
     <div class="modal-bottom">
       <div class="modal-actions">
         <button class="btn-cancel" onclick="closeModal('depositModal')">Cancel</button>
-        <button class="btn-add" onclick="saveDeposit()">Save deposit</button>
+        <button class="btn-add" id="depositSaveBtn" onclick="saveDeposit()">Save deposit</button>
       </div>
     </div>
   </div>
@@ -1186,6 +1247,10 @@ let editingAccountId  = null;
 let editingPaymentId  = null;
 let selectedPayType   = 'income';
 let editingExpenseId  = null;
+let historyViewYear   = new Date().getFullYear();
+let historyViewMonth  = new Date().getMonth();
+let singleBalAccountId = null;
+let depositType       = 'deposit';
 
 // ═══════════════════════════════════════════════════════════════════
 // TOAST
@@ -1525,7 +1590,12 @@ function renderWeek() {
   // Week note for current week
   const currentNote = loadWeekNote(ws);
   html += `<div class="week-note-row">
-    <textarea class="week-note-input" id="weekNoteInput" placeholder="📝 Add a note for this week…" onblur="saveWeekNote('${ws.toISOString()}', this.value)">${escHtml(currentNote)}</textarea>
+    <button class="week-note-btn${currentNote?' week-note-btn-filled':''}" onclick="openWeekNoteModal('${ws.toISOString()}')">
+      <span class="wnb-icon">📝</span>
+      ${currentNote
+        ? `<span class="wnb-preview">${escHtml(currentNote.slice(0,80))}${currentNote.length>80?'…':''}</span><span class="wnb-edit-hint">Edit</span>`
+        : `<span class="wnb-placeholder">Add a note for this week…</span>`}
+    </button>
   </div>`;
 
   if (!weekExp.length) {
@@ -1797,35 +1867,62 @@ function renderHistory() {
   document.getElementById('pctLabel').textContent    = Math.round(pct)+'% used';
   document.getElementById('progressBar').style.width = pct+'%';
   document.getElementById('header').className        = 'header'+(remaining<0?' over-budget':'');
-  const currentExp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ws&&t<we;});
-  let html=historyWeekCard({start:ws,end:we,expenses:currentExp,budget:getWeekBudget(ws,d),isCurrentWeek:true});
-  let hasAny=currentExp.length>0;
 
-  // Compute max weeks to look back (from oldest expense)
-  const allPastExp = d.expenses.filter(e => new Date(e.date) < ws);
-  let nonEmptyCount = 0;
-  if (allPastExp.length > 0) {
-    const oldest = new Date(Math.min(...allPastExp.map(e => new Date(e.date))));
-    const maxWeeks = Math.ceil((ws.getTime() - oldest.getTime()) / (7 * 24 * 3600 * 1000)) + 1;
-    for (let i = 1; i <= maxWeeks; i++) {
-      const ps=new Date(ws);ps.setDate(ws.getDate()-7*i);
-      const pe=new Date(ps);pe.setDate(ps.getDate()+7);
-      const exp=d.expenses.filter(e=>{const t=new Date(e.date);return t>=ps&&t<pe;});
-      if (!exp.length) continue;
-      hasAny=true;
-      nonEmptyCount++;
-      html+=historyWeekCard({start:ps,end:pe,expenses:exp,budget:getWeekBudget(ps,d),isCurrentWeek:false});
-    }
+  const now = new Date();
+  // Clamp navigation to current month max
+  if (historyViewYear > now.getFullYear() || (historyViewYear === now.getFullYear() && historyViewMonth > now.getMonth())) {
+    historyViewYear = now.getFullYear(); historyViewMonth = now.getMonth();
   }
+
+  const monthStart = new Date(historyViewYear, historyViewMonth, 1);
+  const monthEnd   = new Date(historyViewYear, historyViewMonth + 1, 0, 23, 59, 59);
+  const isCurrentMonth = historyViewYear === now.getFullYear() && historyViewMonth === now.getMonth();
+  const monthLabel = monthStart.toLocaleDateString('en-NZ', { month:'long', year:'numeric' });
+
+  const navHtml = `<div class="history-month-nav">
+    <button class="hmn-btn" onclick="navigateHistoryMonth(-1)">‹</button>
+    <div class="hmn-label">📅 ${escHtml(monthLabel)}</div>
+    <button class="hmn-btn" onclick="navigateHistoryMonth(1)" ${isCurrentMonth?'disabled style="opacity:0.3;cursor:default"':''}>›</button>
+  </div>`;
+
+  // Build list of week starts that overlap with this month
+  let weekCursor = getWeekStart(monthStart);
+  // Step back one week in case the month starts mid-week
+  weekCursor.setDate(weekCursor.getDate() - 0); // already at/before monthStart
+  const weekStarts = [];
+  let safety = 0;
+  while (weekCursor <= monthEnd && safety++ < 10) {
+    weekStarts.push(new Date(weekCursor));
+    weekCursor = new Date(weekCursor);
+    weekCursor.setDate(weekCursor.getDate() + 7);
+  }
+
+  let html = navHtml;
+  let hasAny = false;
+
+  weekStarts.forEach(weekS => {
+    const weekE = getWeekEnd(weekS);
+    // Overlap check: week overlaps month if weekS <= monthEnd and weekE > monthStart
+    if (weekS > monthEnd || weekE <= monthStart) return;
+    const isCurrentWeek = weekS.getTime() === ws.getTime();
+    const exp = d.expenses.filter(e => { const t = new Date(e.date); return t >= weekS && t < weekE; });
+    if (!exp.length && !isCurrentWeek) return;
+    hasAny = true;
+    html += historyWeekCard({start:weekS, end:weekE, expenses:exp, budget:getWeekBudget(weekS,d), isCurrentWeek});
+  });
 
   if (!hasAny) {
-    document.getElementById('mainBody').innerHTML=`<div class="empty-state"><div class="emoji">📅</div><p>No history yet</p><small>Come back next week!</small></div>`;
-    return;
+    html += `<div class="empty-state"><div class="emoji">📅</div><p>No expenses in ${escHtml(monthLabel)}</p><small>Use ‹ to go back to previous months</small></div>`;
   }
-  if (nonEmptyCount > 0) {
-    html += `<div style="text-align:center;padding:10px 0 4px;font-size:11px;font-weight:700;color:var(--muted)">Showing all ${nonEmptyCount} week${nonEmptyCount!==1?'s':''} of history</div>`;
-  }
-  document.getElementById('mainBody').innerHTML=html;
+
+  document.getElementById('mainBody').innerHTML = html;
+}
+
+function navigateHistoryMonth(dir) {
+  historyViewMonth += dir;
+  if (historyViewMonth > 11) { historyViewMonth = 0; historyViewYear++; }
+  if (historyViewMonth < 0) { historyViewMonth = 11; historyViewYear--; }
+  render();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1995,6 +2092,7 @@ function renderBudgetAccounts() {
         <div class="account-updated">Updated ${formatDateShort(new Date(a.lastUpdated))}</div>
       </div>
       <div class="account-balance">$${fmtAmtFull(a.balance||0)}</div>
+      <button class="acct-update-btn" onclick="event.stopPropagation();openSingleBalanceUpdate('${a.id}')">↑ Update</button>
     </div>`;
   }).join('');
 
@@ -2047,6 +2145,38 @@ function saveUpdatedBalances() {
   closeModal('updateBalancesModal');
   render();
   showToast(`✅ Balances updated · Net worth $${fmtAmtFull(snapshot.total)}`, 'success');
+}
+
+function openSingleBalanceUpdate(id) {
+  singleBalAccountId = id;
+  const b = loadBudget();
+  const acc = b.accounts.find(a => a.id === id);
+  if (!acc) return;
+  document.getElementById('singleBalAcctName').textContent = acc.name;
+  document.getElementById('singleBalInput').value = (acc.balance || 0).toFixed(2);
+  document.getElementById('singleBalPrev').textContent = 'Current: $' + fmtAmtFull(acc.balance || 0);
+  openModal('singleBalModal');
+  setTimeout(() => { const el = document.getElementById('singleBalInput'); el.focus(); el.select(); }, 350);
+}
+
+function saveSingleBalance() {
+  const val = parseFloat(document.getElementById('singleBalInput').value);
+  if (isNaN(val)) { showToast('Please enter a valid amount'); return; }
+  const b = loadBudget();
+  const acc = b.accounts.find(a => a.id === singleBalAccountId);
+  if (!acc) return;
+  const now = new Date().toISOString();
+  acc.balance = val;
+  acc.lastUpdated = now;
+  // Record a full snapshot so net worth history stays accurate
+  const snapshot = { date: now, accounts: {}, total: 0 };
+  b.accounts.forEach(a => { snapshot.accounts[a.id] = a.balance; });
+  snapshot.total = b.accounts.reduce((s, a) => s + (a.balance || 0), 0);
+  b.balanceHistory.push(snapshot);
+  saveBudget(b);
+  closeModal('singleBalModal');
+  render();
+  showToast(`✅ Balance updated · Net worth $${fmtAmtFull(snapshot.total)}`, 'success');
 }
 
 let acctHistorySelectedId = null;
@@ -3698,9 +3828,29 @@ function renderBudgetGoals() {
       <small>Tap the button below to create your first goal</small>
     </div>`;
   } else {
+    // Overall summary card (only if 2+ goals)
+    if (goals.length >= 2) {
+      const totalSaved   = goals.reduce((s, g) => s + goalSaved(g), 0);
+      const totalTarget  = goals.reduce((s, g) => s + g.targetAmount, 0);
+      const totalRemain  = Math.max(0, totalTarget - totalSaved);
+      const overallPct   = totalTarget > 0 ? Math.min(100, Math.max(0, Math.round((totalSaved / totalTarget) * 100))) : 0;
+      html += `<div class="goal-summary-card">
+        <div class="goal-summary-header">
+          <div class="goal-summary-title">💰 All Goals</div>
+          <div class="goal-summary-pct">${overallPct}%</div>
+        </div>
+        <div class="goal-progress-track" style="margin-bottom:12px"><div class="goal-progress-bar" style="width:${overallPct}%"></div></div>
+        <div class="goal-amounts">
+          <div class="goal-amount-chip"><div class="gac-label">Saved</div><div class="gac-val" style="color:var(--teal)">$${fmtAmtFull(totalSaved)}</div></div>
+          <div class="goal-amount-chip"><div class="gac-label">Remaining</div><div class="gac-val">$${fmtAmtFull(totalRemain)}</div></div>
+          <div class="goal-amount-chip"><div class="gac-label">Target</div><div class="gac-val">$${fmtAmtFull(totalTarget)}</div></div>
+        </div>
+      </div>`;
+    }
+
     goals.forEach(goal => {
       const saved = goalSaved(goal);
-      const pct = Math.min(100, goal.targetAmount > 0 ? Math.round((saved / goal.targetAmount) * 100) : 0);
+      const pct = Math.min(100, Math.max(0, goal.targetAmount > 0 ? Math.round((saved / goal.targetAmount) * 100) : 0));
       const remaining = Math.max(0, goal.targetAmount - saved);
       const weeksLeft = goalWeeksLeft(goal);
       const weeklyNeeded = goalWeeklyNeeded(goal);
@@ -3727,7 +3877,7 @@ function renderBudgetGoals() {
         <div class="goal-amounts">
           <div class="goal-amount-chip">
             <div class="gac-label">Saved</div>
-            <div class="gac-val" style="color:var(--teal)">$${fmtAmt(saved)}</div>
+            <div class="gac-val" style="color:${saved < 0 ? 'var(--coral)' : 'var(--teal)'}">$${fmtAmt(Math.abs(saved))}${saved < 0 ? ' ↓' : ''}</div>
           </div>
           <div class="goal-amount-chip">
             <div class="gac-label">Remaining</div>
@@ -3750,16 +3900,19 @@ function renderBudgetGoals() {
           <span class="gwb-text">Expense date passed — still $${fmtAmt(remaining)} short</span>
         </div>` : ''}
 
-        ${recentDeposits.length ? `<div class="goal-deposits-label">Recent deposits</div>
+        ${recentDeposits.length ? `<div class="goal-deposits-label">Recent activity</div>
         <div class="goal-deposits-list">
-          ${recentDeposits.map(dep => `<div class="goal-deposit-row">
-            <span class="goal-deposit-date">${formatDateShort(new Date(dep.date))}</span>
-            <span class="goal-deposit-note">${escHtml(dep.note||'Deposit')}</span>
-            <span class="goal-deposit-amt">+$${fmtAmt(dep.amount)}</span>
-          </div>`).join('')}
+          ${recentDeposits.map(dep => {
+            const isWd = dep.amount < 0;
+            return `<div class="goal-deposit-row">
+              <span class="goal-deposit-date">${formatDateShort(new Date(dep.date))}</span>
+              <span class="goal-deposit-note">${escHtml(dep.note||(isWd?'Withdrawal':'Deposit'))}</span>
+              <span class="goal-deposit-amt${isWd?' withdrawal':''}">${isWd?'−':'+'}$${fmtAmt(Math.abs(dep.amount))}</span>
+            </div>`;
+          }).join('')}
         </div>` : ''}
 
-        <button class="goal-deposit-btn" onclick="event.stopPropagation();openDepositModal('${goal.id}')">+ Add deposit</button>
+        <button class="goal-deposit-btn" onclick="event.stopPropagation();openDepositModal('${goal.id}')">💰 Deposit / Withdraw</button>
       </div>`;
     });
   }
@@ -3816,6 +3969,7 @@ let depositingGoalId = null;
 
 function openDepositModal(goalId) {
   depositingGoalId = goalId;
+  depositType = 'deposit';
   const goals = loadGoals();
   const goal = goals.find(g => g.id === goalId);
   if (!goal) return;
@@ -3824,6 +3978,16 @@ function openDepositModal(goalId) {
   document.getElementById('depositNoteInput').value = '';
   const today = new Date().toISOString().slice(0,10);
   document.getElementById('depositDateInput').value = today;
+
+  // Reset type buttons
+  document.getElementById('depositModalTitle').textContent = '💰 Add deposit';
+  document.getElementById('depositSaveBtn').textContent = 'Save deposit';
+  document.querySelectorAll('.deposit-type-btn').forEach(b => {
+    b.classList.remove('selected'); b.style.borderColor = ''; b.style.color = '';
+  });
+  const depBtn = document.getElementById('depositTypeDepBtn');
+  depBtn.classList.add('selected');
+  depBtn.style.borderColor = '#6c5ce7'; depBtn.style.color = '#6c5ce7';
 
   // Show suggested weekly amount
   const weekly = goalWeeklyNeeded(goal);
@@ -3834,15 +3998,36 @@ function openDepositModal(goalId) {
   // Show deposit history
   const deps = (goal.deposits || []).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
   document.getElementById('depositHistoryList').innerHTML = deps.length
-    ? deps.map(d => `<div class="goal-deposit-row">
-        <span class="goal-deposit-date">${formatDateShort(new Date(d.date))}</span>
-        <span class="goal-deposit-note">${escHtml(d.note||'Deposit')}</span>
-        <span class="goal-deposit-amt">+$${fmtAmt(d.amount)}</span>
-        <button onclick="removeDeposit('${goalId}','${d.id}')" style="background:none;border:none;color:#ddd;font-size:13px;cursor:pointer;padding:0 0 0 6px" title="Remove">✕</button>
-      </div>`).join('')
-    : '<div style="font-size:12px;color:var(--muted);padding:4px 0">No deposits yet</div>';
+    ? deps.map(d => {
+        const isWd = d.amount < 0;
+        return `<div class="goal-deposit-row">
+          <span class="goal-deposit-date">${formatDateShort(new Date(d.date))}</span>
+          <span class="goal-deposit-note">${escHtml(d.note||(isWd?'Withdrawal':'Deposit'))}</span>
+          <span class="goal-deposit-amt${isWd?' withdrawal':''}">${isWd?'−':'+'}$${fmtAmt(Math.abs(d.amount))}</span>
+          <button onclick="removeDeposit('${goalId}','${d.id}')" style="background:none;border:none;color:#ddd;font-size:13px;cursor:pointer;padding:0 0 0 6px" title="Remove">✕</button>
+        </div>`;
+      }).join('')
+    : '<div style="font-size:12px;color:var(--muted);padding:4px 0">No activity yet</div>';
 
   openModal('depositModal');
+}
+
+function selectDepositType(type, btn) {
+  depositType = type;
+  document.querySelectorAll('.deposit-type-btn').forEach(b => {
+    b.classList.remove('selected'); b.style.borderColor = ''; b.style.color = '';
+  });
+  btn.classList.add('selected');
+  const isWd = type === 'withdrawal';
+  btn.style.borderColor = isWd ? 'var(--coral)' : '#6c5ce7';
+  btn.style.color       = isWd ? 'var(--coral)' : '#6c5ce7';
+  const title = document.getElementById('depositModalTitle');
+  if (title) title.textContent = isWd ? '📤 Withdraw funds' : '💰 Add deposit';
+  const saveBtn = document.getElementById('depositSaveBtn');
+  if (saveBtn) saveBtn.textContent = isWd ? 'Save withdrawal' : 'Save deposit';
+  // Hide suggestion when withdrawing
+  const sugg = document.getElementById('depositSuggestion');
+  if (sugg) sugg.style.display = isWd ? 'none' : '';
 }
 
 function saveDeposit() {
@@ -3855,15 +4040,20 @@ function saveDeposit() {
   const goal = goals.find(g => g.id === depositingGoalId);
   if (!goal) return;
   if (!goal.deposits) goal.deposits = [];
-  goal.deposits.push({ id:'dep'+Date.now(), amount, note, date: date+'T00:00:00.000Z' });
+  const finalAmount = depositType === 'withdrawal' ? -Math.abs(amount) : Math.abs(amount);
+  goal.deposits.push({ id:'dep'+Date.now(), amount: finalAmount, note, date: date+'T00:00:00.000Z', type: depositType });
   saveGoals(goals);
   closeModal('depositModal');
   render();
-  const saved = goalSaved(goal);
-  if (saved >= goal.targetAmount) {
-    showToast('🎉 Goal reached! Amazing work!', 'success');
+  if (depositType === 'withdrawal') {
+    showToast(`📤 $${fmtAmt(amount)} withdrawn`, 'success');
   } else {
-    showToast(`💰 $${fmtAmt(amount)} deposited`, 'success');
+    const saved = goalSaved(goal);
+    if (saved >= goal.targetAmount) {
+      showToast('🎉 Goal reached! Amazing work!', 'success');
+    } else {
+      showToast(`💰 $${fmtAmt(amount)} deposited`, 'success');
+    }
   }
 }
 
